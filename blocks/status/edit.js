@@ -135,7 +135,7 @@ class Edit extends wp.element.Component {
 				            form_ids={ form_ids } fields={ fields } liveData={ liveData } entry_data={ { rows: [] } } column_order={ column_order } display_filters={ true }/>
 			),
 			(isDetail &&
-				<DetailPage timeline={ timeline } step_status={ step_status } workflow_info={ workflow_info }
+				<DetailPage key={ 'gravityflow-detail' } timeline={ timeline } step_status={ step_status } workflow_info={ workflow_info }
 				            sidebar={ sidebar } back_link={ back_link } back_link_text={ back_link_text }
 				            back_link_url={ back_link_url } setAttributes={ setAttributes }/>)
 		]

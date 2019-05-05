@@ -1,0 +1,30 @@
+.gravityflow-entry-table thead tr {background: #FFF}
+.gravityflow-entry-table tr:nth-child(even) {background: #f9f9f9}
+.gravityflow-entry-table tr:nth-child(odd) {background: #FFF}
+
+.gravityflow-entry-table {
+  border-collapse:collapse;
+  width:100%;
+  border-top:1px solid #ddd!important;
+}
+.gravityflow-entry-table th{
+  display:table-cell;
+  padding: 10px;
+  border-right:0;
+}
+
+.gravityflow-entry-table td {
+  padding: 10px;
+  border-right:0;
+}
+
+.gravityflow-entry-table th{
+  border-top:1px solid #ddd !important;
+}
+
+.gravityflow-entry-table tbody tr{
+  border-left-width: 3px;
+  border-left-style: solid;
+  border-left-color: transparent;
+}
+

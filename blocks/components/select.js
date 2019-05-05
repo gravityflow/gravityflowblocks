@@ -1,0 +1,36 @@
+/* Copyright (C) 2019 Steven Henty S.L. - All Rights Reserved */
+
+import ReactSelect from 'react-select';
+const {BaseControl} = wp.components;
+
+const { withState } = wp.compose;
+
+
+class Select extends wp.element.Component {
+	constructor() {
+		super( ...arguments );
+	}
+
+	render() {
+		const { isMulti, setState, options, value, label, id, help, className, onChange } = this.props;
+
+		const handleChange = ( selectedValues ) => {
+			setState( { value: selectedValues } );
+			onChange( selectedValues );
+		};
+
+		return (
+			<BaseControl label={ label } id={ id } help={ help } className={ className }>
+				<ReactSelect
+					isMulti={ isMulti }
+					value={ value }
+					onChange={ handleChange }
+					options={ options }
+				/>
+			</BaseControl>
+		)
+	}
+}
+
+export default withState()( Select );
+

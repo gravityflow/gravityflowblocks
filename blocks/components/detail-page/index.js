@@ -17,11 +17,11 @@ class DetailPage extends wp.element.Component {
 	}
 
 	render() {
-		const { setAttributes, timeline, step_status, workflow_info, sidebar, back_link, back_link_text, back_link_url } = this.props;
+		const { setAttributes, timeline, stepStatus, workflowInfo, sidebar, backLink, backLinkText, backLinkUrl } = this.props;
 
-		const dummyValue = <div className={ 'field-value' }/>
+		const dummyValue = <div className={ 'field-value' }/>;
 
-		const workflowInfo = (workflow_info &&
+		const workflowInfoEl = (workflowInfo &&
 			<div  key={ 'gravityflow-workflow-details' } id={ 'gravityflow-workflow-details' }>
 				<strong>{ __( 'Workflow', 'gravityflow' ) }</strong>
 				<div id={ 'entry-id' }>
@@ -38,9 +38,9 @@ class DetailPage extends wp.element.Component {
 				</div>
 				<hr style={ { marginTop: '10px' } }/>
 			</div>
-		)
+		);
 
-		const stepStatus = (step_status &&
+		const stepStatusEl = (stepStatus &&
 			<div key={ 'gravityflow-step-status' } id={ 'gravityflow-step-status' }>
 				<div key={ 'step-status' } id={ 'step-status' }>
 					<strong>{ __( 'Step Name (Status)', 'gravityflow' ) }</strong>
@@ -49,7 +49,7 @@ class DetailPage extends wp.element.Component {
 					{ __( 'Assignee:', 'gravityflow' ) }{ dummyValue } { __( '(status)', 'gravityflow' ) }
 				</div>
 			</div>
-		)
+		);
 
 		const timelineItem = ( i ) => (
 			<div key={ 'timeline-item-' + i } className={ 'timeline-item' }>
@@ -81,8 +81,8 @@ class DetailPage extends wp.element.Component {
 		);
 
 		const workflowBox = (<div key={ 'workflow-box' }>
-				{ workflowInfo }
-				{ stepStatus }
+				{ workflowInfoEl }
+				{ stepStatusEl }
 			</div>
 		);
 
@@ -107,13 +107,13 @@ class DetailPage extends wp.element.Component {
 					/>
 					<ToggleControl
 						label={ __( 'Step Status', 'gravityflow' ) }
-						checked={ step_status }
-						onChange={ () => setAttributes( { step_status: !step_status } ) }
+						checked={ stepStatus }
+						onChange={ () => setAttributes( { stepStatus: !stepStatus } ) }
 					/>
 					<ToggleControl
 						label={ __( 'Workflow Details', 'gravityflow' ) }
-						checked={ workflow_info }
-						onChange={ () => setAttributes( { workflow_info: !workflow_info } ) }
+						checked={ workflowInfo }
+						onChange={ () => setAttributes( { workflowInfo: !workflowInfo } ) }
 					/>
 					<ToggleControl
 						label={ __( 'Sidebar', 'gravityflow' ) }
@@ -122,27 +122,27 @@ class DetailPage extends wp.element.Component {
 					/>
 					<ToggleControl
 						label={ __( 'Back Link', 'gravityflow' ) }
-						checked={ back_link }
-						onChange={ () => setAttributes( { back_link: !back_link } ) }
+						checked={ backLink }
+						onChange={ () => setAttributes( { backLink: !backLink } ) }
 					/>
-					{ back_link && (
+					{ backLink && (
 						<div>
 							<TextControl
 								label={ __( 'Back Link Text', 'gravityforms' ) }
-								value={ back_link_text }
-								onChange={ ( new_back_link_text ) => setAttributes( { back_link_text: new_back_link_text } ) }
+								value={ backLinkText }
+								onChange={ ( newBackLinkText ) => setAttributes( { backLinkText: newBackLinkText } ) }
 							/>
 							<TextControl
 								label={ __( 'Custom Inbox URL (Optional)', 'gravityforms' ) }
-								value={ back_link_url }
-								onChange={ ( new_back_link_url ) => setAttributes( { back_link_url: new_back_link_url } ) }
+								value={ backLinkUrl }
+								onChange={ ( newBackLinkUrl ) => setAttributes( { backLinkUrl: newBackLinkUrl } ) }
 							/>
 						</div>
 					) }
 				</PanelBody>
 			</InspectorControls>,
 			<div key={ 'detail-view' } id={ 'detail-view' } className={ 'detail-view' }>
-				{ back_link && back_link_text }
+				{ backLink && backLinkText }
 				<div id={ 'container' }>
 					<div key={ 'main' } id={ 'main' }>
 						<div id={ 'entry-details' }>

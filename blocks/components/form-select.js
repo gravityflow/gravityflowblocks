@@ -12,7 +12,7 @@ class FormSelectView extends wp.element.Component {
 	}
 
 	render() {
-		const { form_ids, className, forms, fields, onFieldsChange, onFormsChange } = this.props
+		const { selectedForms, className, forms, selectedFields, onFieldsChange, onFormsChange } = this.props;
 		if ( forms === undefined ) {
 			return (
 				<p className={ className }>
@@ -43,7 +43,7 @@ class FormSelectView extends wp.element.Component {
 
 		let fieldOptions = [];
 
-		const form = form_ids.length === 1 ? forms[ form_ids.map( item => item.value ) ] : false
+		const form = selectedForms.length === 1 ? forms[ selectedForms.map( item => item.value ) ] : false
 		if ( form ) {
 			Object.keys( form.fields ).forEach( function ( key, i ) {
 				const field = form.fields[key];
@@ -78,16 +78,16 @@ class FormSelectView extends wp.element.Component {
 				<Select
 					isMulti
 					label={ __( 'Filter Form(s)', 'gravityflow' ) }
-					value={form_ids}
+					value={selectedForms}
 					onChange={onFormsChange}
 					options={options}
 				/>
 				{
-					form && fields !== undefined &&
+					form && selectedFields !== undefined &&
 					<Select
 						isMulti
 						label={ __( 'Select Fields', 'gravityflow' ) }
-						value={fields}
+						value={selectedFields}
 						onChange={onFieldsChange}
 						options={fieldOptions}
 					/>

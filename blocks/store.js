@@ -1,7 +1,7 @@
 /* Copyright (C) 2019 Steven Henty S.L. - All Rights Reserved */
 
-const { registerStore } = wp.data
-const { apiFetch } = wp
+const { registerStore } = wp.data;
+const { apiFetch } = wp;
 
 const actions = {
 	setForms( forms ) {
@@ -18,7 +18,7 @@ const actions = {
 		}
 	},
 
-}
+};
 
 const store = registerStore( 'gravityflow/workflow', {
 	reducer( state = { forms: [] }, action ) {
@@ -37,7 +37,7 @@ const store = registerStore( 'gravityflow/workflow', {
 
 	selectors: {
 		receiveForms( state ) {
-			const { forms } = state
+			const { forms } = state;
 			return forms
 		},
 	},
@@ -62,4 +62,4 @@ const store = registerStore( 'gravityflow/workflow', {
 			return actions.setForms( forms )
 		},
 	},
-} )
+} );

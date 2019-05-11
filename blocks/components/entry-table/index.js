@@ -16,9 +16,9 @@ class EntryTable extends wp.element.Component {
 	}
 
 	render() {
-		const { step_highlight, id_column, submitter_column, step_column, actions_column, last_updated, due_date, className, form_ids, fields, entry_data, live_data, column_order, display_filters } = this.props
+		const { stepHighlight, idColumn, submitterColumn, stepColumn, actionsColumn, lastUpdated, dueDate, className, selectedForms, selectedFields, entryData, liveData, columnOrder, displayFilters } = this.props
 
-		if ( entry_data === undefined || entry_data.rows === undefined ) {
+		if ( entryData === undefined || entryData.rows === undefined ) {
 			return (
 				<p className={ className }>
 					<Spinner/>
@@ -27,26 +27,26 @@ class EntryTable extends wp.element.Component {
 			)
 		}
 		const columnMappings = {
-			id: { enabled: id_column, title: __( 'ID', 'gravityflow' ) },
-			actions: { enabled: actions_column, title: '' },
-			form_title: { enabled: form_ids.length === 0 || form_ids.length > 1, title: __( 'Form', 'gravityflow' ) },
-			created_by: { enabled: submitter_column, title: __( 'Submitter', 'gravityflow' ) },
-			workflow_step: { enabled: step_column, title: __( 'Step', 'gravityflow' ) },
+			id: { enabled: idColumn, title: __( 'ID', 'gravityflow' ) },
+			actions: { enabled: actionsColumn, title: '' },
+			form_title: { enabled: selectedForms.length === 0 || selectedForms.length > 1, title: __( 'Form', 'gravityflow' ) },
+			created_by: { enabled: submitterColumn, title: __( 'Submitter', 'gravityflow' ) },
+			workflow_step: { enabled: stepColumn, title: __( 'Step', 'gravityflow' ) },
 			workflow_final_status: { enabled: true, title: __( 'Status', 'gravityflow' ) },
 			date_created: { enabled: true, title: __( 'Submitted', 'gravityflow' ) },
-			fields: fields,
-			last_updated: { enabled: last_updated, title: __( 'Last Updated', 'gravityflow' ) },
-			due_date: { enabled: due_date, title: __( 'Due date', 'gravityflow' ) }
+			fields: selectedFields,
+			last_updated: { enabled: lastUpdated, title: __( 'Last Updated', 'gravityflow' ) },
+			due_date: { enabled: dueDate, title: __( 'Due date', 'gravityflow' ) }
 		};
 
 		const orderedColumns = [];
-		column_order.forEach(function(key) {
+		columnOrder.forEach(function(key) {
 			orderedColumns[key] = columnMappings[key];
 		});
 		let columns = [];
 		Object.keys( orderedColumns ).map(function( key ){
 			if ( key === 'fields' ) {
-				fields.map( function ( field ) {
+				selectedFields.map( function ( field ) {
 					columns.push( { key: field.value, title: field.label } );
 				} )
 			} else if ( orderedColumns[key].enabled ) {
@@ -55,14 +55,14 @@ class EntryTable extends wp.element.Component {
 		} );
 
 
-		if ( !live_data ) {
+		if ( !liveData ) {
 			let row = {};
 			columns.forEach( function ( column, i ) {
 				row[column.key] = (
 					<div style={ { width: 'auto', backgroundColor: '#eee', height: '10px' } }>&nbsp;</div>
 				)
 			} );
-			entry_data.rows = [...Array( 10 )].map( ( _, i ) => {
+			entryData.rows = [...Array( 10 )].map( ( _, i ) => {
 					let newRow = {};
 					Object.assign( newRow, row );
 					newRow.id = i + 1;
@@ -76,7 +76,7 @@ class EntryTable extends wp.element.Component {
 
 		return (
 			<div>
-				{ display_filters && <Filters forms_count={ form_ids.length }/> }
+				{ displayFilters && <Filters formsCount={ selectedForms.length }/> }
 				<table className={ 'gravityflow-entry-table' }>
 					<thead>
 					<tr>
@@ -93,8 +93,8 @@ class EntryTable extends wp.element.Component {
 					</thead>
 
 					<tbody>
-					{ entry_data.rows.map( row => {
-						const highlightColor = step_highlight ? row.step_highlight : '';
+					{ entryData.rows.map( row => {
+						const highlightColor = stepHighlight ? row.step_highlight : '';
 						return (
 							<tr key={ row.id } style={ { borderColor: highlightColor } }>
 								{ columns.map( column => {

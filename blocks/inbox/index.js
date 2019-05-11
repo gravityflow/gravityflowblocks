@@ -15,6 +15,7 @@ registerBlockType(
 		icon: {
 			src: icon,
 		},
+		keywords: [ __( 'Gravity Flow' ), __( 'Gravity' ) ],
 		category: 'widgets',
 		supports: {
 			multiple: false,
@@ -22,41 +23,41 @@ registerBlockType(
 			anchor: true,
 		},
 		attributes: {
-			step_highlight: {
+			stepHighlight: {
 				type: 'boolean',
 				default: true,
 			},
-			id_column: {
+			idColumn: {
 				type: 'boolean',
 				default: true,
 			},
-			submitter_column: {
+			submitterColumn: {
 				type: 'boolean',
 				default: true,
 			},
-			step_column: {
+			stepColumn: {
 				type: 'boolean',
 				default: true,
 			},
-			actions_column: {
+			actionsColumn: {
 				type: 'boolean',
 				default: false,
 			},
-			last_updated: {
+			lastUpdated: {
 				type: 'boolean',
 				default: false,
 			},
-			due_date: {
+			dueDate: {
 				type: 'boolean',
 				default: false,
 			},
-			selected_forms_json: {
+			selectedFormsJson: {
 				type: 'string',
 				source: 'meta',
 				meta: '_gravityflow_inbox_forms_json',
 				default: '',
 			},
-			selected_fields_json: {
+			selectedFieldsJson: {
 				type: 'string',
 				source: 'meta',
 				meta: '_gravityflow_inbox_fields_json',
@@ -66,11 +67,11 @@ registerBlockType(
 				type: 'boolean',
 				default: true,
 			},
-			step_status: {
+			stepStatus: {
 				type: 'boolean',
 				default: true,
 			},
-			workflow_info: {
+			workflowInfo: {
 				type: 'boolean',
 				default: true,
 			},
@@ -78,15 +79,15 @@ registerBlockType(
 				type: 'boolean',
 				default: true,
 			},
-			back_link: {
+			backLink: {
 				type: 'boolean',
 				default: false,
 			},
-			back_link_text: {
+			backLinkText: {
 				type: 'string',
-				default: __( 'Back to Inbox', 'gravityflow' ),
+				default: __( 'Return to list', 'gravityflow' ),
 			},
-			back_link_url: {
+			backLinkUrl: {
 				type: 'string',
 				default: '',
 			},

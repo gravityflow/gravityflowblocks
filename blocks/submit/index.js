@@ -17,6 +17,7 @@ registerBlockType(
 		icon: {
 			src: icon,
 		},
+		keywords: [ __( 'Gravity Flow' ), __( 'Gravity' ) ],
 		category: 'widgets',
 		supports: {
 			multiple: false,
@@ -24,7 +25,7 @@ registerBlockType(
 			anchor: true,
 		},
 		attributes: {
-			selected_forms_json: {
+			selectedFormsJson: {
 				type: 'string',
 				source: 'meta',
 				meta: '_gravityflow_submit_forms_json',

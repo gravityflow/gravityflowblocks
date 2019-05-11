@@ -27,13 +27,13 @@ class Edit extends wp.element.Component {
 	}
 
 	render() {
-		let { attributes: { step_highlight, id_column, submitter_column, step_column, last_updated, due_date, selected_forms_json, selected_fields_json, timeline, step_status, workflow_info, sidebar, back_link, back_link_text, back_link_url, display_all, allow_anonymous }, setAttributes, setState, current_view, liveData } = this.props
+		let { attributes: { idColumn, submitterColumn, stepColumn, lastUpdated, dueDate, selectedFormsJson, selectedFieldsJson, timeline, stepStatus, workflowInfo, sidebar, backLink, backLinkText, backLinkUrl, displayAll, allowAnonymous }, setAttributes, setState, currentView, liveData } = this.props
 
-		const fields = !selected_fields_json ? [] : JSON.parse( selected_fields_json );
-		const form_ids = !selected_forms_json ? [] : JSON.parse( selected_forms_json );
-		const isDetail = current_view === 'detail';
+		const selectedFields = !selectedFieldsJson ? [] : JSON.parse( selectedFieldsJson );
+		const selectedForms = !selectedFormsJson ? [] : JSON.parse( selectedFormsJson );
+		const isDetail = currentView === 'detail';
 
-		const column_order = [
+		const columnOrder = [
 			'id', 'date_created', 'form_title', 'created_by', 'workflow_step', 'workflow_final_status', 'fields', 'last_updated', 'due_date'
 		];
 
@@ -47,13 +47,13 @@ class Edit extends wp.element.Component {
 						<Button
 							className={ 'view-toggle-button' }
 							isDefault
-							onClick={ () => setState( { current_view: 'list' } ) }
+							onClick={ () => setState( { currentView: 'list' } ) }
 							style={ { zIndex: 0 } }
 							isPrimary={ !isDetail }>{ __( 'List', 'gravityflow' ) }</Button>
 						<Button
 							className={ 'view-toggle-button' }
 							isDefault
-							onClick={ () => setState( { current_view: 'detail' } ) }
+							onClick={ () => setState( { currentView: 'detail' } ) }
 							style={ { zIndex: 0 } }
 							isPrimary={ isDetail }>Detail</Button>
 					</ButtonGroup>
@@ -66,45 +66,40 @@ class Edit extends wp.element.Component {
 							title={ __( 'Display Settings', 'gravityflow' ) }
 						>
 							<ToggleControl
-								label={ __( 'Highlight', 'gravityflow' ) }
-								checked={ step_highlight }
-								onChange={ () => setAttributes( { step_highlight: !step_highlight } ) }
-							/>
-							<ToggleControl
 								label={ __( 'Entry ID', 'gravityflow' ) }
-								checked={ id_column }
-								onChange={ () => setAttributes( { id_column: !id_column } ) }
+								checked={ idColumn }
+								onChange={ () => setAttributes( { idColumn: !idColumn } ) }
 							/>
 							<ToggleControl
 								label={ __( 'Submitter', 'gravityflow' ) }
-								checked={ submitter_column }
-								onChange={ () => setAttributes( { submitter_column: !submitter_column } ) }
+								checked={ submitterColumn }
+								onChange={ () => setAttributes( { submitterColumn: !submitterColumn } ) }
 							/>
 							<ToggleControl
 								label={ __( 'Step', 'gravityflow' ) }
-								checked={ step_column }
-								onChange={ () => setAttributes( { step_column: !step_column } ) }
+								checked={ stepColumn }
+								onChange={ () => setAttributes( { stepColumn: !stepColumn } ) }
 							/>
 							<ToggleControl
 								label={ __( 'Last updated', 'gravityflow' ) }
-								checked={ last_updated }
-								onChange={ () => setAttributes( { last_updated: !last_updated } ) }
+								checked={ lastUpdated }
+								onChange={ () => setAttributes( { lastUpdated: !lastUpdated } ) }
 							/>
 							<ToggleControl
 								label={ __( 'Due Date', 'gravityflow' ) }
-								checked={ due_date }
-								onChange={ () => setAttributes( { due_date: !due_date } ) }
+								checked={ dueDate }
+								onChange={ () => setAttributes( { dueDate: !dueDate } ) }
 							/>
 
 						</PanelBody>
 						<FormSelect
-							form_ids={ form_ids }
-							fields={ fields }
-							onFormsChange={ ( form_ids ) => {
-								setAttributes( { selected_forms_json: JSON.stringify( form_ids ), fields: '' } );
+							selectedForms={ selectedForms }
+							selectedFields={ selectedFields }
+							onFormsChange={ ( selectedForms ) => {
+								setAttributes( { selectedFormsJson: JSON.stringify( selectedForms ), selectedFieldsJson: '' } );
 							}}
-							onFieldsChange={ ( fields ) => {
-								setAttributes( { selected_fields_json: JSON.stringify( fields ) } );
+							onFieldsChange={ ( selectedFields ) => {
+								setAttributes( { selectedFieldsJson: JSON.stringify( selectedFields ) } );
 							}
 							}
 						/>
@@ -114,14 +109,14 @@ class Edit extends wp.element.Component {
 						>
 							<ToggleControl
 								label={ __( 'Display All Entries', 'gravityflow' ) }
-								checked={ display_all }
-								onChange={ () => setAttributes( { display_all: !display_all } ) }
+								checked={ displayAll }
+								onChange={ () => setAttributes( { displayAll: !displayAll } ) }
 								help={ __( "Displays all entries to all logged in users regardless of their permissions.", 'gravityflow' ) }
 							/>
-							{ display_all && <ToggleControl
+							{ displayAll && <ToggleControl
 								label={ __( 'Make all entries public', 'gravityflow' ) }
-								checked={ allow_anonymous }
-								onChange={ () => setAttributes( { allow_anonymous: !allow_anonymous } ) }
+								checked={ allowAnonymous }
+								onChange={ () => setAttributes( { allowAnonymous: !allowAnonymous } ) }
 								help={ __( 'Displays all entries to all site visitors, including anonymous. This will also allow search engines to index the entries.', 'gravityflow' ) }
 							/>}
 						</PanelBody>
@@ -129,19 +124,19 @@ class Edit extends wp.element.Component {
 				) }
 			</InspectorControls>,
 			(!isDetail &&
-				<EntryTable key={ 'gravityflow-status' } step_highlight={ step_highlight } id_column={ id_column }
-				            submitter_column={ submitter_column } step_column={ step_column }
-				            last_updated={ last_updated } due_date={ due_date }
-				            form_ids={ form_ids } fields={ fields } liveData={ liveData } entry_data={ { rows: [] } } column_order={ column_order } display_filters={ true }/>
+				<EntryTable key={ 'gravityflow-status' } idColumn={ idColumn }
+				            submitterColumn={ submitterColumn } stepColumn={ stepColumn }
+				            lastUpdated={ lastUpdated } dueDate={ dueDate }
+				            selectedForms={ selectedForms } selectedFields={ selectedFields } liveData={ liveData } entryData={ { rows: [] } } columnOrder={ columnOrder } displayFilters={ true }/>
 			),
 			(isDetail &&
-				<DetailPage key={ 'gravityflow-detail' } timeline={ timeline } step_status={ step_status } workflow_info={ workflow_info }
-				            sidebar={ sidebar } back_link={ back_link } back_link_text={ back_link_text }
-				            back_link_url={ back_link_url } setAttributes={ setAttributes }/>)
+				<DetailPage key={ 'gravityflow-detail' } timeline={ timeline } stepStatus={ stepStatus } workflowInfo={ workflowInfo }
+				            sidebar={ sidebar } backLink={ backLink } backLinkText={ backLinkText }
+				            backLinkUrl={ backLinkUrl } setAttributes={ setAttributes }/>)
 		]
 	}
 }
 
 export default withState(
-	{ current_view: 'list' }
+	{ currentView: 'list' }
 )( Edit );

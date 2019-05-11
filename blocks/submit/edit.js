@@ -20,12 +20,12 @@ class Edit extends wp.element.Component {
 	}
 
 	render() {
-		let { attributes: { selected_forms_json }, forms, setAttributes } = this.props;
+		let { attributes: { selectedFormsJson }, forms, setAttributes } = this.props;
 
-		const form_ids = !selected_forms_json ? [] : JSON.parse( selected_forms_json );
+		const selectedForms = !selectedFormsJson ? [] : JSON.parse( selectedFormsJson );
 
 		let displayForms = [];
-		if ( form_ids.length === 0 ) {
+		if ( selectedForms.length === 0 ) {
 			Object.keys( forms ).forEach( function ( key, i ) {
 				displayForms.push( {
 					label: forms[key].title,
@@ -33,24 +33,24 @@ class Edit extends wp.element.Component {
 				} );
 			} );
 		} else {
-			displayForms = form_ids;
+			displayForms = selectedForms;
 		}
 
 		const formsList = displayForms.map( (form ) => {
-			return <div>{form.label}</div>
+			return <div key={ form.value }>{form.label}</div>
 		} );
 
 		return [
 			<InspectorControls key={ 'inbox-inspector' }>
 				<FormSelect
-					form_ids={ form_ids }
-					onFormsChange={ ( form_ids ) => {
-						setAttributes( { selected_forms_json: JSON.stringify( form_ids ) } );
+					selectedForms={ selectedForms }
+					onFormsChange={ ( selectedForms ) => {
+						setAttributes( { selectedFormsJson: JSON.stringify( selectedForms ) } );
 					}
 					}
 				/>
 			</InspectorControls>,
-			<div>
+			<div key={ 'form-list' }>
 			{formsList}
 			</div>
 		]
@@ -59,6 +59,6 @@ class Edit extends wp.element.Component {
 
 export default withSelect( ( select ) => {
 	return {
-		forms: select( 'gravityflow/inbox' ).receiveForms(),
+		forms: select( 'gravityflow/workflow' ).receiveForms(),
 	}
 } )( Edit );

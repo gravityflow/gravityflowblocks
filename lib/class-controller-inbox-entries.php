@@ -4,7 +4,16 @@ if ( ! class_exists( 'GFForms' ) ) {
 }
 
 
-class Gravity_Flow_REST_Inbox_Entries_Controller extends GF_REST_Form_Entries_Controller {
+class Gravity_Flow_REST_Inbox_Entries_Controller extends WP_REST_Controller {
+
+	/**
+	 * Endpoint namespace.
+	 *
+	 * @since 0.1
+	 *
+	 * @var string
+	 */
+	protected $namespace = 'gf/v2';
 
 	/**
 	 * @since 0.1
@@ -122,6 +131,19 @@ class Gravity_Flow_REST_Inbox_Entries_Controller extends GF_REST_Form_Entries_Co
 	public function get_items_permissions_check( $request ) {
 		// Permissions are checked in the Gravity Flow API
 		return true;
+	}
+
+	/**
+	 * Get the query params for collections
+	 *
+	 * @todo
+	 *
+	 * @since 2.4-beta-1
+	 *
+	 * @return array
+	 */
+	public function get_collection_params() {
+		return array();
 	}
 
 }

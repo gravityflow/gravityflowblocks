@@ -27,13 +27,14 @@ class Gravity_Flow_Blocks_Bootstrap {
 	 */
 	public static function load() {
 
-		if ( class_exists( 'GF_REST_API' ) ) {
-
-			include __DIR__ . '/lib/class-controller-inbox-entries.php';
-			include __DIR__ . '/lib/class-controller-inbox-forms.php';
-
-			add_action( 'rest_api_init', array( 'Gravity_Flow_Blocks_Bootstrap', 'register_rest_routes' ) );
+		if ( ! class_exists( 'GF_REST_API' ) ) {
+			require_once GFCommon::get_base_path() . '/includes/webapi/v2/includes/controllers/class-gf-rest-controller.php';
 		}
+
+		include __DIR__ . '/lib/class-controller-inbox-entries.php';
+		include __DIR__ . '/lib/class-controller-inbox-forms.php';
+
+		add_action( 'rest_api_init', array( 'Gravity_Flow_Blocks_Bootstrap', 'register_rest_routes' ) );
 	}
 
 	/**

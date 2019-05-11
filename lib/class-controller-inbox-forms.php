@@ -4,7 +4,16 @@ if ( ! class_exists( 'GFForms' ) ) {
 }
 
 
-class Gravity_Flow_REST_Inbox_Forms_Controller extends GF_REST_Controller {
+class Gravity_Flow_REST_Inbox_Forms_Controller extends WP_REST_Controller {
+
+	/**
+	 * Endpoint namespace.
+	 *
+	 * @since 0.1
+	 *
+	 * @var string
+	 */
+	protected $namespace = 'gf/v2';
 
 	/**
 	 * @since 0.1

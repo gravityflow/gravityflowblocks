@@ -67,7 +67,7 @@ class Gravity_Flow_REST_Inbox_Entries_Controller extends WP_REST_Controller {
 			'last_updated'   => $request->get_param( 'last-updated' ),
 			'due_date'       => $request->get_param( 'due-date' ),
 			'form_id'        => $form_ids,
-			'field_ids'      => $request->get_param( 'fields' ),
+			'field_ids'      => GFAPI::current_user_can_any( 'gravityflow_status_view_all' ) ? $request->get_param( 'fields' ) : '',
 		);
 		$args = gravity_flow()->booleanize_shortcode_attributes( $args );
 		$args = wp_parse_args( $args, Gravity_Flow_Inbox::get_defaults() );

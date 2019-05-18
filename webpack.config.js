@@ -1,62 +1,74 @@
 const path = require( 'path' );
-const webpack = require( 'webpack' );
-const ExtractTextPlugin = require( 'extract-text-webpack-plugin' );
+const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
+const autoprefixer = require('autoprefixer');
 
-const editBlocksCSSPlugin = new ExtractTextPlugin( {
-  filename: './assets/css/blocks.editor.css',
-} );
+module.exports = ( env, options ) => {
+  const PROD = 'production' === options.mode;
 
-// Configuration for the ExtractTextPlugin.
-const extractConfig = {
-  use: [
-    { loader: 'raw-loader' },
-    {
-      loader: 'postcss-loader',
-      options: {
-        plugins: [ require( 'autoprefixer' ) ],
-      },
+  return {
+    entry: {
+      './assets/js/editor.blocks' : './blocks/index.js'
     },
-    {
-      loader: 'sass-loader',
-      query: {
-        outputStyle:
-          'production' === process.env.NODE_ENV ? 'compressed' : 'nested',
-      },
+    devtool: PROD ? '' : 'source-map',
+    output: {
+      path: path.resolve( __dirname ),
+      filename: PROD ? '[name].min.js' : '[name].js',
     },
-  ],
-};
-
-
-module.exports = {
-  entry: {
-    './assets/js/editor.blocks' : './blocks/index.js'
-  },
-  output: {
-    path: path.resolve( __dirname ),
-    filename: '[name].js',
-  },
-  externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM',
-  },
-  watch: 'production' !== process.env.NODE_ENV,
-  devtool: 'cheap-eval-source-map',
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
+    externals: {
+      'react': 'React',
+      'react-dom': 'ReactDOM',
+    },
+    resolve: {
+      extensions: [ '.js' ]
+    },
+    module:  {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use:     {
+            loader: 'babel-loader',
+            query:  {
+              presets: [ 'react' ],
+              plugins: [ 'transform-object-rest-spread' ]
+            }
+          }
         },
-      },
-      {
-        test: /.*\/editor\.s?css$/,
-        use: editBlocksCSSPlugin.extract( extractConfig ),
-      },
-    ],
-  },
-  plugins: [
-    editBlocksCSSPlugin,
-  ],
+        {
+          test: /.*\/editor\.s?css$/,
+          use:  [
+            MiniCssExtractPlugin.loader,
+            {
+              loader:  'css-loader',
+              options: {
+                minimize:     true,
+                sourcemap:    ! PROD,
+                autoprefixer: {
+                  add:     true,
+                  cascade: false,
+                }
+              }
+            },
+            {
+              loader: "postcss-loader",
+              options: {
+                plugins: () => [
+                  autoprefixer
+                ]
+              },
+            },
+            {
+              loader: "sass-loader",
+              options: {}
+            }
+          ]
+        }
+      ]
+    },
+    plugins: [
+      new MiniCssExtractPlugin( {
+        filename: './assets/css/blocks.editor.css',
+      } )
+    ]
+  }
 };

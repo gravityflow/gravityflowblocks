@@ -5,8 +5,9 @@ add_action( 'enqueue_block_editor_assets', 'gravityflow_enqueue_block_editor_ass
  * Enqueue block editor only JavaScript and CSS.
  */
 function gravityflow_enqueue_block_editor_assets() {
-	// Make paths variables so we don't write em twice ;)
-	$block_path = '/assets/js/editor.blocks.js';
+	$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
+
+	$block_path = "/assets/js/editor.blocks{$min}.js";
 	$style_path = '/assets/css/blocks.editor.css';
 
 	// Enqueue the bundled block JS file

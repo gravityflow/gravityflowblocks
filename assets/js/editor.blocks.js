@@ -864,7 +864,7 @@ var FormSelectView = function (_wp$element$Component) {
 				{ key: 'workflow-form-selector' },
 				React.createElement(_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
 					isMulti: true,
-					label: __('Filter Form(s)', 'gravityflow'),
+					label: __('Filter Forms', 'gravityflow'),
 					value: selectedForms,
 					onChange: onFormsChange,
 					options: options

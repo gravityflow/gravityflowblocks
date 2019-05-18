@@ -77,7 +77,7 @@ class FormSelectView extends wp.element.Component {
 			<div key={ 'workflow-form-selector' }>
 				<Select
 					isMulti
-					label={ __( 'Filter Form(s)', 'gravityflow' ) }
+					label={ __( 'Filter Forms', 'gravityflow' ) }
 					value={selectedForms}
 					onChange={onFormsChange}
 					options={options}

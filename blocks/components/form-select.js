@@ -67,7 +67,6 @@ class FormSelectView extends wp.element.Component {
 						value: field.id.toString(),
 					} );
 
-
 				}
 
 			} );

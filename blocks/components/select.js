@@ -26,6 +26,8 @@ class Select extends wp.element.Component {
 					value={ value }
 					onChange={ handleChange }
 					options={ options }
+					styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+					menuPortalTarget={document.body}
 				/>
 			</BaseControl>
 		)

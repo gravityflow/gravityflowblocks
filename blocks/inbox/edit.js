@@ -137,7 +137,6 @@ class Edit extends wp.element.Component {
 								checked={ dueDate }
 								onChange={ () => setAttributes( { dueDate: !dueDate } ) }
 							/>
-
 							<FormSelect
 								selectedForms={ selectedForms }
 								selectedFields={ selectedFields }

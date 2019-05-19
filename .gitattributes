@@ -3,6 +3,6 @@
 README.md export-ignore
 .babelrc export-ignore
 .browserslistrc export-ignore
-package.json
-package-lock.json
-webpack.config.js
+package.json export-ignore
+package-lock.json export-ignore
+webpack.config.js export-ignore

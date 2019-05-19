@@ -13,7 +13,7 @@ registerBlockType(
 	'gravityflow/submit',
 	{
 		title: __( 'Workflow Submit', 'gravityflow' ),
-		description: __( 'Display the workflow submit view.', 'gravityflow' ),
+		description: __( 'Display links to workflow forms.', 'gravityflow' ),
 		icon: {
 			src: icon,
 		},

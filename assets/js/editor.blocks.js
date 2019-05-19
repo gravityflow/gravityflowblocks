@@ -2001,10 +2001,12 @@ var Edit = function (_wp$element$Component) {
 			var displayForms = [];
 			if (selectedForms.length === 0) {
 				babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1___default()(forms).forEach(function (key, i) {
-					displayForms.push({
-						label: forms[key].title,
-						value: forms[key].id
-					});
+					if (forms[key].isPublished) {
+						displayForms.push({
+							label: forms[key].title,
+							value: forms[key].id
+						});
+					}
 				});
 			} else {
 				displayForms = selectedForms;
@@ -2107,7 +2109,7 @@ var registerBlockType = wp.blocks.registerBlockType;
 
 registerBlockType('gravityflow/submit', {
 	title: __('Workflow Submit', 'gravityflow'),
-	description: __('Display the workflow submit view.', 'gravityflow'),
+	description: __('Display links to workflow forms.', 'gravityflow'),
 	icon: {
 		src: _icon__WEBPACK_IMPORTED_MODULE_0__["default"]
 	},

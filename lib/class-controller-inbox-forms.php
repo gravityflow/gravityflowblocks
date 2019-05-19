@@ -58,7 +58,10 @@ class Gravity_Flow_REST_Inbox_Forms_Controller extends WP_REST_Controller {
 		$form_details = array();
 
 		$form_ids = gravity_flow()->get_workflow_form_ids();
-		$forms = GFFormsModel::get_form_meta_by_id( $form_ids );
+		$forms    = GFFormsModel::get_form_meta_by_id( $form_ids );
+
+		$published_form_ids = gravity_flow()->get_published_form_ids();
+
 		foreach ( $forms as $form ) {
 			$field_data = array();
 			foreach ( $form['fields'] as $field ) {
@@ -69,7 +72,12 @@ class Gravity_Flow_REST_Inbox_Forms_Controller extends WP_REST_Controller {
 					'inputs' => $field->get_entry_inputs(),
 				);
 			}
-			$form_details[ $form['id'] ] = array( 'id' => $form['id'], 'title' => $form['title'], 'fields' => $field_data );
+			$form_details[ $form['id'] ] = array(
+				'id'     => $form['id'],
+				'title'  => $form['title'],
+				'fields' => $field_data,
+				'isPublished' => in_array( $form['id'], $published_form_ids )
+			);
 		}
 
 		$response = rest_ensure_response( $form_details );

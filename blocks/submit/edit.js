@@ -27,10 +27,12 @@ class Edit extends wp.element.Component {
 		let displayForms = [];
 		if ( selectedForms.length === 0 ) {
 			Object.keys( forms ).forEach( function ( key, i ) {
-				displayForms.push( {
-					label: forms[key].title,
-					value: forms[key].id,
-				} );
+				if ( forms[key].isPublished ) {
+					displayForms.push( {
+						label: forms[key].title,
+						value: forms[key].id,
+					} );
+				}
 			} );
 		} else {
 			displayForms = selectedForms;

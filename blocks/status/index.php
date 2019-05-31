@@ -53,7 +53,7 @@ function gravityflow_render_status( $attributes, $content ) {
 	$html = '';
 	if ( rgget( 'view' ) || ! empty( $entry_id ) ) {
 		$html .= gravity_flow()->get_shortcode_status_page_detail( $shortcode_atts );
-	} elseif ( is_user_logged_in() || ( $shortcode_atts['display_all'] && $shortcode_atts['display_all'] ) ) {
+	} elseif ( is_user_logged_in() || ( $shortcode_atts['display_all'] && $shortcode_atts['allow_anonymous'] ) ) {
 		$html .= gravity_flow()->get_shortcode_status_page( $shortcode_atts );
 	}
 

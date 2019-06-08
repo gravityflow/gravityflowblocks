@@ -61,35 +61,44 @@ function gravityflow_render_status( $attributes, $content ) {
 }
 
 function gravityflow_register_status_fields() {
+
+	if ( ! GFAPI::current_user_can_any( 'gravityflow_status_view_all' ) ) {
+		return;
+	}
+
 	register_meta( 'post', '_gravityflow_status_fields_json', array(
-		'show_in_rest'  => true,
-		'single'        => true,
-		'type'          => 'string',
-		'auth_callback' => function () {
+		'show_in_rest'   => true,
+		'object_subtype' => 'page',
+		'single'         => true,
+		'type'           => 'string',
+		'auth_callback'  => function () {
 			return GFAPI::current_user_can_any( 'gravityflow_view_all' );
 		},
 	) );
 	register_meta( 'post', '_gravityflow_status_forms_json', array(
-		'show_in_rest'  => true,
-		'single'        => true,
-		'type'          => 'string',
-		'auth_callback' => function () {
+		'show_in_rest'   => true,
+		'object_subtype' => 'page',
+		'single'         => true,
+		'type'           => 'string',
+		'auth_callback'  => function () {
 			return GFAPI::current_user_can_any( 'gravityflow_view_all' );
 		},
 	) );
 	register_meta( 'post', '_gravityflow_status_display_all', array(
-		'show_in_rest'  => true,
-		'single'        => true,
-		'type'          => 'boolean',
-		'auth_callback' => function () {
+		'show_in_rest'   => true,
+		'object_subtype' => 'page',
+		'single'         => true,
+		'type'           => 'boolean',
+		'auth_callback'  => function () {
 			return GFAPI::current_user_can_any( 'gravityflow_view_all' );
 		},
 	) );
 	register_meta( 'post', '_gravityflow_status_allow_anonymous', array(
-		'show_in_rest'  => true,
-		'single'        => true,
-		'type'          => 'boolean',
-		'auth_callback' => function () {
+		'show_in_rest'   => true,
+		'object_subtype' => 'page',
+		'single'         => true,
+		'type'           => 'boolean',
+		'auth_callback'  => function () {
 			return GFAPI::current_user_can_any( 'gravityflow_view_all' );
 		},
 	) );

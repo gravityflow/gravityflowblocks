@@ -37,6 +37,11 @@ function gravityflow_render_submit( $attributes, $content ) {
 }
 
 function gravityflow_register_submit_fields() {
+
+	if ( ! GFAPI::current_user_can_any( 'gravityflow_status_view_all' ) ) {
+		return;
+	}
+
 	register_meta( 'post', '_gravityflow_submit_forms_json', array(
 		'show_in_rest'  => true,
 		'single'        => true,

@@ -50,6 +50,11 @@ function gravityflow_render_inbox( $attributes, $content ) {
 }
 
 function gravityflow_register_inbox_fields() {
+	
+	if ( ! GFAPI::current_user_can_any( 'gravityflow_status_view_all' ) ) {
+		return;
+	}
+	
 	register_meta( 'post', '_gravityflow_inbox_fields_json', array(
 		'show_in_rest'  => true,
 		'single'        => true,
@@ -71,33 +76,3 @@ function gravityflow_register_inbox_fields() {
 add_action( 'init', 'gravityflow_register_inbox_fields' );
 
 
-//add_filter( 'rest_pre_insert_page', 'gravityflow_block_attribute_validation', 10, 2 );
-function gravityflow_block_attribute_validation( $prepared_post, $request ) {
-	$current_post = get_post( $prepared_post->ID );
-
-	$current_post->post_content;
-
-	$current_blocks = parse_blocks( $prepared_post->post_content );
-
-	foreach ( $current_blocks as $block ) {
-		if ( $block['blockName'] == 'gravityflow/inbox' && rgars( $block, 'attrs/fields' ) ) {
-			$fields = rgars( $block, 'attrs/fields' );
-			if ( ! empty( $fields ) ) {
-				return new WP_Error( 'my_error', 'Bye!' );
-			}
-
-		}
-	}
-
-	return $prepared_post;
-}
-
-function my_test_allowed_block_types( $allowed_block_types, $post ) {
-	if ( $post->post_type === 'post' ) {
-		return $allowed_block_types;
-	}
-
-	return $allowed_block_types;
-}
-
-//add_filter( 'allowed_block_types', 'my_test_allowed_block_types', 10, 2 );

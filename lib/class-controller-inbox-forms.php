@@ -97,6 +97,6 @@ class Gravity_Flow_REST_Inbox_Forms_Controller extends WP_REST_Controller {
 	 */
 	public function get_items_permissions_check( $request ) {
 
-		return GFAPI::current_user_can_any( array( 'gravityflow_view_all' ) );
+		return GFAPI::current_user_can_any( array( 'gravityflow_status_view_all' ) );
 	}
 }

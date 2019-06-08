@@ -25,6 +25,7 @@ class Select extends wp.element.Component {
 					isMulti={ isMulti }
 					value={ value }
 					onChange={ handleChange }
+					menuPlacement={ 'auto' }
 					options={ options }
 					styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
 					menuPortalTarget={document.body}

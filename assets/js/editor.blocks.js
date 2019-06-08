@@ -807,7 +807,7 @@ var FormSelectView = function (_wp$element$Component) {
 				return React.createElement(
 					'p',
 					null,
-					__('You don\'t have permission to set the forms and fields', 'gravityflow')
+					__("Some settings are hidden because you don't have sufficient permissions.", 'gravityflow')
 				);
 			}
 
@@ -963,6 +963,7 @@ var Select = function (_wp$element$Component) {
 					isMulti: isMulti,
 					value: value,
 					onChange: handleChange,
+					menuPlacement: 'auto',
 					options: options,
 					styles: { menuPortal: function menuPortal(base) {
 							return babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0___default()({}, base, { zIndex: 9999 });

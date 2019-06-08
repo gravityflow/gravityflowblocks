@@ -23,7 +23,7 @@ class FormSelectView extends wp.element.Component {
 		}
 
 		if ( forms === 'error' ) {
-			return <p>{ __( "Some settings have been hidden because you don't have sufficient permissions.", 'gravityflow' ) }</p>
+			return <p>{ __( "Some settings are hidden because you don't have sufficient permissions.", 'gravityflow' ) }</p>
 
 		}
 

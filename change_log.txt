@@ -1,0 +1,5 @@
+Fixed an issue where the post meta is displayed in the REST API to users without sufficient permissions.
+Fixed an issue with the status block display_all attribute ignoring the allow_anonymous attribute.
+Fixed the position of the form selection menu.
+Fixed an issue with the permissions for the GET gf/v2/workflow/forms endpoint.
+Updated the string displayed when the current user doesn't have sufficient permissions to edit the forms and fields.

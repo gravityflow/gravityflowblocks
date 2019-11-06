@@ -1,6 +1,6 @@
 <?php
 
-add_action( 'plugins_loaded', 'gravityflow_register_inbox_dynamic_block' );
+add_action( 'init', 'gravityflow_register_inbox_dynamic_block' );
 /**
  * Register the dynamic block.
  *

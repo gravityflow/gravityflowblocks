@@ -1,6 +1,6 @@
 <?php
 
-add_action( 'plugins_loaded', 'gravityflow_register_submit_block' );
+add_action( 'init', 'gravityflow_register_submit_block' );
 /**
  * Register the status block.
  *

@@ -15,7 +15,7 @@
 defined( 'ABSPATH' ) || exit;
 
 
-add_action( 'init', array( 'Gravity_Flow_Blocks_Bootstrap', 'load' ), 100 );
+add_action( 'gravityflow_loaded', array( 'Gravity_Flow_Blocks_Bootstrap', 'load' ) );
 
 /**
  * Class Gravity_Flow_Bootstrap
@@ -35,6 +35,12 @@ class Gravity_Flow_Blocks_Bootstrap {
 		include __DIR__ . '/lib/class-controller-inbox-forms.php';
 
 		add_action( 'rest_api_init', array( 'Gravity_Flow_Blocks_Bootstrap', 'register_rest_routes' ) );
+
+		// Enqueue JS and CSS.
+		include __DIR__ . '/lib/enqueue-scripts.php';
+		include __DIR__ . '/blocks/inbox/index.php';
+		include __DIR__ . '/blocks/status/index.php';
+		include __DIR__ . '/blocks/submit/index.php';
 	}
 
 	/**
@@ -55,16 +61,6 @@ class Gravity_Flow_Blocks_Bootstrap {
 	}
 
 }
-
-// Enqueue JS and CSS
-
-include __DIR__ . '/lib/enqueue-scripts.php';
-
-include __DIR__ . '/blocks/inbox/index.php';
-
-include __DIR__ . '/blocks/status/index.php';
-
-include __DIR__ . '/blocks/submit/index.php';
 
 /**
  * Gets this plugin's absolute directory path.

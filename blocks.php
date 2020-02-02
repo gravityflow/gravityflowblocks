@@ -41,6 +41,7 @@ class Gravity_Flow_Blocks_Bootstrap {
 		include __DIR__ . '/blocks/inbox/index.php';
 		include __DIR__ . '/blocks/status/index.php';
 		include __DIR__ . '/blocks/submit/index.php';
+		include __DIR__ . '/blocks/reports/index.php';
 	}
 
 	/**

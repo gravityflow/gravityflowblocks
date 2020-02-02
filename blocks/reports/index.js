@@ -26,9 +26,5 @@ registerBlockType(
 
         },
         edit: Edit,
-        save() {
-            return (
-                null
-            );
-        },
+        save: () => null,
     } );

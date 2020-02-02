@@ -1,6 +1,4 @@
 import FormSelect from '../components/form-select';
-import DetailPage from '../components/detail-page';
-import EntryTable from '../components/entry-table';
 
 const { __ } = wp.i18n
 
@@ -12,19 +10,20 @@ const {
     Button, ButtonGroup,
 } = wp.components
 
-
-const { withState } = wp.compose;
-
 class Edit extends wp.element.Component {
     constructor() {
         super(...arguments);
     }
 
-    render() {
+    componentWillUnmount() {
+        // Hack to remove post meta when the block is removed.
+        // @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
+        wp.data.dispatch( 'core/editor' ).editPost( { meta:{_gravityflow_reports_fields_json:'', _gravityflow_reports_forms_json:''} } );
+    }
 
+    render() {
+        return '<div></div>';
     }
 }
 
-export default withState(
-    { currentView: 'list' }
-)( Edit );
+export default Edit;

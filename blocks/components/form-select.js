@@ -12,7 +12,7 @@ class FormSelectView extends wp.element.Component {
 	}
 
 	render() {
-		const { selectedForms, className, forms, selectedFields, onFieldsChange, onFormsChange } = this.props;
+		const { selectedForms, className, forms, selectedFields, onFieldsChange, onFormsChange, isMulti } = this.props;
 		if ( forms === undefined ) {
 			return (
 				<p className={ className }>
@@ -75,7 +75,7 @@ class FormSelectView extends wp.element.Component {
 		return (
 			<div key={ 'workflow-form-selector' }>
 				<Select
-					isMulti
+					isMulti={isMulti === undefined ? true : isMulti}
 					label={ __( 'Filter Forms', 'gravityflow' ) }
 					value={selectedForms}
 					onChange={onFormsChange}

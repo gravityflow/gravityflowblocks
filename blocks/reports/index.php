@@ -27,14 +27,9 @@ function gravityflow_register_reports_dynamic_block() {
  */
 function gravityflow_render_reports( $attributes, $content ) {
 
-	$saved_form_ids_json  = get_post_meta( get_the_ID(), '_gravityflow_reports_forms_json', true );
-	$saved_form_ids       = json_decode( $saved_form_ids_json, true );
-	$form_ids             = is_array( $saved_form_ids ) ? wp_list_pluck( $saved_form_ids, 'value' ) : array();
-	$attributes['form']   = join( ',', $form_ids );
-	$saved_field_ids_json = get_post_meta( get_the_ID(), '_gravityflow_reports_fields_json', true );
-	$saved_field_ids      = json_decode( $saved_field_ids_json, true );
-	$fields               = is_array( $saved_field_ids ) ? wp_list_pluck( $saved_field_ids, 'value' ) : array();
-	$attributes['fields'] = join( ',', $fields );
+	$attributes['range'] = get_post_meta( get_the_ID(), '_gravityflow_reports_range', true );
+	$attributes['form']  = get_post_meta( get_the_ID(), '_gravityflow_reports_form', true );
+	$attributes['category']  = get_post_meta( get_the_ID(), '_gravityflow_reports_category', true );
 
 	$shortcode_atts = array();
 	foreach ( $attributes as $key => $value ) {
@@ -55,22 +50,22 @@ function gravityflow_register_reports_fields() {
 		return;
 	}
 
-	register_meta( 'post', '_gravityflow_reports_fields_json', array(
-		'show_in_rest'  => true,
-		'single'        => true,
-		'type'          => 'string',
-		'auth_callback' => function () {
-			return GFAPI::current_user_can_any( 'gravityflow_view_all' );
-		},
-	) );
-	register_meta( 'post', '_gravityflow_reports_forms_json', array(
-		'show_in_rest'  => true,
-		'single'        => true,
-		'type'          => 'string',
-		'auth_callback' => function () {
-			return GFAPI::current_user_can_any( 'gravityflow_view_all' );
-		},
-	) );
+	$metas = array(
+		'_gravityflow_reports_range',
+		'_gravityflow_reports_form',
+		'_gravityflow_reports_category',
+	);
+
+	foreach ( $metas as $meta ) {
+		register_meta( 'post', $meta, array(
+			'show_in_rest'  => true,
+			'single'        => true,
+			'type'          => 'string',
+			'auth_callback' => function () {
+				return GFAPI::current_user_can_any( 'gravityflow_view_all' );
+			},
+		) );
+	}
 }
 
 add_action( 'init', 'gravityflow_register_reports_fields' );

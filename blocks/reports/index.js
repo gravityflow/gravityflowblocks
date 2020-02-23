@@ -23,7 +23,24 @@ registerBlockType(
             anchor: true,
         },
         attributes: {
-
+            range: {
+                type: 'string',
+                source: 'meta',
+                meta: '_gravityflow_reports_range',
+                default: '',
+            },
+            selectedForm: {
+                type: 'string',
+                source: 'meta',
+                meta: '_gravityflow_reports_form',
+                default: '',
+            },
+            category: {
+                type: 'string',
+                source: 'meta',
+                meta: '_gravityflow_reports_category',
+                default: '',
+            }
         },
         edit: Edit,
         save: () => null,

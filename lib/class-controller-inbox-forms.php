@@ -42,12 +42,22 @@ class Gravity_Flow_REST_Inbox_Forms_Controller extends WP_REST_Controller {
 				'args'                => $this->get_collection_params(),
 			),
 		) );
+
+		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)/steps', array(
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_items' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'args'                => $this->get_collection_params(),
+			),
+		) );
 	}
 
 	/**
 	 * Get a collection of entries
 	 *
 	 * @since 0.1
+	 * @since 0.2 Added support for getting steps.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 *
@@ -55,6 +65,38 @@ class Gravity_Flow_REST_Inbox_Forms_Controller extends WP_REST_Controller {
 	 */
 	public function get_items( $request ) {
 
+		if ( strstr( $request->get_route(), 'steps' ) ) {
+			$response = $this->get_steps( $request );
+		} else {
+			$response = $this->get_forms();
+		}
+
+		return $response;
+	}
+
+
+	/**
+	 * Check if a given request has access to get items
+	 *
+	 * @since 0.1
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 *
+	 * @return WP_Error|bool
+	 */
+	public function get_items_permissions_check( $request ) {
+
+		return GFAPI::current_user_can_any( array( 'gravityflow_status_view_all' ) );
+	}
+
+	/**
+	 * Get all forms with workflow.
+	 *
+	 * @since 0.2
+	 *
+	 * @return WP_REST_Response
+	 */
+	private function get_forms() {
 		$form_details = array();
 
 		$form_ids = gravity_flow()->get_workflow_form_ids();
@@ -80,23 +122,41 @@ class Gravity_Flow_REST_Inbox_Forms_Controller extends WP_REST_Controller {
 			);
 		}
 
-		$response = rest_ensure_response( $form_details );
-
-		return $response;
+		return rest_ensure_response( $form_details );
 	}
 
-
 	/**
-	 * Check if a given request has access to get items
+	 * Get workflow steps by request.
 	 *
-	 * @since 0.1
+	 * @since 0.2
 	 *
-	 * @param WP_REST_Request $request Full data about the request.
+	 * @param WP_REST_Request $request The request object.
 	 *
-	 * @return WP_Error|bool
+	 * @return WP_REST_Response
 	 */
-	public function get_items_permissions_check( $request ) {
+	private function get_steps( $request ) {
+		$steps = gravity_flow()->get_steps( $request['id'] );
 
-		return GFAPI::current_user_can_any( array( 'gravityflow_status_view_all' ) );
+		$_steps = array();
+		foreach ( $steps as $step ) {
+			$assignees     = $step->get_assignees();
+			$assignee_vars = array();
+			foreach ( $assignees as $assignee ) {
+				$assignee_id = $assignee->get_id();
+				if ( ! empty( $assignee_id ) ) {
+					$assignee_vars[] = array(
+						'key'  => $assignee->get_key(),
+						'name' => $assignee->get_display_name(),
+					);
+				}
+			}
+			$_steps[ $step->get_id() ] = array(
+				'id'        => $step->get_id(),
+				'name'      => $step->get_name(),
+				'assignees' => $assignee_vars,
+			);
+		}
+
+		return rest_ensure_response( $_steps );
 	}
 }

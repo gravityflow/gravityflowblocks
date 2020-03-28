@@ -40,6 +40,12 @@ registerBlockType(
                 source: 'meta',
                 meta: '_gravityflow_reports_category',
                 default: '',
+            },
+            step: {
+                type: 'string',
+                source: 'meta',
+                meta: '_gravityflow_reports_step',
+                default: '',
             }
         },
         edit: Edit,

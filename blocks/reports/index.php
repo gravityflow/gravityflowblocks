@@ -27,9 +27,13 @@ function gravityflow_register_reports_dynamic_block() {
  */
 function gravityflow_render_reports( $attributes, $content ) {
 
-	$attributes['range'] = get_post_meta( get_the_ID(), '_gravityflow_reports_range', true );
-	$attributes['form']  = get_post_meta( get_the_ID(), '_gravityflow_reports_form', true );
-	$attributes['category']  = get_post_meta( get_the_ID(), '_gravityflow_reports_category', true );
+	$form = get_post_meta( get_the_ID(), '_gravityflow_reports_form', true );
+	$form = json_decode( $form, true );
+
+	$attributes['range']    = get_post_meta( get_the_ID(), '_gravityflow_reports_range', true );
+	$attributes['form']     = $form['value'];
+	$attributes['category'] = get_post_meta( get_the_ID(), '_gravityflow_reports_category', true );
+	$attributes['step_id']  = get_post_meta( get_the_ID(), '_gravityflow_reports_step', true );
 
 	$shortcode_atts = array();
 	foreach ( $attributes as $key => $value ) {
@@ -54,6 +58,7 @@ function gravityflow_register_reports_fields() {
 		'_gravityflow_reports_range',
 		'_gravityflow_reports_form',
 		'_gravityflow_reports_category',
+		'_gravityflow_reports_step',
 	);
 
 	foreach ( $metas as $meta ) {

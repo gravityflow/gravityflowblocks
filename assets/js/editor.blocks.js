@@ -1445,17 +1445,23 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ "./node_modules/babel-runtime/core-js/object/get-prototype-of.js");
-/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
-/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ "./node_modules/babel-runtime/helpers/createClass.js");
-/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ "./node_modules/babel-runtime/helpers/possibleConstructorReturn.js");
-/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/babel-runtime/helpers/inherits.js");
-/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _components_form_select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/form-select */ "./blocks/components/form-select.js");
+/* harmony import */ var babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babel-runtime/core-js/json/stringify */ "./node_modules/babel-runtime/core-js/json/stringify.js");
+/* harmony import */ var babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! babel-runtime/core-js/object/keys */ "./node_modules/babel-runtime/core-js/object/keys.js");
+/* harmony import */ var babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ "./node_modules/babel-runtime/core-js/object/get-prototype-of.js");
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ "./node_modules/babel-runtime/helpers/createClass.js");
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ "./node_modules/babel-runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/babel-runtime/helpers/inherits.js");
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _components_form_select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/form-select */ "./blocks/components/form-select.js");
+
+
 
 
 
@@ -1465,6 +1471,9 @@ __webpack_require__.r(__webpack_exports__);
 
 var __ = wp.i18n.__;
 var InspectorControls = wp.editor.InspectorControls;
+var _wp = wp,
+    apiFetch = _wp.apiFetch;
+var withState = wp.compose.withState;
 var _wp$components = wp.components,
     PanelBody = _wp$components.PanelBody,
     FormToggle = _wp$components.FormToggle,
@@ -1474,15 +1483,15 @@ var _wp$components = wp.components,
     SelectControl = _wp$components.SelectControl;
 
 var Edit = function (_wp$element$Component) {
-    babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(Edit, _wp$element$Component);
+    babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6___default()(Edit, _wp$element$Component);
 
     function Edit() {
-        babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, Edit);
+        babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3___default()(this, Edit);
 
-        return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, (Edit.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default()(Edit)).apply(this, arguments));
+        return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default()(this, (Edit.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2___default()(Edit)).apply(this, arguments));
     }
 
-    babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(Edit, [{
+    babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default()(Edit, [{
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
             // Hack to remove post meta when the block is removed.
@@ -1490,16 +1499,44 @@ var Edit = function (_wp$element$Component) {
             wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_reports_form: '' } });
         }
     }, {
+        key: 'getSteps',
+        value: function getSteps() {
+            var _this2 = this;
+
+            var selectedForm = JSON.parse(this.props.attributes.selectedForm);
+            var formId = selectedForm.value;
+            var options = [{ label: __('All Steps', 'gravityflow'), value: '' }];
+
+            apiFetch({ path: 'gf/v2/workflow/forms/' + formId + '/steps' }).then(function (_steps) {
+                babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1___default()(_steps).forEach(function (key, i) {
+                    options.push({
+                        label: _steps[key].name,
+                        value: _steps[key].id
+                    });
+                });
+
+                _this2.props.setState({ steps: options });
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             var _props = this.props,
                 _props$attributes = _props.attributes,
                 range = _props$attributes.range,
                 selectedForm = _props$attributes.selectedForm,
                 category = _props$attributes.category,
+                step = _props$attributes.step,
+                steps = _props.steps,
                 setAttributes = _props.setAttributes,
                 setState = _props.setState;
 
+
+            var selectedForms = !selectedForm ? [] : JSON.parse(selectedForm);
+
+            this.getSteps();
 
             return [React.createElement(
                 InspectorControls,
@@ -1517,20 +1554,31 @@ var Edit = function (_wp$element$Component) {
                         },
                         options: [{ value: 'last-12-months', label: __('Last 12 months', 'gravityflowblocks') }, { value: 'last-6-months', label: __('Last 6 months', 'gravityflowblocks') }, { value: 'last-3-months', label: __('Last 3 months', 'gravityflowblocks') }]
                     }),
-                    React.createElement(_components_form_select__WEBPACK_IMPORTED_MODULE_5__["default"], {
+                    React.createElement(_components_form_select__WEBPACK_IMPORTED_MODULE_7__["default"], {
                         isMulti: false,
-                        selectedForms: [selectedForm],
+                        selectedForms: selectedForms,
                         onFormsChange: function onFormsChange(selectedForms) {
-                            setAttributes({ selectedForm: selectedForms.value.toString() });
+                            setAttributes({ selectedForm: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', step: '' });
                         }
                     }),
                     selectedForm && React.createElement(SelectControl, {
                         label: __('Category', 'gravityflowblocks'),
                         value: category,
                         onChange: function onChange(category) {
-                            setAttributes({ category: category });
+                            setAttributes({ category: category, step: '' });
+                            if (category === 'step') {
+                                _this3.getSteps();
+                            }
                         },
                         options: [{ value: 'month', label: __('Month', 'gravityflowblocks') }, { value: 'assignee', label: __('Assignee', 'gravityflowblocks') }, { value: 'step', label: __('Step', 'gravityflowblocks') }]
+                    }),
+                    category === 'step' && React.createElement(SelectControl, {
+                        label: __('Step', 'gravityflowblocks'),
+                        value: step,
+                        onChange: function onChange(step) {
+                            setAttributes({ step: step });
+                        },
+                        options: steps
                     })
                 )
             ), React.createElement(
@@ -1544,7 +1592,9 @@ var Edit = function (_wp$element$Component) {
     return Edit;
 }(wp.element.Component);
 
-/* harmony default export */ __webpack_exports__["default"] = (Edit);
+/* harmony default export */ __webpack_exports__["default"] = (withState({
+    steps: {}
+})(Edit));
 
 /***/ }),
 
@@ -1630,6 +1680,12 @@ registerBlockType('gravityflow/reports', {
             type: 'string',
             source: 'meta',
             meta: '_gravityflow_reports_category',
+            default: ''
+        },
+        step: {
+            type: 'string',
+            source: 'meta',
+            meta: '_gravityflow_reports_step',
             default: ''
         }
     },

@@ -46,6 +46,12 @@ registerBlockType(
                 source: 'meta',
                 meta: '_gravityflow_reports_step',
                 default: '',
+            },
+            assignee: {
+                type: 'string',
+                source: 'meta',
+                meta: '_gravityflow_reports_assignee',
+                default: '',
             }
         },
         edit: Edit,

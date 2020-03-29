@@ -34,6 +34,7 @@ function gravityflow_render_reports( $attributes, $content ) {
 	$attributes['form']     = $form['value'];
 	$attributes['category'] = get_post_meta( get_the_ID(), '_gravityflow_reports_category', true );
 	$attributes['step_id']  = get_post_meta( get_the_ID(), '_gravityflow_reports_step', true );
+	$attributes['assignee']  = get_post_meta( get_the_ID(), '_gravityflow_reports_assignee', true );
 
 	$shortcode_atts = array();
 	foreach ( $attributes as $key => $value ) {
@@ -59,6 +60,7 @@ function gravityflow_register_reports_fields() {
 		'_gravityflow_reports_form',
 		'_gravityflow_reports_category',
 		'_gravityflow_reports_step',
+		'_gravityflow_reports_assignee',
 	);
 
 	foreach ( $metas as $meta ) {

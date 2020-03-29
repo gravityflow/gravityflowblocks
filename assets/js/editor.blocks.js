@@ -1499,6 +1499,14 @@ var Edit = function (_wp$element$Component) {
             wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_reports_form: '' } });
         }
     }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.getSteps();
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps) {}
+    }, {
         key: 'getSteps',
         value: function getSteps() {
             var _this2 = this;
@@ -1506,6 +1514,7 @@ var Edit = function (_wp$element$Component) {
             var selectedForm = JSON.parse(this.props.attributes.selectedForm);
             var formId = selectedForm.value;
             var options = [{ label: __('All Steps', 'gravityflow'), value: '' }];
+            var assignees = [];
 
             apiFetch({ path: 'gf/v2/workflow/forms/' + formId + '/steps' }).then(function (_steps) {
                 babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1___default()(_steps).forEach(function (key, i) {
@@ -1513,9 +1522,19 @@ var Edit = function (_wp$element$Component) {
                         label: _steps[key].name,
                         value: _steps[key].id
                     });
+
+                    assignees[_steps[key].id] = [{ label: __('All Assignees', 'gravityflow'), value: '' }];
+                    if (_steps[key].assignees.length) {
+                        _steps[key].assignees.forEach(function (k, j) {
+                            assignees[_steps[key].id].push({
+                                label: k.name,
+                                value: k.key
+                            });
+                        });
+                    }
                 });
 
-                _this2.props.setState({ steps: options });
+                _this2.props.setState({ steps: options, assignees: assignees });
             });
         }
     }, {
@@ -1529,14 +1548,14 @@ var Edit = function (_wp$element$Component) {
                 selectedForm = _props$attributes.selectedForm,
                 category = _props$attributes.category,
                 step = _props$attributes.step,
+                assignee = _props$attributes.assignee,
                 steps = _props.steps,
+                assignees = _props.assignees,
                 setAttributes = _props.setAttributes,
                 setState = _props.setState;
 
 
             var selectedForms = !selectedForm ? [] : JSON.parse(selectedForm);
-
-            this.getSteps();
 
             return [React.createElement(
                 InspectorControls,
@@ -1565,7 +1584,7 @@ var Edit = function (_wp$element$Component) {
                         label: __('Category', 'gravityflowblocks'),
                         value: category,
                         onChange: function onChange(category) {
-                            setAttributes({ category: category, step: '' });
+                            setAttributes({ category: category, step: '', assignee: '' });
                             if (category === 'step') {
                                 _this3.getSteps();
                             }
@@ -1576,9 +1595,17 @@ var Edit = function (_wp$element$Component) {
                         label: __('Step', 'gravityflowblocks'),
                         value: step,
                         onChange: function onChange(step) {
-                            setAttributes({ step: step });
+                            setAttributes({ step: step, assignee: '' });
                         },
                         options: steps
+                    }),
+                    assignees && React.createElement(SelectControl, {
+                        label: __('Assignee', 'gravityflowblocks'),
+                        value: assignee,
+                        onChange: function onChange(assignee) {
+                            setAttributes({ assignee: assignee });
+                        },
+                        options: assignees[step]
                     })
                 )
             ), React.createElement(
@@ -1593,7 +1620,8 @@ var Edit = function (_wp$element$Component) {
 }(wp.element.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (withState({
-    steps: {}
+    steps: [],
+    assignees: []
 })(Edit));
 
 /***/ }),
@@ -1686,6 +1714,12 @@ registerBlockType('gravityflow/reports', {
             type: 'string',
             source: 'meta',
             meta: '_gravityflow_reports_step',
+            default: ''
+        },
+        assignee: {
+            type: 'string',
+            source: 'meta',
+            meta: '_gravityflow_reports_assignee',
             default: ''
         }
     },

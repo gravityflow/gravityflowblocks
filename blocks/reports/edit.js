@@ -25,10 +25,19 @@ class Edit extends wp.element.Component {
         wp.data.dispatch('core/editor').editPost({meta: {_gravityflow_reports_form: ''}});
     }
 
+    componentDidMount() {
+        this.getSteps();
+    }
+
+    componentDidUpdate( prevProps ) {
+
+    }
+
     getSteps() {
         const selectedForm = JSON.parse(this.props.attributes.selectedForm);
         const formId = selectedForm.value;
         let options = [{label: __('All Steps', 'gravityflow'), value: ''}];
+        let assignees = [];
 
         apiFetch({path: 'gf/v2/workflow/forms/' + formId + '/steps'}).then((_steps) => {
             Object.keys(_steps).forEach(function (key, i) {
@@ -36,18 +45,26 @@ class Edit extends wp.element.Component {
                     label: _steps[key].name,
                     value: _steps[key].id
                 });
+
+                assignees[_steps[key].id] = [{label: __('All Assignees', 'gravityflow'), value: ''}];
+                if(_steps[key].assignees.length) {
+                    _steps[key].assignees.forEach(function (k, j) {
+                        assignees[_steps[key].id].push({
+                            label: k.name,
+                            value: k.key
+                        });
+                    })
+                }
             });
 
-            this.props.setState({steps: options});
+            this.props.setState({steps: options, assignees: assignees});
         });
     }
 
     render() {
-        let {attributes: {range, selectedForm, category, step}, steps, setAttributes, setState} = this.props
+        let {attributes: {range, selectedForm, category, step, assignee}, steps, assignees, setAttributes, setState} = this.props
 
         const selectedForms = !selectedForm ? [] : JSON.parse(selectedForm);
-
-        this.getSteps()
 
         return [
             <InspectorControls key={'inbox-inspector'}>
@@ -79,7 +96,7 @@ class Edit extends wp.element.Component {
                                 label={__('Category', 'gravityflowblocks')}
                                 value={category}
                                 onChange={(category) => {
-                                    setAttributes({category: category, step: ''});
+                                    setAttributes({category: category, step: '', assignee: ''});
                                     if (category === 'step') {
                                         this.getSteps();
                                     }
@@ -98,9 +115,21 @@ class Edit extends wp.element.Component {
                                 label={__('Step', 'gravityflowblocks')}
                                 value={step}
                                 onChange={(step) => {
-                                    setAttributes({step: step});
+                                    setAttributes({step: step, assignee: ''});
                                 }}
                                 options={steps}
+                            />
+                        )
+                    }
+                    {
+                        assignees && (
+                            <SelectControl
+                                label={__('Assignee', 'gravityflowblocks')}
+                                value={assignee}
+                                onChange={(assignee) => {
+                                    setAttributes({assignee: assignee});
+                                }}
+                                options={assignees[step]}
                             />
                         )
                     }
@@ -113,6 +142,7 @@ class Edit extends wp.element.Component {
 
 export default withState(
     {
-        steps: {}
+        steps: [],
+        assignees: []
     }
 )(Edit);

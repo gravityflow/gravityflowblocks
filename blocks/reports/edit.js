@@ -22,7 +22,7 @@ class Edit extends wp.element.Component {
     componentWillUnmount() {
         // Hack to remove post meta when the block is removed.
         // @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
-        wp.data.dispatch('core/editor').editPost({meta: {_gravityflow_reports_form: ''}});
+        wp.data.dispatch('core/editor').editPost({meta: {_gravityflow_reports_form_json: '', _gravityflow_reports_range: '', _gravityflow_reports_category: '', _gravityflow_reports_step: '', _gravityflow_reports_assignee: ''}});
     }
 
     componentDidMount() {
@@ -34,7 +34,13 @@ class Edit extends wp.element.Component {
     }
 
     getSteps() {
-        const selectedForm = JSON.parse(this.props.attributes.selectedForm);
+        const selectedFormJson = this.props.attributes.selectedFormJson;
+
+        if (! selectedFormJson) {
+            return;
+        }
+
+        const selectedForm = JSON.parse(selectedFormJson);
         const formId = selectedForm.value;
         let options = [{label: __('All Steps', 'gravityflow'), value: ''}];
         let assignees = [];
@@ -62,9 +68,9 @@ class Edit extends wp.element.Component {
     }
 
     render() {
-        let {attributes: {range, selectedForm, category, step, assignee}, steps, assignees, setAttributes, setState} = this.props
+        let {attributes: {range, selectedFormJson, category, step, assignee}, steps, assignees, setAttributes, setState} = this.props
 
-        const selectedForms = !selectedForm ? [] : JSON.parse(selectedForm);
+        const selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
 
         return [
             <InspectorControls key={'inbox-inspector'}>
@@ -87,11 +93,11 @@ class Edit extends wp.element.Component {
                         isMulti={false}
                         selectedForms={selectedForms}
                         onFormsChange={(selectedForms) => {
-                            setAttributes({selectedForm: JSON.stringify(selectedForms), category: '', step: ''});
+                            setAttributes({selectedFormJson: JSON.stringify(selectedForms), category: '', step: ''});
                         }}
                     />
                     {
-                        selectedForm && (
+                        selectedFormJson && (
                             <SelectControl
                                 label={__('Category', 'gravityflowblocks')}
                                 value={category}

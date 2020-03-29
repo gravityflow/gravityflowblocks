@@ -27,7 +27,7 @@ function gravityflow_register_reports_dynamic_block() {
  */
 function gravityflow_render_reports( $attributes, $content ) {
 
-	$form = get_post_meta( get_the_ID(), '_gravityflow_reports_form', true );
+	$form = get_post_meta( get_the_ID(), '_gravityflow_reports_form_json', true );
 	$form = json_decode( $form, true );
 
 	$attributes['range']    = get_post_meta( get_the_ID(), '_gravityflow_reports_range', true );
@@ -57,7 +57,7 @@ function gravityflow_register_reports_fields() {
 
 	$metas = array(
 		'_gravityflow_reports_range',
-		'_gravityflow_reports_form',
+		'_gravityflow_reports_form_json',
 		'_gravityflow_reports_category',
 		'_gravityflow_reports_step',
 		'_gravityflow_reports_assignee',

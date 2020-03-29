@@ -29,10 +29,10 @@ registerBlockType(
                 meta: '_gravityflow_reports_range',
                 default: '',
             },
-            selectedForm: {
+            selectedFormJson: {
                 type: 'string',
                 source: 'meta',
-                meta: '_gravityflow_reports_form',
+                meta: '_gravityflow_reports_form_json',
                 default: '',
             },
             category: {

@@ -1496,7 +1496,7 @@ var Edit = function (_wp$element$Component) {
         value: function componentWillUnmount() {
             // Hack to remove post meta when the block is removed.
             // @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
-            wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_reports_form: '' } });
+            wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_reports_form_json: '', _gravityflow_reports_range: '', _gravityflow_reports_category: '', _gravityflow_reports_step: '', _gravityflow_reports_assignee: '' } });
         }
     }, {
         key: 'componentDidMount',
@@ -1511,7 +1511,13 @@ var Edit = function (_wp$element$Component) {
         value: function getSteps() {
             var _this2 = this;
 
-            var selectedForm = JSON.parse(this.props.attributes.selectedForm);
+            var selectedFormJson = this.props.attributes.selectedFormJson;
+
+            if (!selectedFormJson) {
+                return;
+            }
+
+            var selectedForm = JSON.parse(selectedFormJson);
             var formId = selectedForm.value;
             var options = [{ label: __('All Steps', 'gravityflow'), value: '' }];
             var assignees = [];
@@ -1545,7 +1551,7 @@ var Edit = function (_wp$element$Component) {
             var _props = this.props,
                 _props$attributes = _props.attributes,
                 range = _props$attributes.range,
-                selectedForm = _props$attributes.selectedForm,
+                selectedFormJson = _props$attributes.selectedFormJson,
                 category = _props$attributes.category,
                 step = _props$attributes.step,
                 assignee = _props$attributes.assignee,
@@ -1555,7 +1561,7 @@ var Edit = function (_wp$element$Component) {
                 setState = _props.setState;
 
 
-            var selectedForms = !selectedForm ? [] : JSON.parse(selectedForm);
+            var selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
 
             return [React.createElement(
                 InspectorControls,
@@ -1577,10 +1583,10 @@ var Edit = function (_wp$element$Component) {
                         isMulti: false,
                         selectedForms: selectedForms,
                         onFormsChange: function onFormsChange(selectedForms) {
-                            setAttributes({ selectedForm: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', step: '' });
+                            setAttributes({ selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', step: '' });
                         }
                     }),
-                    selectedForm && React.createElement(SelectControl, {
+                    selectedFormJson && React.createElement(SelectControl, {
                         label: __('Category', 'gravityflowblocks'),
                         value: category,
                         onChange: function onChange(category) {
@@ -1698,10 +1704,10 @@ registerBlockType('gravityflow/reports', {
             meta: '_gravityflow_reports_range',
             default: ''
         },
-        selectedForm: {
+        selectedFormJson: {
             type: 'string',
             source: 'meta',
-            meta: '_gravityflow_reports_form',
+            meta: '_gravityflow_reports_form_json',
             default: ''
         },
         category: {

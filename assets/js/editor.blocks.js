@@ -1502,6 +1502,7 @@ var Edit = function (_wp$element$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.getSteps();
+            this.getReports();
         }
     }, {
         key: 'componentDidUpdate',
@@ -1544,9 +1545,20 @@ var Edit = function (_wp$element$Component) {
             });
         }
     }, {
+        key: 'getReports',
+        value: function getReports() {
+            var _this3 = this;
+
+            apiFetch({ path: 'gf/v2/workflow/reports' }).then(function (reports) {
+                _this3.props.setState({ reports: reports });
+
+                Gravity_Flow_Reports.drawCharts();
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             var _props = this.props,
                 _props$attributes = _props.attributes,
@@ -1557,6 +1569,7 @@ var Edit = function (_wp$element$Component) {
                 assignee = _props$attributes.assignee,
                 steps = _props.steps,
                 assignees = _props.assignees,
+                reports = _props.reports,
                 setAttributes = _props.setAttributes,
                 setState = _props.setState;
 
@@ -1592,7 +1605,7 @@ var Edit = function (_wp$element$Component) {
                         onChange: function onChange(category) {
                             setAttributes({ category: category, step: '', assignee: '' });
                             if (category === 'step') {
-                                _this3.getSteps();
+                                _this4.getSteps();
                             }
                         },
                         options: [{ value: 'month', label: __('Month', 'gravityflowblocks') }, { value: 'assignee', label: __('Assignee', 'gravityflowblocks') }, { value: 'step', label: __('Step', 'gravityflowblocks') }]
@@ -1616,8 +1629,10 @@ var Edit = function (_wp$element$Component) {
                 )
             ), React.createElement(
                 'div',
-                null,
-                'reports'
+                { key: 'gravityflow_chart_top_level', id: 'gravityflow_chart_top_level',
+                    className: 'gravityflow_chart', 'data-type': 'Bar', 'data-table': reports.table,
+                    'data-options': reports.options },
+                __('Workflow Reports', 'gravityflowblocks')
             )];
         }
     }]);
@@ -1627,7 +1642,8 @@ var Edit = function (_wp$element$Component) {
 
 /* harmony default export */ __webpack_exports__["default"] = (withState({
     steps: [],
-    assignees: []
+    assignees: [],
+    reports: {}
 })(Edit));
 
 /***/ }),

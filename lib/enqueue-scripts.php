@@ -25,5 +25,8 @@ function gravityflow_enqueue_block_editor_assets() {
 		[ ],
 		filemtime( _get_plugin_directory() . $style_path )
 	);
+
+	// Enqueue scripts for Reports.
+	wp_enqueue_script( 'google_charts', 'https://www.google.com/jsapi',  array(), gravity_flow()->_version );
 }
 

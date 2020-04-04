@@ -27,6 +27,7 @@ class Edit extends wp.element.Component {
 
     componentDidMount() {
         this.getSteps();
+        this.getReports();
     }
 
     componentDidUpdate( prevProps ) {
@@ -67,8 +68,16 @@ class Edit extends wp.element.Component {
         });
     }
 
+    getReports() {
+        apiFetch({path: 'gf/v2/workflow/reports'}).then(reports => {
+            this.props.setState({reports: reports});
+
+            Gravity_Flow_Reports.drawCharts();
+        });
+    }
+
     render() {
-        let {attributes: {range, selectedFormJson, category, step, assignee}, steps, assignees, setAttributes, setState} = this.props
+        let {attributes: {range, selectedFormJson, category, step, assignee}, steps, assignees, reports, setAttributes, setState} = this.props
 
         const selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
 
@@ -141,7 +150,9 @@ class Edit extends wp.element.Component {
                     }
                 </PanelBody>
             </InspectorControls>,
-            <div>reports</div>
+            <div key={ 'gravityflow_chart_top_level' } id={ 'gravityflow_chart_top_level' }
+                 className={ 'gravityflow_chart' } data-type={ 'Bar' } data-table={reports.table}
+                 data-options={reports.options}>{ __('Workflow Reports', 'gravityflowblocks') }</div>
         ];
     }
 }
@@ -149,6 +160,7 @@ class Edit extends wp.element.Component {
 export default withState(
     {
         steps: [],
-        assignees: []
+        assignees: [],
+        reports: {}
     }
 )(Edit);

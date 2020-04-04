@@ -33,6 +33,7 @@ class Gravity_Flow_Blocks_Bootstrap {
 
 		include __DIR__ . '/lib/class-controller-inbox-entries.php';
 		include __DIR__ . '/lib/class-controller-inbox-forms.php';
+		include __DIR__ . '/lib/class-controller-reports.php';
 
 		add_action( 'rest_api_init', array( 'Gravity_Flow_Blocks_Bootstrap', 'register_rest_routes' ) );
 
@@ -53,6 +54,7 @@ class Gravity_Flow_Blocks_Bootstrap {
 		$controllers = array(
 			'Gravity_Flow_REST_Inbox_Entries_Controller',
 			'Gravity_Flow_REST_Inbox_Forms_Controller',
+			'Gravity_Flow_REST_Reports_Controller',
 		);
 
 		foreach ( $controllers as $controller ) {

@@ -29,9 +29,11 @@ function gravityflow_render_reports( $attributes, $content ) {
 
 	$form = get_post_meta( get_the_ID(), '_gravityflow_reports_form_json', true );
 	$form = json_decode( $form, true );
+	if ( rgar( $form, 'value' ) ) {
+		$attributes['form'] = $form['value'];
+	}
 
 	$attributes['range']    = get_post_meta( get_the_ID(), '_gravityflow_reports_range', true );
-	$attributes['form']     = $form['value'];
 	$attributes['category'] = get_post_meta( get_the_ID(), '_gravityflow_reports_category', true );
 	$attributes['step_id']  = get_post_meta( get_the_ID(), '_gravityflow_reports_step', true );
 	$attributes['assignee']  = get_post_meta( get_the_ID(), '_gravityflow_reports_assignee', true );

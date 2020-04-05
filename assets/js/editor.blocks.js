@@ -1473,6 +1473,7 @@ var __ = wp.i18n.__;
 var InspectorControls = wp.editor.InspectorControls;
 var _wp = wp,
     apiFetch = _wp.apiFetch;
+var addQueryArgs = wp.url.addQueryArgs;
 var withState = wp.compose.withState;
 var _wp$components = wp.components,
     PanelBody = _wp$components.PanelBody,
@@ -1496,7 +1497,15 @@ var Edit = function (_wp$element$Component) {
         value: function componentWillUnmount() {
             // Hack to remove post meta when the block is removed.
             // @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
-            wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_reports_form_json: '', _gravityflow_reports_range: '', _gravityflow_reports_category: '', _gravityflow_reports_step: '', _gravityflow_reports_assignee: '' } });
+            wp.data.dispatch('core/editor').editPost({
+                meta: {
+                    _gravityflow_reports_form_json: '',
+                    _gravityflow_reports_range: '',
+                    _gravityflow_reports_category: '',
+                    _gravityflow_reports_step: '',
+                    _gravityflow_reports_assignee: ''
+                }
+            });
         }
     }, {
         key: 'componentDidMount',
@@ -1506,12 +1515,14 @@ var Edit = function (_wp$element$Component) {
         }
     }, {
         key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps) {}
+        value: function componentDidUpdate(prevProps) {
+            if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.step !== this.props.attributes.step || prevProps.attributes.assignee !== this.props.attributes.assignee) {
+                this.getReports(this.props);
+            }
+        }
     }, {
-        key: 'getSteps',
-        value: function getSteps() {
-            var _this2 = this;
-
+        key: 'getSelectedForm',
+        value: function getSelectedForm() {
             var selectedFormJson = this.props.attributes.selectedFormJson;
 
             if (!selectedFormJson) {
@@ -1519,7 +1530,15 @@ var Edit = function (_wp$element$Component) {
             }
 
             var selectedForm = JSON.parse(selectedFormJson);
-            var formId = selectedForm.value;
+
+            return selectedForm.value;
+        }
+    }, {
+        key: 'getSteps',
+        value: function getSteps() {
+            var _this2 = this;
+
+            var formId = this.getSelectedForm();
             var options = [{ label: __('All Steps', 'gravityflow'), value: '' }];
             var assignees = [];
 
@@ -1546,13 +1565,35 @@ var Edit = function (_wp$element$Component) {
         }
     }, {
         key: 'getReports',
-        value: function getReports() {
+        value: function getReports(props) {
             var _this3 = this;
 
-            apiFetch({ path: 'gf/v2/workflow/reports' }).then(function (reports) {
+            var formId = this.getSelectedForm();
+
+            if (typeof props === 'undefined') {
+                props = this.props;
+            }
+
+            apiFetch({
+                path: addQueryArgs('/gf/v2/workflow/reports/', {
+                    'form': formId,
+                    'range': props.attributes.range === '' ? 'last-12-months' : props.attributes.range,
+                    'category': props.attributes.category,
+                    'step_id': props.attributes.step,
+                    'assignee': props.attributes.assignee
+                })
+            }).then(function (reports) {
                 _this3.props.setState({ reports: reports });
 
-                Gravity_Flow_Reports.drawCharts();
+                var data = google.visualization.arrayToDataTable(JSON.parse(reports.table));
+
+                var options = JSON.parse(reports.options);
+
+                var chartType = 'Bar';
+
+                var chart = new google.charts[chartType](document.getElementsByClassName('gravityflow_chart')[0]);
+
+                chart.draw(data, options);
             });
         }
     }, {
@@ -1627,12 +1668,10 @@ var Edit = function (_wp$element$Component) {
                         options: assignees[step]
                     })
                 )
-            ), React.createElement(
+            ), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), !reports.hasOwnProperty('table') && React.createElement(
                 'div',
-                { key: 'gravityflow_chart_top_level', id: 'gravityflow_chart_top_level',
-                    className: 'gravityflow_chart', 'data-type': 'Bar', 'data-table': reports.table,
-                    'data-options': reports.options },
-                __('Workflow Reports', 'gravityflowblocks')
+                { key: 'gravityflow_chart_no_data' },
+                __('No data to display', 'gravityflowblocks')
             )];
         }
     }]);
@@ -1718,7 +1757,7 @@ registerBlockType('gravityflow/reports', {
             type: 'string',
             source: 'meta',
             meta: '_gravityflow_reports_range',
-            default: ''
+            default: 'last-12-months'
         },
         selectedFormJson: {
             type: 'string',

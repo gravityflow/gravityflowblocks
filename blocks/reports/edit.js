@@ -4,6 +4,7 @@ const {__} = wp.i18n
 
 const {InspectorControls} = wp.editor
 const {apiFetch} = wp
+const {addQueryArgs} = wp.url;
 const {withState} = wp.compose;
 const {
     PanelBody,
@@ -22,7 +23,15 @@ class Edit extends wp.element.Component {
     componentWillUnmount() {
         // Hack to remove post meta when the block is removed.
         // @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
-        wp.data.dispatch('core/editor').editPost({meta: {_gravityflow_reports_form_json: '', _gravityflow_reports_range: '', _gravityflow_reports_category: '', _gravityflow_reports_step: '', _gravityflow_reports_assignee: ''}});
+        wp.data.dispatch('core/editor').editPost({
+            meta: {
+                _gravityflow_reports_form_json: '',
+                _gravityflow_reports_range: '',
+                _gravityflow_reports_category: '',
+                _gravityflow_reports_step: '',
+                _gravityflow_reports_assignee: ''
+            }
+        });
     }
 
     componentDidMount() {
@@ -30,19 +39,26 @@ class Edit extends wp.element.Component {
         this.getReports();
     }
 
-    componentDidUpdate( prevProps ) {
-
+    componentDidUpdate(prevProps) {
+        if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.step !== this.props.attributes.step || prevProps.attributes.assignee !== this.props.attributes.assignee) {
+            this.getReports(this.props);
+        }
     }
 
-    getSteps() {
+    getSelectedForm() {
         const selectedFormJson = this.props.attributes.selectedFormJson;
 
-        if (! selectedFormJson) {
+        if (!selectedFormJson) {
             return;
         }
 
         const selectedForm = JSON.parse(selectedFormJson);
-        const formId = selectedForm.value;
+
+        return selectedForm.value;
+    }
+
+    getSteps() {
+        const formId = this.getSelectedForm();
         let options = [{label: __('All Steps', 'gravityflow'), value: ''}];
         let assignees = [];
 
@@ -54,7 +70,7 @@ class Edit extends wp.element.Component {
                 });
 
                 assignees[_steps[key].id] = [{label: __('All Assignees', 'gravityflow'), value: ''}];
-                if(_steps[key].assignees.length) {
+                if (_steps[key].assignees.length) {
                     _steps[key].assignees.forEach(function (k, j) {
                         assignees[_steps[key].id].push({
                             label: k.name,
@@ -68,11 +84,38 @@ class Edit extends wp.element.Component {
         });
     }
 
-    getReports() {
-        apiFetch({path: 'gf/v2/workflow/reports'}).then(reports => {
+    getReports(props) {
+        const formId = this.getSelectedForm();
+
+        if (typeof props === 'undefined') {
+            props = this.props;
+        }
+
+        apiFetch(
+            {
+                path: addQueryArgs(
+                    '/gf/v2/workflow/reports/',
+                    {
+                        'form': formId,
+                        'range': props.attributes.range === '' ? 'last-12-months' : props.attributes.range,
+                        'category': props.attributes.category,
+                        'step_id': props.attributes.step,
+                        'assignee': props.attributes.assignee
+                    }
+                )
+            }
+        ).then(reports => {
             this.props.setState({reports: reports});
 
-            Gravity_Flow_Reports.drawCharts();
+            var data = google.visualization.arrayToDataTable(JSON.parse(reports.table));
+
+            var options = JSON.parse(reports.options);
+
+            var chartType = 'Bar';
+
+            var chart = new google.charts[chartType]( document.getElementsByClassName('gravityflow_chart')[0] );
+
+            chart.draw(data, options);
         });
     }
 
@@ -150,9 +193,12 @@ class Edit extends wp.element.Component {
                     }
                 </PanelBody>
             </InspectorControls>,
-            <div key={ 'gravityflow_chart_top_level' } id={ 'gravityflow_chart_top_level' }
-                 className={ 'gravityflow_chart' } data-type={ 'Bar' } data-table={reports.table}
-                 data-options={reports.options}>{ __('Workflow Reports', 'gravityflowblocks') }</div>
+            reports.hasOwnProperty('table') && (
+                <div key={'gravityflow_chart_top_level'} className={'gravityflow_chart'} />
+            ),
+            ! reports.hasOwnProperty('table') && (
+                <div key={ 'gravityflow_chart_no_data' }>{__( 'No data to display', 'gravityflowblocks' )}</div>
+            )
         ];
     }
 }

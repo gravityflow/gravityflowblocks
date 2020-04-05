@@ -56,14 +56,41 @@ class Gravity_Flow_REST_Reports_Controller extends WP_REST_Controller {
 	public function get_items( $request ) {
 		require_once( gravity_flow()->get_base_path() . '/includes/pages/class-reports.php' );
 
-		$defaults = array(
-			'display_filter' => true,
-			'check_permission' => true,
+		$assignee_key = sanitize_text_field( $request->get_param( 'assignee' ) );
+		list( $assignee_type, $assignee_id ) = rgexplode( '|', $assignee_key, 2 );
+
+		$range = sanitize_text_field( $request->get_param( 'range' ) );
+		switch ( $range ) {
+			case 'last-6-months' :
+				$start_date = date( 'Y-m-d', strtotime( '-6 months' ) );
+				break;
+			case 'last-3-months' :
+				$start_date = date( 'Y-m-d', strtotime( '-3 months' ) );
+				break;
+			default :
+				$start_date = date( 'Y-m-d', strtotime( '-1 year' ) );
+		}
+
+		$app_settings  = gravity_flow()->get_app_settings();
+		$allow_reports = rgar( $app_settings, 'allow_display_reports' );
+
+		$args = array(
+			'display_header'    => false,
+			'form_id'           => $request->get_param( 'form' ),
+			'range'             => $range,
+			'start_date'        => $start_date,
+			'category'          => $request->get_param( 'category' ),
+			'step_id'           => $request->get_param( 'step_id' ),
+			'assignee'          => $assignee_key,
+			'assignee_type'     => $assignee_type,
+			'assignee_id'       => $assignee_id,
+			'display_filter'    => $request->get_param( 'display_filter' ),
+			'check_permissions' => ! $allow_reports,
 		);
 
-		$args = wp_parse_args( array(), $defaults );
+		$result = Gravity_Flow_Reports::output_reports( $args, 'json' );
 
-		return rest_ensure_response( Gravity_Flow_Reports::report_all_forms( $args, 'json' ) );
+		return rest_ensure_response( $result );
 	}
 
 

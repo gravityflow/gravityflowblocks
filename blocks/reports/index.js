@@ -27,7 +27,7 @@ registerBlockType(
                 type: 'string',
                 source: 'meta',
                 meta: '_gravityflow_reports_range',
-                default: '',
+                default: 'last-12-months',
             },
             selectedFormJson: {
                 type: 'string',

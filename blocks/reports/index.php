@@ -24,8 +24,14 @@ function gravityflow_register_reports_dynamic_block() {
 
 /**
  * Server rendering for reports
+ *
+ * @return void|string
  */
 function gravityflow_render_reports( $attributes, $content ) {
+
+	if ( is_admin() ) {
+		return;
+	}
 
 	$form = get_post_meta( get_the_ID(), '_gravityflow_reports_form_json', true );
 	$form = json_decode( $form, true );

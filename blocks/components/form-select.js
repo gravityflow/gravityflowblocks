@@ -3,9 +3,10 @@
 import Select from './select'
 const { __ } = wp.i18n
 
-const { Spinner } = wp.components
+const { Spinner, SelectControl } = wp.components
 const { withSelect } = wp.data
 import '../store'
+import {Fragment} from "react";
 class FormSelectView extends wp.element.Component {
 	constructor() {
 		super( ...arguments );
@@ -73,14 +74,36 @@ class FormSelectView extends wp.element.Component {
 		}
 
 		return (
-			<div key={ 'workflow-form-selector' }>
-				<Select
-					isMulti={isMulti === undefined ? true : isMulti}
-					label={ __( 'Filter Forms', 'gravityflow' ) }
-					value={selectedForms}
-					onChange={onFormsChange}
-					options={options}
-				/>
+			<Fragment>
+				{
+					( isMulti === undefined || isMulti ) && (
+						<Select
+							isMulti={true}
+							label={ __( 'Filter Forms', 'gravityflow' ) }
+							value={selectedForms}
+							onChange={onFormsChange}
+							options={options}
+						/>
+					)
+				}
+				{
+					false === isMulti && (
+						<SelectControl
+							label={ __( 'Filter Forms', 'gravityflow' ) }
+							value={selectedForms ? selectedForms.value : ''}
+							onChange={(value) => {
+								for(let i = 0; i<options.length; i++) {
+								    if ( options[i].value === parseInt(value) ) {
+								    	const selectedForm = {label: options[i].label, value: options[i].value};
+										onFormsChange(selectedForm);
+								        break;
+								    }
+								}
+							}}
+							options={options}
+						/>
+					)
+				}
 				{
 					form && selectedFields !== undefined &&
 					<Select
@@ -91,7 +114,7 @@ class FormSelectView extends wp.element.Component {
 						options={fieldOptions}
 					/>
 				}
-			</div>
+			</Fragment>
 		)
 	}
 }

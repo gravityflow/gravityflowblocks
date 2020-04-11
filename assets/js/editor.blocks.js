@@ -759,6 +759,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _select__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./select */ "./blocks/components/select.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../store */ "./blocks/store.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_8__);
 
 
 
@@ -769,8 +771,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var __ = wp.i18n.__;
-var Spinner = wp.components.Spinner;
+var _wp$components = wp.components,
+    Spinner = _wp$components.Spinner,
+    SelectControl = _wp$components.SelectControl;
 var withSelect = wp.data.withSelect;
+
 
 
 
@@ -861,13 +866,27 @@ var FormSelectView = function (_wp$element$Component) {
 			}
 
 			return React.createElement(
-				'div',
-				{ key: 'workflow-form-selector' },
-				React.createElement(_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
-					isMulti: isMulti === undefined ? true : isMulti,
+				react__WEBPACK_IMPORTED_MODULE_8__["Fragment"],
+				null,
+				(isMulti === undefined || isMulti) && React.createElement(_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
+					isMulti: true,
 					label: __('Filter Forms', 'gravityflow'),
 					value: selectedForms,
 					onChange: onFormsChange,
+					options: options
+				}),
+				false === isMulti && React.createElement(SelectControl, {
+					label: __('Filter Forms', 'gravityflow'),
+					value: selectedForms ? selectedForms.value : '',
+					onChange: function onChange(value) {
+						for (var i = 0; i < options.length; i++) {
+							if (options[i].value === parseInt(value)) {
+								var selectedForm = { label: options[i].label, value: options[i].value };
+								onFormsChange(selectedForm);
+								break;
+							}
+						}
+					},
 					options: options
 				}),
 				form && selectedFields !== undefined && React.createElement(_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -1535,12 +1554,18 @@ var Edit = function (_wp$element$Component) {
         }
     }, {
         key: 'getSteps',
-        value: function getSteps() {
+        value: function getSteps(formId) {
             var _this2 = this;
 
-            var formId = this.getSelectedForm();
+            if (formId === undefined) {
+                formId = this.getSelectedForm();
+            }
             var options = [{ label: __('All Steps', 'gravityflow'), value: '' }];
             var assignees = [];
+
+            if (!formId) {
+                return;
+            }
 
             apiFetch({ path: 'gf/v2/workflow/forms/' + formId + '/steps' }).then(function (_steps) {
                 babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1___default()(_steps).forEach(function (key, i) {
@@ -1585,15 +1610,17 @@ var Edit = function (_wp$element$Component) {
             }).then(function (reports) {
                 _this3.props.setState({ reports: reports });
 
-                var data = google.visualization.arrayToDataTable(JSON.parse(reports.table));
+                if (reports.hasOwnProperty('table')) {
+                    var data = google.visualization.arrayToDataTable(JSON.parse(reports.table));
 
-                var options = JSON.parse(reports.options);
+                    var options = JSON.parse(reports.options);
 
-                var chartType = 'Bar';
+                    var chartType = 'Bar';
 
-                var chart = new google.charts[chartType](document.getElementsByClassName('gravityflow_chart')[0]);
+                    var chart = new google.charts[chartType](document.getElementsByClassName('gravityflow_chart')[0]);
 
-                chart.draw(data, options);
+                    chart.draw(data, options);
+                }
             });
         }
     }, {
@@ -1646,7 +1673,7 @@ var Edit = function (_wp$element$Component) {
                         onChange: function onChange(category) {
                             setAttributes({ category: category, step: '', assignee: '' });
                             if (category === 'step') {
-                                _this4.getSteps();
+                                _this4.getSteps(_this4.getSelectedForm());
                             }
                         },
                         options: [{ value: 'month', label: __('Month', 'gravityflowblocks') }, { value: 'assignee', label: __('Assignee', 'gravityflowblocks') }, { value: 'step', label: __('Step', 'gravityflowblocks') }]

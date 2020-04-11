@@ -57,10 +57,16 @@ class Edit extends wp.element.Component {
         return selectedForm.value;
     }
 
-    getSteps() {
-        const formId = this.getSelectedForm();
+    getSteps(formId) {
+        if (formId === undefined){
+            formId = this.getSelectedForm();
+        }
         let options = [{label: __('All Steps', 'gravityflow'), value: ''}];
         let assignees = [];
+
+        if (!formId){
+            return;
+        }
 
         apiFetch({path: 'gf/v2/workflow/forms/' + formId + '/steps'}).then((_steps) => {
             Object.keys(_steps).forEach(function (key, i) {
@@ -107,15 +113,17 @@ class Edit extends wp.element.Component {
         ).then(reports => {
             this.props.setState({reports: reports});
 
-            var data = google.visualization.arrayToDataTable(JSON.parse(reports.table));
+            if (reports.hasOwnProperty('table')) {
+                var data = google.visualization.arrayToDataTable(JSON.parse(reports.table));
 
-            var options = JSON.parse(reports.options);
+                var options = JSON.parse(reports.options);
 
-            var chartType = 'Bar';
+                var chartType = 'Bar';
 
-            var chart = new google.charts[chartType]( document.getElementsByClassName('gravityflow_chart')[0] );
+                var chart = new google.charts[chartType](document.getElementsByClassName('gravityflow_chart')[0]);
 
-            chart.draw(data, options);
+                chart.draw(data, options);
+            }
         });
     }
 
@@ -156,7 +164,7 @@ class Edit extends wp.element.Component {
                                 onChange={(category) => {
                                     setAttributes({category: category, step: '', assignee: ''});
                                     if (category === 'step') {
-                                        this.getSteps();
+                                        this.getSteps(this.getSelectedForm());
                                     }
                                 }}
                                 options={[
@@ -194,10 +202,10 @@ class Edit extends wp.element.Component {
                 </PanelBody>
             </InspectorControls>,
             reports.hasOwnProperty('table') && (
-                <div key={'gravityflow_chart_top_level'} className={'gravityflow_chart'} />
+                <div key={'gravityflow_chart_top_level'} className={'gravityflow_chart'}/>
             ),
-            ! reports.hasOwnProperty('table') && (
-                <div key={ 'gravityflow_chart_no_data' }>{__( 'No data to display', 'gravityflowblocks' )}</div>
+            !reports.hasOwnProperty('table') && (
+                <div key={'gravityflow_chart_no_data'}>{__('No data to display', 'gravityflowblocks')}</div>
             )
         ];
     }

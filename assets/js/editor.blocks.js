@@ -913,6 +913,122 @@ var FormSelect = withSelect(function (select) {
 
 /***/ }),
 
+/***/ "./blocks/components/reports-filter.js":
+/*!*********************************************!*\
+  !*** ./blocks/components/reports-filter.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ "./node_modules/babel-runtime/core-js/object/get-prototype-of.js");
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ "./node_modules/babel-runtime/helpers/createClass.js");
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ "./node_modules/babel-runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/babel-runtime/helpers/inherits.js");
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _form_select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./form-select */ "./blocks/components/form-select.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_6__);
+
+
+
+
+
+
+
+
+var __ = wp.i18n.__;
+var SelectControl = wp.components.SelectControl;
+
+var ReportsFilter = function (_wp$element$Component) {
+    babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(ReportsFilter, _wp$element$Component);
+
+    function ReportsFilter() {
+        babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, ReportsFilter);
+
+        return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, (ReportsFilter.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default()(ReportsFilter)).apply(this, arguments));
+    }
+
+    babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(ReportsFilter, [{
+        key: "render",
+        value: function render() {
+            var _props = this.props,
+                name = _props.name,
+                range = _props.range,
+                onRangeChange = _props.onRangeChange,
+                selectedFormJson = _props.selectedFormJson,
+                _onFormsChange = _props.onFormsChange,
+                category = _props.category,
+                onCategoryChange = _props.onCategoryChange,
+                assignee = _props.assignee,
+                assignees = _props.assignees,
+                onAssigneeChange = _props.onAssigneeChange,
+                step = _props.step,
+                steps = _props.steps,
+                onStepChange = _props.onStepChange;
+
+
+            var selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
+
+            return [React.createElement(
+                react__WEBPACK_IMPORTED_MODULE_6__["Fragment"],
+                { key: name },
+                React.createElement(SelectControl, {
+                    label: __('Range', 'gravityflowblocks'),
+                    value: range,
+                    onChange: function onChange(range) {
+                        onRangeChange(range);
+                    },
+                    options: [{ value: 'last-12-months', label: __('Last 12 months', 'gravityflowblocks') }, { value: 'last-6-months', label: __('Last 6 months', 'gravityflowblocks') }, { value: 'last-3-months', label: __('Last 3 months', 'gravityflowblocks') }]
+                }),
+                React.createElement(_form_select__WEBPACK_IMPORTED_MODULE_5__["default"], {
+                    isMulti: false,
+                    selectedForms: selectedForms,
+                    onFormsChange: function onFormsChange(selectedForms) {
+                        _onFormsChange(selectedForms);
+                    }
+                }),
+                selectedFormJson && React.createElement(SelectControl, {
+                    label: __('Category', 'gravityflowblocks'),
+                    value: category,
+                    onChange: function onChange(category) {
+                        onCategoryChange(category);
+                    },
+                    options: [{ value: 'month', label: __('Month', 'gravityflowblocks') }, { value: 'assignee', label: __('Assignee', 'gravityflowblocks') }, { value: 'step', label: __('Step', 'gravityflowblocks') }]
+                }),
+                category === 'step' && React.createElement(SelectControl, {
+                    label: __('Step', 'gravityflowblocks'),
+                    value: step,
+                    onChange: function onChange(step) {
+                        onStepChange(step);
+                    },
+                    options: steps
+                }),
+                assignees && React.createElement(SelectControl, {
+                    label: __('Assignee', 'gravityflowblocks'),
+                    value: assignee,
+                    onChange: function onChange(assignee) {
+                        onAssigneeChange(assignee);
+                    },
+                    options: assignees
+                })
+            )];
+        }
+    }]);
+
+    return ReportsFilter;
+}(wp.element.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (ReportsFilter);
+
+/***/ }),
+
 /***/ "./blocks/components/select.js":
 /*!*************************************!*\
   !*** ./blocks/components/select.js ***!
@@ -1478,7 +1594,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/babel-runtime/helpers/inherits.js");
 /* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _components_form_select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/form-select */ "./blocks/components/form-select.js");
+/* harmony import */ var _components_reports_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/reports-filter */ "./blocks/components/reports-filter.js");
 
 
 
@@ -1644,6 +1760,37 @@ var Edit = function (_wp$element$Component) {
 
             var selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
 
+            var Filter = function Filter(props) {
+                return React.createElement(_components_reports_filter__WEBPACK_IMPORTED_MODULE_7__["default"], {
+                    name: props.name,
+                    range: range,
+                    onRangeChange: function onRangeChange(range) {
+                        setAttributes({ range: range });
+                    },
+                    selectedFormJson: selectedFormJson,
+                    onFormsChange: function onFormsChange(selectedForms) {
+                        setAttributes({ selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', step: '' });
+                    },
+                    category: category,
+                    onCategoryChange: function onCategoryChange(category) {
+                        setAttributes({ category: category, step: '', assignee: '' });
+                        if (category === 'step') {
+                            _this4.getSteps(_this4.getSelectedForm());
+                        }
+                    },
+                    step: step,
+                    onStepChange: function onStepChange(step) {
+                        setAttributes({ step: step, assignee: '' });
+                    },
+                    steps: steps,
+                    assignee: assignee,
+                    onAssigneeChange: function onAssigneeChange(assignee) {
+                        setAttributes({ assignee: assignee });
+                    },
+                    assignees: assignees[step]
+                });
+            };
+
             return [React.createElement(
                 InspectorControls,
                 { key: 'inbox-inspector' },
@@ -1652,50 +1799,9 @@ var Edit = function (_wp$element$Component) {
                     {
                         title: __('Filter Settings', 'gravityflowblocks')
                     },
-                    React.createElement(SelectControl, {
-                        label: __('Range', 'gravityflowblocks'),
-                        value: range,
-                        onChange: function onChange(range) {
-                            setAttributes({ range: range });
-                        },
-                        options: [{ value: 'last-12-months', label: __('Last 12 months', 'gravityflowblocks') }, { value: 'last-6-months', label: __('Last 6 months', 'gravityflowblocks') }, { value: 'last-3-months', label: __('Last 3 months', 'gravityflowblocks') }]
-                    }),
-                    React.createElement(_components_form_select__WEBPACK_IMPORTED_MODULE_7__["default"], {
-                        isMulti: false,
-                        selectedForms: selectedForms,
-                        onFormsChange: function onFormsChange(selectedForms) {
-                            setAttributes({ selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', step: '' });
-                        }
-                    }),
-                    selectedFormJson && React.createElement(SelectControl, {
-                        label: __('Category', 'gravityflowblocks'),
-                        value: category,
-                        onChange: function onChange(category) {
-                            setAttributes({ category: category, step: '', assignee: '' });
-                            if (category === 'step') {
-                                _this4.getSteps(_this4.getSelectedForm());
-                            }
-                        },
-                        options: [{ value: 'month', label: __('Month', 'gravityflowblocks') }, { value: 'assignee', label: __('Assignee', 'gravityflowblocks') }, { value: 'step', label: __('Step', 'gravityflowblocks') }]
-                    }),
-                    category === 'step' && React.createElement(SelectControl, {
-                        label: __('Step', 'gravityflowblocks'),
-                        value: step,
-                        onChange: function onChange(step) {
-                            setAttributes({ step: step, assignee: '' });
-                        },
-                        options: steps
-                    }),
-                    assignees && React.createElement(SelectControl, {
-                        label: __('Assignee', 'gravityflowblocks'),
-                        value: assignee,
-                        onChange: function onChange(assignee) {
-                            setAttributes({ assignee: assignee });
-                        },
-                        options: assignees[step]
-                    })
+                    React.createElement(Filter, { name: 'panel-body-filter' })
                 )
-            ), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), !reports.hasOwnProperty('table') && React.createElement(
+            ), React.createElement(Filter, { key: 'block-content-filter', name: 'block-content-filter' }), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), !reports.hasOwnProperty('table') && React.createElement(
                 'div',
                 { key: 'gravityflow_chart_no_data' },
                 __('No data to display', 'gravityflowblocks')

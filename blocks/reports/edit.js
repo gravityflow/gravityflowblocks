@@ -1,4 +1,4 @@
-import FormSelect from '../components/form-select';
+import ReportsFilter from '../components/reports-filter';
 
 const {__} = wp.i18n
 
@@ -132,81 +132,54 @@ class Edit extends wp.element.Component {
 
         const selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
 
+        const Filter = (props) => {
+            return (
+                <ReportsFilter
+                    name={props.name}
+                    range={range}
+                    onRangeChange={(range) => {
+                        setAttributes({range: range});
+                    }}
+                    selectedFormJson={selectedFormJson}
+                    onFormsChange={(selectedForms) => {
+                        setAttributes({selectedFormJson: JSON.stringify(selectedForms), category: '', step: ''});
+                    }}
+                    category={category}
+                    onCategoryChange={(category) => {
+                        setAttributes({category: category, step: '', assignee: ''});
+                        if (category === 'step') {
+                            this.getSteps(this.getSelectedForm());
+                        }
+                    }}
+                    step={step}
+                    onStepChange={(step) => {
+                        setAttributes({step: step, assignee: ''});
+                    }}
+                    steps={steps}
+                    assignee={assignee}
+                    onAssigneeChange={(assignee) => {
+                        setAttributes({assignee: assignee});
+                    }}
+                    assignees={assignees[step]}
+                />
+            )
+        };
+
         return [
             <InspectorControls key={'inbox-inspector'}>
                 <PanelBody
                     title={__('Filter Settings', 'gravityflowblocks')}
                 >
-                    <SelectControl
-                        label={__('Range', 'gravityflowblocks')}
-                        value={range}
-                        onChange={(range) => {
-                            setAttributes({range: range});
-                        }}
-                        options={[
-                            {value: 'last-12-months', label: __('Last 12 months', 'gravityflowblocks')},
-                            {value: 'last-6-months', label: __('Last 6 months', 'gravityflowblocks')},
-                            {value: 'last-3-months', label: __('Last 3 months', 'gravityflowblocks')},
-                        ]}
-                    />
-                    <FormSelect
-                        isMulti={false}
-                        selectedForms={selectedForms}
-                        onFormsChange={(selectedForms) => {
-                            setAttributes({selectedFormJson: JSON.stringify(selectedForms), category: '', step: ''});
-                        }}
-                    />
-                    {
-                        selectedFormJson && (
-                            <SelectControl
-                                label={__('Category', 'gravityflowblocks')}
-                                value={category}
-                                onChange={(category) => {
-                                    setAttributes({category: category, step: '', assignee: ''});
-                                    if (category === 'step') {
-                                        this.getSteps(this.getSelectedForm());
-                                    }
-                                }}
-                                options={[
-                                    {value: 'month', label: __('Month', 'gravityflowblocks')},
-                                    {value: 'assignee', label: __('Assignee', 'gravityflowblocks')},
-                                    {value: 'step', label: __('Step', 'gravityflowblocks')},
-                                ]}
-                            />
-                        )
-                    }
-                    {
-                        category === 'step' && (
-                            <SelectControl
-                                label={__('Step', 'gravityflowblocks')}
-                                value={step}
-                                onChange={(step) => {
-                                    setAttributes({step: step, assignee: ''});
-                                }}
-                                options={steps}
-                            />
-                        )
-                    }
-                    {
-                        assignees && (
-                            <SelectControl
-                                label={__('Assignee', 'gravityflowblocks')}
-                                value={assignee}
-                                onChange={(assignee) => {
-                                    setAttributes({assignee: assignee});
-                                }}
-                                options={assignees[step]}
-                            />
-                        )
-                    }
+                    <Filter name={'panel-body-filter'} />
                 </PanelBody>
             </InspectorControls>,
+            <Filter key={'block-content-filter'} name={'block-content-filter'} />,
             reports.hasOwnProperty('table') && (
                 <div key={'gravityflow_chart_top_level'} className={'gravityflow_chart'}/>
             ),
             !reports.hasOwnProperty('table') && (
                 <div key={'gravityflow_chart_no_data'}>{__('No data to display', 'gravityflowblocks')}</div>
-            )
+            ),
         ];
     }
 }

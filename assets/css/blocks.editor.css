@@ -139,6 +139,16 @@
 
 
 
+.wp-block[data-type="gravityflow/reports"] .components-base-control {
+  display: inline-block;
+  margin-right: 5px; }
+  .wp-block[data-type="gravityflow/reports"] .components-base-control + .components-base-control {
+    margin-bottom: 0; }
+  .wp-block[data-type="gravityflow/reports"] .components-base-control label {
+    display: none; }
+
+.wp-block[data-type="gravityflow/reports"] .gravityflow_chart {
+  margin-top: 20px; }
 
 
 /*# sourceMappingURL=blocks.editor.css.map*/

@@ -1,0 +1,18 @@
+.wp-block[data-type="gravityflow/reports"] {
+  .components-base-control {
+    display: inline-block;
+    margin-right: 5px;
+
+    & + .components-base-control {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: none;
+    }
+  }
+
+  .gravityflow_chart {
+    margin-top: 20px;
+  }
+}

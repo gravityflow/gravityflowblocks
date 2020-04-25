@@ -23,6 +23,10 @@ registerBlockType(
             anchor: true,
         },
         attributes: {
+            displayFilter: {
+                type: 'boolean',
+                default: false,
+            },
             range: {
                 type: 'string',
                 source: 'meta',

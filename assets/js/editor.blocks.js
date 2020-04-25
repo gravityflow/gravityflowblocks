@@ -1751,14 +1751,12 @@ var Edit = function (_wp$element$Component) {
                 category = _props$attributes.category,
                 step = _props$attributes.step,
                 assignee = _props$attributes.assignee,
+                displayFilter = _props$attributes.displayFilter,
                 steps = _props.steps,
                 assignees = _props.assignees,
                 reports = _props.reports,
-                setAttributes = _props.setAttributes,
-                setState = _props.setState;
+                setAttributes = _props.setAttributes;
 
-
-            var selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
 
             var Filter = function Filter(props) {
                 return React.createElement(_components_reports_filter__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -1797,11 +1795,24 @@ var Edit = function (_wp$element$Component) {
                 React.createElement(
                     PanelBody,
                     {
+                        title: __('Display Settings', 'gravityflowblocks')
+                    },
+                    React.createElement(ToggleControl, {
+                        label: __('Display the data filter', 'gravityflowblocks'),
+                        checked: displayFilter,
+                        onChange: function onChange() {
+                            return setAttributes({ displayFilter: !displayFilter });
+                        }
+                    })
+                ),
+                React.createElement(
+                    PanelBody,
+                    {
                         title: __('Filter Settings', 'gravityflowblocks')
                     },
                     React.createElement(Filter, { name: 'panel-body-filter' })
                 )
-            ), React.createElement(Filter, { key: 'block-content-filter', name: 'block-content-filter' }), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), !reports.hasOwnProperty('table') && React.createElement(
+            ), displayFilter && React.createElement(Filter, { key: 'block-content-filter', name: 'block-content-filter' }), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), !reports.hasOwnProperty('table') && React.createElement(
                 'div',
                 { key: 'gravityflow_chart_no_data' },
                 __('No data to display', 'gravityflowblocks')
@@ -1886,6 +1897,10 @@ registerBlockType('gravityflow/reports', {
         anchor: true
     },
     attributes: {
+        displayFilter: {
+            type: 'boolean',
+            default: false
+        },
         range: {
             type: 'string',
             source: 'meta',

@@ -128,9 +128,7 @@ class Edit extends wp.element.Component {
     }
 
     render() {
-        let {attributes: {range, selectedFormJson, category, step, assignee}, steps, assignees, reports, setAttributes, setState} = this.props
-
-        const selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
+        let {attributes: {range, selectedFormJson, category, step, assignee, displayFilter}, steps, assignees, reports, setAttributes} = this.props
 
         const Filter = (props) => {
             return (
@@ -168,12 +166,21 @@ class Edit extends wp.element.Component {
         return [
             <InspectorControls key={'inbox-inspector'}>
                 <PanelBody
+                    title={__('Display Settings', 'gravityflowblocks')}
+                >
+                    <ToggleControl
+                        label={ __( 'Display the data filter', 'gravityflowblocks' ) }
+                        checked={ displayFilter }
+                        onChange={ () => setAttributes( { displayFilter: !displayFilter } ) }
+                    />
+                </PanelBody>
+                <PanelBody
                     title={__('Filter Settings', 'gravityflowblocks')}
                 >
                     <Filter name={'panel-body-filter'} />
                 </PanelBody>
             </InspectorControls>,
-            <Filter key={'block-content-filter'} name={'block-content-filter'} />,
+            displayFilter && <Filter key={'block-content-filter'} name={'block-content-filter'} />,
             reports.hasOwnProperty('table') && (
                 <div key={'gravityflow_chart_top_level'} className={'gravityflow_chart'}/>
             ),

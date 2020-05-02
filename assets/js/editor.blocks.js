@@ -1798,7 +1798,7 @@ var Edit = function (_wp$element$Component) {
                         title: __('Display Settings', 'gravityflowblocks')
                     },
                     React.createElement(ToggleControl, {
-                        label: __('Display the data filter', 'gravityflowblocks'),
+                        label: __('Display filters', 'gravityflowblocks'),
                         checked: displayFilter,
                         onChange: function onChange() {
                             return setAttributes({ displayFilter: !displayFilter });

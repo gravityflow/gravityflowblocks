@@ -169,7 +169,7 @@ class Edit extends wp.element.Component {
                     title={__('Display Settings', 'gravityflowblocks')}
                 >
                     <ToggleControl
-                        label={ __( 'Display the data filter', 'gravityflowblocks' ) }
+                        label={ __( 'Display filters', 'gravityflowblocks' ) }
                         checked={ displayFilter }
                         onChange={ () => setAttributes( { displayFilter: !displayFilter } ) }
                     />

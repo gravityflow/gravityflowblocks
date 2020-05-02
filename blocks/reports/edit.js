@@ -1,4 +1,5 @@
 import ReportsFilter from '../components/reports-filter';
+import DummyFilters from './dummy-filters';
 
 const {__} = wp.i18n
 
@@ -180,7 +181,7 @@ class Edit extends wp.element.Component {
                     <Filter name={'panel-body-filter'} />
                 </PanelBody>
             </InspectorControls>,
-            displayFilter && <Filter key={'block-content-filter'} name={'block-content-filter'} />,
+            displayFilter && <DummyFilters key={'block-content-filter'} />,
             reports.hasOwnProperty('table') && (
                 <div key={'gravityflow_chart_top_level'} className={'gravityflow_chart'}/>
             ),

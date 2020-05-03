@@ -152,7 +152,8 @@
   vertical-align: middle; }
 
 .wp-block[data-type="gravityflow/reports"] .gravityflow_chart {
-  margin-top: 20px; }
+  margin-top: 20px;
+  font-size: 16px; }
   .wp-block[data-type="gravityflow/reports"] .gravityflow_chart text {
     font-size: 14px; }
 

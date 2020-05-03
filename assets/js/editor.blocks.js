@@ -1699,7 +1699,8 @@ var addQueryArgs = wp.url.addQueryArgs;
 var withState = wp.compose.withState;
 var _wp$components = wp.components,
     PanelBody = _wp$components.PanelBody,
-    ToggleControl = _wp$components.ToggleControl;
+    ToggleControl = _wp$components.ToggleControl,
+    Spinner = _wp$components.Spinner;
 
 var Edit = function (_wp$element$Component) {
     babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6___default()(Edit, _wp$element$Component);
@@ -1798,6 +1799,9 @@ var Edit = function (_wp$element$Component) {
                 props = this.props;
             }
 
+            // Reset reports to get the spinner.
+            this.props.setState({ reports: {} });
+
             apiFetch({
                 path: addQueryArgs('/gf/v2/workflow/reports/', {
                     'form': formId,
@@ -1895,9 +1899,14 @@ var Edit = function (_wp$element$Component) {
                     },
                     React.createElement(Filter, { name: 'panel-body-filter' })
                 )
-            ), displayFilter && React.createElement(_dummy_filters__WEBPACK_IMPORTED_MODULE_8__["default"], { key: 'block-content-filter' }), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), !reports.hasOwnProperty('table') && React.createElement(
+            ), displayFilter && React.createElement(_dummy_filters__WEBPACK_IMPORTED_MODULE_8__["default"], { key: 'block-content-filter' }), typeof reports !== 'string' && !reports.hasOwnProperty('table') && React.createElement(
                 'div',
-                { key: 'gravityflow_chart_no_data' },
+                { key: 'gravityflow_chart_loading', className: 'gravityflow_chart' },
+                React.createElement(Spinner, null),
+                __('Loading', 'gravityflow')
+            ), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), typeof reports === 'string' && React.createElement(
+                'div',
+                { key: 'gravityflow_chart_no_data', className: 'gravityflow_chart' },
                 __('No data to display', 'gravityflowblocks')
             )];
         }

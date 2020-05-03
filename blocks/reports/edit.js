@@ -9,7 +9,8 @@ const {addQueryArgs} = wp.url;
 const {withState} = wp.compose;
 const {
     PanelBody,
-    ToggleControl
+    ToggleControl,
+    Spinner
 } = wp.components
 
 class Edit extends wp.element.Component {
@@ -93,6 +94,9 @@ class Edit extends wp.element.Component {
         if (typeof props === 'undefined') {
             props = this.props;
         }
+
+        // Reset reports to get the spinner.
+        this.props.setState({reports: {}});
 
         apiFetch(
             {
@@ -178,12 +182,18 @@ class Edit extends wp.element.Component {
                 </PanelBody>
             </InspectorControls>,
             displayFilter && <DummyFilters key={'block-content-filter'} />,
+            typeof reports !== 'string' && ! reports.hasOwnProperty('table') && (
+                <div key={'gravityflow_chart_loading'} className={'gravityflow_chart'}>
+                    <Spinner/>
+                    { __( 'Loading', 'gravityflow' ) }
+                </div>
+            ),
             reports.hasOwnProperty('table') && (
-                <div key={'gravityflow_chart_top_level'} className={'gravityflow_chart'}/>
+                <div key={'gravityflow_chart_top_level'} className={'gravityflow_chart'} />
             ),
-            !reports.hasOwnProperty('table') && (
-                <div key={'gravityflow_chart_no_data'}>{__('No data to display', 'gravityflowblocks')}</div>
-            ),
+            typeof reports === 'string' && (
+                <div key={'gravityflow_chart_no_data'} className={'gravityflow_chart'}>{__('No data to display', 'gravityflowblocks')}</div>
+            )
         ];
     }
 }

@@ -37,7 +37,7 @@ class ReportsFilter extends wp.element.Component {
                     }}
                 />
                 {
-                    selectedFormJson && (
+                    selectedForms.value !== '' && (
                         <SelectControl
                             label={__('Category', 'gravityflowblocks')}
                             value={category}

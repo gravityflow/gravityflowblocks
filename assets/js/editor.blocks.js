@@ -827,6 +827,10 @@ var FormSelectView = function (_wp$element$Component) {
 
 			var options = [];
 
+			if (!isMulti) {
+				options.push({ label: __('Select A Workflow Form', 'gravityflowblocks'), value: '' });
+			}
+
 			babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(forms).forEach(function (key, i) {
 				options.push({
 					label: forms[key].title,
@@ -880,7 +884,7 @@ var FormSelectView = function (_wp$element$Component) {
 					value: selectedForms ? selectedForms.value : '',
 					onChange: function onChange(value) {
 						for (var i = 0; i < options.length; i++) {
-							if (options[i].value === parseInt(value)) {
+							if (value === '' || options[i].value === parseInt(value)) {
 								var selectedForm = { label: options[i].label, value: options[i].value };
 								onFormsChange(selectedForm);
 								break;
@@ -994,7 +998,7 @@ var ReportsFilter = function (_wp$element$Component) {
                         _onFormsChange(selectedForms);
                     }
                 }),
-                selectedFormJson && React.createElement(SelectControl, {
+                selectedForms.value !== '' && React.createElement(SelectControl, {
                     label: __('Category', 'gravityflowblocks'),
                     value: category,
                     onChange: function onChange(category) {
@@ -1695,11 +1699,7 @@ var addQueryArgs = wp.url.addQueryArgs;
 var withState = wp.compose.withState;
 var _wp$components = wp.components,
     PanelBody = _wp$components.PanelBody,
-    FormToggle = _wp$components.FormToggle,
-    ToggleControl = _wp$components.ToggleControl,
-    Button = _wp$components.Button,
-    ButtonGroup = _wp$components.ButtonGroup,
-    SelectControl = _wp$components.SelectControl;
+    ToggleControl = _wp$components.ToggleControl;
 
 var Edit = function (_wp$element$Component) {
     babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6___default()(Edit, _wp$element$Component);
@@ -1744,7 +1744,7 @@ var Edit = function (_wp$element$Component) {
             var selectedFormJson = this.props.attributes.selectedFormJson;
 
             if (!selectedFormJson) {
-                return;
+                return '';
             }
 
             var selectedForm = JSON.parse(selectedFormJson);
@@ -1762,7 +1762,7 @@ var Edit = function (_wp$element$Component) {
             var options = [{ label: __('All Steps', 'gravityflow'), value: '' }];
             var assignees = [];
 
-            if (!formId) {
+            if (formId === '') {
                 return;
             }
 

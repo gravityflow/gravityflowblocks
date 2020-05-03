@@ -34,6 +34,12 @@ class FormSelectView extends wp.element.Component {
 
 		let options = [];
 
+		if ( ! isMulti ) {
+			options.push(
+				{ label: __( 'Select A Workflow Form', 'gravityflowblocks' ), value: '' }
+			);
+		}
+
 		Object.keys( forms ).forEach( function ( key, i ) {
 			options.push( {
 				label: forms[key].title,
@@ -93,7 +99,7 @@ class FormSelectView extends wp.element.Component {
 							value={selectedForms ? selectedForms.value : ''}
 							onChange={(value) => {
 								for(let i = 0; i<options.length; i++) {
-								    if ( options[i].value === parseInt(value) ) {
+								    if ( value === '' || options[i].value === parseInt(value) ) {
 								    	const selectedForm = {label: options[i].label, value: options[i].value};
 										onFormsChange(selectedForm);
 								        break;

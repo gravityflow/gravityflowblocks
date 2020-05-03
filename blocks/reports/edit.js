@@ -9,11 +9,7 @@ const {addQueryArgs} = wp.url;
 const {withState} = wp.compose;
 const {
     PanelBody,
-    FormToggle,
-    ToggleControl,
-    Button,
-    ButtonGroup,
-    SelectControl
+    ToggleControl
 } = wp.components
 
 class Edit extends wp.element.Component {
@@ -50,7 +46,7 @@ class Edit extends wp.element.Component {
         const selectedFormJson = this.props.attributes.selectedFormJson;
 
         if (!selectedFormJson) {
-            return;
+            return '';
         }
 
         const selectedForm = JSON.parse(selectedFormJson);
@@ -65,7 +61,7 @@ class Edit extends wp.element.Component {
         let options = [{label: __('All Steps', 'gravityflow'), value: ''}];
         let assignees = [];
 
-        if (!formId){
+        if (formId === ''){
             return;
         }
 

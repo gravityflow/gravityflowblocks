@@ -23,5 +23,4 @@ class DummyFilters extends wp.element.Component {
     }
 }
 
-
 export default DummyFilters;

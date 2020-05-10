@@ -33,16 +33,14 @@ function gravityflow_render_reports( $attributes, $content ) {
 		return;
 	}
 
-	$form = get_post_meta( get_the_ID(), '_gravityflow_reports_form_json', true );
-	$form = json_decode( $form, true );
+	$form = json_decode( $attributes['selectedFormJson'], true );
 	if ( rgar( $form, 'value' ) ) {
 		$attributes['form'] = $form['value'];
 	}
 
-	$attributes['range']    = get_post_meta( get_the_ID(), '_gravityflow_reports_range', true );
-	$attributes['category'] = get_post_meta( get_the_ID(), '_gravityflow_reports_category', true );
-	$attributes['step_id']  = get_post_meta( get_the_ID(), '_gravityflow_reports_step', true );
-	$attributes['assignee']  = get_post_meta( get_the_ID(), '_gravityflow_reports_assignee', true );
+	if ( ! rgar( $attributes, 'displayFilter' ) ) {
+		$attributes['display_filter'] = false;
+	}
 
 	$shortcode_atts = array();
 	foreach ( $attributes as $key => $value ) {
@@ -56,31 +54,3 @@ function gravityflow_render_reports( $attributes, $content ) {
 
 	return gravity_flow()->get_shortcode_reports_page( $shortcode_atts );
 }
-
-function gravityflow_register_reports_fields() {
-
-	if ( ! GFAPI::current_user_can_any( 'gravityflow_status_view_all' ) ) {
-		return;
-	}
-
-	$metas = array(
-		'_gravityflow_reports_range',
-		'_gravityflow_reports_form_json',
-		'_gravityflow_reports_category',
-		'_gravityflow_reports_step',
-		'_gravityflow_reports_assignee',
-	);
-
-	foreach ( $metas as $meta ) {
-		register_meta( 'post', $meta, array(
-			'show_in_rest'  => true,
-			'single'        => true,
-			'type'          => 'string',
-			'auth_callback' => function () {
-				return GFAPI::current_user_can_any( 'gravityflow_view_all' );
-			},
-		) );
-	}
-}
-
-add_action( 'init', 'gravityflow_register_reports_fields' );

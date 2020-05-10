@@ -18,7 +18,7 @@ registerBlockType(
         keywords: [ __( 'Gravity Flow' ), __( 'Gravity' ) ],
         category: 'widgets',
         supports: {
-            multiple: false,
+            multiple: true,
             html: false,
             anchor: true,
         },
@@ -29,32 +29,22 @@ registerBlockType(
             },
             range: {
                 type: 'string',
-                source: 'meta',
-                meta: '_gravityflow_reports_range',
                 default: 'last-12-months',
             },
             selectedFormJson: {
                 type: 'string',
-                source: 'meta',
-                meta: '_gravityflow_reports_form_json',
                 default: '',
             },
             category: {
                 type: 'string',
-                source: 'meta',
-                meta: '_gravityflow_reports_category',
                 default: '',
             },
             step: {
                 type: 'string',
-                source: 'meta',
-                meta: '_gravityflow_reports_step',
                 default: '',
             },
             assignee: {
                 type: 'string',
-                source: 'meta',
-                meta: '_gravityflow_reports_assignee',
                 default: '',
             }
         },

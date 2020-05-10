@@ -121,7 +121,7 @@ class Edit extends wp.element.Component {
 
                 var chartType = 'Bar';
 
-                var chart = new google.charts[chartType](document.getElementsByClassName('gravityflow_chart')[0]);
+                var chart = new google.charts[chartType](document.querySelector( '[data-block="' + this.props.clientId + '"] .gravityflow_chart' ));
 
                 chart.draw(data, options);
             }

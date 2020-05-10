@@ -1820,7 +1820,7 @@ var Edit = function (_wp$element$Component) {
 
                     var chartType = 'Bar';
 
-                    var chart = new google.charts[chartType](document.getElementsByClassName('gravityflow_chart')[0]);
+                    var chart = new google.charts[chartType](document.querySelector('[data-block="' + _this3.props.clientId + '"] .gravityflow_chart'));
 
                     chart.draw(data, options);
                 }
@@ -1984,7 +1984,7 @@ registerBlockType('gravityflow/reports', {
     keywords: [__('Gravity Flow'), __('Gravity')],
     category: 'widgets',
     supports: {
-        multiple: false,
+        multiple: true,
         html: false,
         anchor: true
     },
@@ -1995,32 +1995,22 @@ registerBlockType('gravityflow/reports', {
         },
         range: {
             type: 'string',
-            source: 'meta',
-            meta: '_gravityflow_reports_range',
             default: 'last-12-months'
         },
         selectedFormJson: {
             type: 'string',
-            source: 'meta',
-            meta: '_gravityflow_reports_form_json',
             default: ''
         },
         category: {
             type: 'string',
-            source: 'meta',
-            meta: '_gravityflow_reports_category',
             default: ''
         },
         step: {
             type: 'string',
-            source: 'meta',
-            meta: '_gravityflow_reports_step',
             default: ''
         },
         assignee: {
             type: 'string',
-            source: 'meta',
-            meta: '_gravityflow_reports_assignee',
             default: ''
         }
     },

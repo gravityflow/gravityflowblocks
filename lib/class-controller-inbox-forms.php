@@ -127,6 +127,9 @@ class Gravity_Flow_REST_Inbox_Forms_Controller extends WP_REST_Controller {
 			);
 		}
 
+		// Sort by the form title.
+		usort( $form_details, array( $this, 'sort_by_form_title' ) );
+
 		return rest_ensure_response( $form_details );
 	}
 
@@ -163,5 +166,19 @@ class Gravity_Flow_REST_Inbox_Forms_Controller extends WP_REST_Controller {
 		}
 
 		return rest_ensure_response( $_steps );
+	}
+
+	/**
+	 * Sort two arrays by the key of "title".
+	 *
+	 * @since 0.2
+	 *
+	 * @param array $a The first array.
+	 * @param array $b The second array.
+	 *
+	 * @return int
+	 */
+	private function sort_by_form_title( $a, $b ) {
+		return strcmp( $a['title'], $b['title'] );
 	}
 }

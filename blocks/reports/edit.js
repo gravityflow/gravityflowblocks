@@ -38,7 +38,7 @@ class Edit extends wp.element.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.step !== this.props.attributes.step || prevProps.attributes.assignee !== this.props.attributes.assignee) {
+        if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.step_id !== this.props.attributes.step_id || prevProps.attributes.assignee !== this.props.attributes.assignee) {
             this.getReports(this.props);
         }
     }
@@ -106,7 +106,7 @@ class Edit extends wp.element.Component {
                         'form': formId,
                         'range': props.attributes.range === '' ? 'last-12-months' : props.attributes.range,
                         'category': props.attributes.category,
-                        'step_id': props.attributes.step,
+                        'step_id': props.attributes.step_id,
                         'assignee': props.attributes.assignee
                     }
                 )
@@ -129,7 +129,7 @@ class Edit extends wp.element.Component {
     }
 
     render() {
-        let {attributes: {range, selectedFormJson, category, step, assignee, displayFilter}, steps, assignees, reports, setAttributes} = this.props
+        let {attributes: {range, selectedFormJson, category, step_id, assignee, displayFilter}, steps, assignees, reports, setAttributes} = this.props
 
         const Filter = (props) => {
             return (
@@ -141,25 +141,25 @@ class Edit extends wp.element.Component {
                     }}
                     selectedFormJson={selectedFormJson}
                     onFormsChange={(selectedForms) => {
-                        setAttributes({selectedFormJson: JSON.stringify(selectedForms), category: '', step: ''});
+                        setAttributes({selectedFormJson: JSON.stringify(selectedForms), category: '', step_id: ''});
                     }}
                     category={category}
                     onCategoryChange={(category) => {
-                        setAttributes({category: category, step: '', assignee: ''});
+                        setAttributes({category: category, step_id: '', assignee: ''});
                         if (category === 'step') {
                             this.getSteps(this.getSelectedForm());
                         }
                     }}
-                    step={step}
-                    onStepChange={(step) => {
-                        setAttributes({step: step, assignee: ''});
+                    step_id={step_id}
+                    onStepChange={(step_id) => {
+                        setAttributes({step_id: step_id, assignee: ''});
                     }}
                     steps={steps}
                     assignee={assignee}
                     onAssigneeChange={(assignee) => {
                         setAttributes({assignee: assignee});
                     }}
-                    assignees={assignees[step]}
+                    assignees={assignees[step_id]}
                 />
             )
         };

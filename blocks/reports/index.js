@@ -39,7 +39,7 @@ registerBlockType(
                 type: 'string',
                 default: '',
             },
-            step: {
+            step_id: {
                 type: 'string',
                 default: '',
             },

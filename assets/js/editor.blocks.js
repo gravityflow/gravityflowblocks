@@ -1735,7 +1735,7 @@ var Edit = function (_wp$element$Component) {
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps) {
-            if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.step !== this.props.attributes.step || prevProps.attributes.assignee !== this.props.attributes.assignee) {
+            if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.step_id !== this.props.attributes.step_id || prevProps.attributes.assignee !== this.props.attributes.assignee) {
                 this.getReports(this.props);
             }
         }
@@ -1807,7 +1807,7 @@ var Edit = function (_wp$element$Component) {
                     'form': formId,
                     'range': props.attributes.range === '' ? 'last-12-months' : props.attributes.range,
                     'category': props.attributes.category,
-                    'step_id': props.attributes.step,
+                    'step_id': props.attributes.step_id,
                     'assignee': props.attributes.assignee
                 })
             }).then(function (reports) {
@@ -1836,7 +1836,7 @@ var Edit = function (_wp$element$Component) {
                 range = _props$attributes.range,
                 selectedFormJson = _props$attributes.selectedFormJson,
                 category = _props$attributes.category,
-                step = _props$attributes.step,
+                step_id = _props$attributes.step_id,
                 assignee = _props$attributes.assignee,
                 displayFilter = _props$attributes.displayFilter,
                 steps = _props.steps,
@@ -1854,25 +1854,25 @@ var Edit = function (_wp$element$Component) {
                     },
                     selectedFormJson: selectedFormJson,
                     onFormsChange: function onFormsChange(selectedForms) {
-                        setAttributes({ selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', step: '' });
+                        setAttributes({ selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', step_id: '' });
                     },
                     category: category,
                     onCategoryChange: function onCategoryChange(category) {
-                        setAttributes({ category: category, step: '', assignee: '' });
+                        setAttributes({ category: category, step_id: '', assignee: '' });
                         if (category === 'step') {
                             _this4.getSteps(_this4.getSelectedForm());
                         }
                     },
-                    step: step,
-                    onStepChange: function onStepChange(step) {
-                        setAttributes({ step: step, assignee: '' });
+                    step_id: step_id,
+                    onStepChange: function onStepChange(step_id) {
+                        setAttributes({ step_id: step_id, assignee: '' });
                     },
                     steps: steps,
                     assignee: assignee,
                     onAssigneeChange: function onAssigneeChange(assignee) {
                         setAttributes({ assignee: assignee });
                     },
-                    assignees: assignees[step]
+                    assignees: assignees[step_id]
                 });
             };
 
@@ -2005,7 +2005,7 @@ registerBlockType('gravityflow/reports', {
             type: 'string',
             default: ''
         },
-        step: {
+        step_id: {
             type: 'string',
             default: ''
         },

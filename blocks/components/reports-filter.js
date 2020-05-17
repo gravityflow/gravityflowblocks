@@ -11,7 +11,7 @@ class ReportsFilter extends wp.element.Component {
     }
 
     render() {
-        let {name, range, onRangeChange, selectedFormJson, onFormsChange, category, onCategoryChange, assignee, assignees, onAssigneeChange, step, steps, onStepChange} = this.props
+        let {name, range, onRangeChange, selectedFormJson, onFormsChange, category, onCategoryChange, assignee, assignees, onAssigneeChange, step_id, steps, onStepChange} = this.props
 
         const selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
 
@@ -56,9 +56,9 @@ class ReportsFilter extends wp.element.Component {
                     category === 'step' && (
                         <SelectControl
                             label={__('Step', 'gravityflowblocks')}
-                            value={step}
-                            onChange={(step) => {
-                                onStepChange(step);
+                            value={step_id}
+                            onChange={(step_id) => {
+                                onStepChange(step_id);
                             }}
                             options={steps}
                         />

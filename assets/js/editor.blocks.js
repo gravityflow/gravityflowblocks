@@ -973,7 +973,7 @@ var ReportsFilter = function (_wp$element$Component) {
                 assignee = _props.assignee,
                 assignees = _props.assignees,
                 onAssigneeChange = _props.onAssigneeChange,
-                step = _props.step,
+                step_id = _props.step_id,
                 steps = _props.steps,
                 onStepChange = _props.onStepChange;
 
@@ -1008,9 +1008,9 @@ var ReportsFilter = function (_wp$element$Component) {
                 }),
                 category === 'step' && React.createElement(SelectControl, {
                     label: __('Step', 'gravityflowblocks'),
-                    value: step,
-                    onChange: function onChange(step) {
-                        onStepChange(step);
+                    value: step_id,
+                    onChange: function onChange(step_id) {
+                        onStepChange(step_id);
                     },
                     options: steps
                 }),

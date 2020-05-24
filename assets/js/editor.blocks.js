@@ -1703,207 +1703,212 @@ var _wp$components = wp.components,
     Spinner = _wp$components.Spinner;
 
 var Edit = function (_wp$element$Component) {
-    babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6___default()(Edit, _wp$element$Component);
+	babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6___default()(Edit, _wp$element$Component);
 
-    function Edit() {
-        babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3___default()(this, Edit);
+	function Edit() {
+		babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3___default()(this, Edit);
 
-        return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default()(this, (Edit.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2___default()(Edit)).apply(this, arguments));
-    }
+		return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default()(this, (Edit.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2___default()(Edit)).apply(this, arguments));
+	}
 
-    babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default()(Edit, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.getSteps();
-            this.getReports();
-        }
-    }, {
-        key: 'componentDidUpdate',
-        value: function componentDidUpdate(prevProps) {
-            if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.stepId !== this.props.attributes.stepId || prevProps.attributes.assignee !== this.props.attributes.assignee) {
-                this.getReports(this.props);
-            }
-        }
-    }, {
-        key: 'getSelectedForm',
-        value: function getSelectedForm() {
-            var selectedFormJson = this.props.attributes.selectedFormJson;
+	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default()(Edit, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.getSteps();
+			this.getReports();
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(prevProps) {
+			if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.stepId !== this.props.attributes.stepId || prevProps.attributes.assignee !== this.props.attributes.assignee) {
+				this.getReports(this.props);
+			}
+		}
+	}, {
+		key: 'getSelectedForm',
+		value: function getSelectedForm() {
+			var selectedFormJson = this.props.attributes.selectedFormJson;
 
-            if (!selectedFormJson) {
-                return '';
-            }
+			if (!selectedFormJson) {
+				return '';
+			}
 
-            var selectedForm = JSON.parse(selectedFormJson);
+			var selectedForm = JSON.parse(selectedFormJson);
 
-            return selectedForm.value;
-        }
-    }, {
-        key: 'getSteps',
-        value: function getSteps(formId) {
-            var _this2 = this;
+			return selectedForm.value;
+		}
+	}, {
+		key: 'getSteps',
+		value: function getSteps(formId) {
+			var _this2 = this;
 
-            if (formId === undefined) {
-                formId = this.getSelectedForm();
-            }
-            var options = [{ label: __('All Steps', 'gravityflow'), value: '' }];
-            var assignees = [];
+			if (formId === undefined) {
+				formId = this.getSelectedForm();
+			}
+			var options = [{ label: __('All Steps', 'gravityflow'), value: '' }];
+			var assignees = [];
 
-            if (formId === '') {
-                return;
-            }
+			if (formId === '') {
+				return;
+			}
 
-            apiFetch({ path: 'gf/v2/workflow/forms/' + formId + '/steps' }).then(function (_steps) {
-                babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1___default()(_steps).forEach(function (key, i) {
-                    options.push({
-                        label: _steps[key].name,
-                        value: _steps[key].id
-                    });
+			apiFetch({ path: 'gf/v2/workflow/forms/' + formId + '/steps' }).then(function (_steps) {
+				babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1___default()(_steps).forEach(function (key, i) {
+					options.push({
+						label: _steps[key].name,
+						value: _steps[key].id
+					});
 
-                    assignees[_steps[key].id] = [{ label: __('All Assignees', 'gravityflow'), value: '' }];
-                    if (_steps[key].assignees.length) {
-                        _steps[key].assignees.forEach(function (k, j) {
-                            assignees[_steps[key].id].push({
-                                label: k.name,
-                                value: k.key
-                            });
-                        });
-                    }
-                });
+					assignees[_steps[key].id] = [{ label: __('All Assignees', 'gravityflow'), value: '' }];
+					if (_steps[key].assignees.length) {
+						_steps[key].assignees.forEach(function (k, j) {
+							assignees[_steps[key].id].push({
+								label: k.name,
+								value: k.key
+							});
+						});
+					}
+				});
 
-                _this2.props.setState({ steps: options, assignees: assignees });
-            });
-        }
-    }, {
-        key: 'getReports',
-        value: function getReports(props) {
-            var _this3 = this;
+				_this2.props.setState({ steps: options, assignees: assignees });
+			});
+		}
+	}, {
+		key: 'getReports',
+		value: function getReports(props) {
+			var _this3 = this;
 
-            var formId = this.getSelectedForm();
+			var formId = this.getSelectedForm();
 
-            if (typeof props === 'undefined') {
-                props = this.props;
-            }
+			if (typeof props === 'undefined') {
+				props = this.props;
+			}
 
-            // Reset reports to get the spinner.
-            this.props.setState({ reports: {} });
+			// Reset reports to get the spinner.
+			this.props.setState({ reports: {} });
 
-            apiFetch({
-                path: addQueryArgs('/gf/v2/workflow/reports/', {
-                    'form': formId,
-                    'range': props.attributes.range === '' ? 'last-12-months' : props.attributes.range,
-                    'category': props.attributes.category,
-                    'step-id': props.attributes.stepId,
-                    'assignee': props.attributes.assignee
-                })
-            }).then(function (reports) {
-                _this3.props.setState({ reports: reports });
+			apiFetch({
+				path: addQueryArgs('/gf/v2/workflow/reports/', {
+					'form': formId,
+					'range': props.attributes.range === '' ? 'last-12-months' : props.attributes.range,
+					'category': props.attributes.category,
+					'step-id': props.attributes.stepId,
+					'assignee': props.attributes.assignee
+				})
+			}).then(function (reports) {
+				_this3.props.setState({ reports: reports });
 
-                if (reports.hasOwnProperty('table')) {
-                    var data = google.visualization.arrayToDataTable(JSON.parse(reports.table));
+				if (reports.hasOwnProperty('table')) {
+					var data = google.visualization.arrayToDataTable(JSON.parse(reports.table));
 
-                    var options = JSON.parse(reports.options);
+					var options = JSON.parse(reports.options);
 
-                    var chartType = 'Bar';
+					var chartType = 'Bar';
 
-                    var chart = new google.charts[chartType](document.querySelector('[data-block="' + _this3.props.clientId + '"] .gravityflow_chart'));
+					var chart = new google.charts[chartType](document.querySelector('[data-block="' + _this3.props.clientId + '"] .gravityflow_chart'));
 
-                    chart.draw(data, options);
-                }
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
+					chart.draw(data, options);
+				}
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this4 = this;
 
-            var _props = this.props,
-                _props$attributes = _props.attributes,
-                range = _props$attributes.range,
-                selectedFormJson = _props$attributes.selectedFormJson,
-                category = _props$attributes.category,
-                stepId = _props$attributes.stepId,
-                assignee = _props$attributes.assignee,
-                displayFilter = _props$attributes.displayFilter,
-                steps = _props.steps,
-                assignees = _props.assignees,
-                reports = _props.reports,
-                setAttributes = _props.setAttributes;
+			var _props = this.props,
+			    _props$attributes = _props.attributes,
+			    range = _props$attributes.range,
+			    selectedFormJson = _props$attributes.selectedFormJson,
+			    category = _props$attributes.category,
+			    stepId = _props$attributes.stepId,
+			    assignee = _props$attributes.assignee,
+			    displayFilter = _props$attributes.displayFilter,
+			    steps = _props.steps,
+			    assignees = _props.assignees,
+			    reports = _props.reports,
+			    setAttributes = _props.setAttributes;
 
 
-            var Filter = function Filter(props) {
-                return React.createElement(_components_reports_filter__WEBPACK_IMPORTED_MODULE_7__["default"], {
-                    name: props.name,
-                    range: range,
-                    onRangeChange: function onRangeChange(range) {
-                        setAttributes({ range: range });
-                    },
-                    selectedFormJson: selectedFormJson,
-                    onFormsChange: function onFormsChange(selectedForms) {
-                        setAttributes({ selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', stepId: '' });
-                    },
-                    category: category,
-                    onCategoryChange: function onCategoryChange(category) {
-                        setAttributes({ category: category, stepId: '', assignee: '' });
-                        if (category === 'step') {
-                            _this4.getSteps(_this4.getSelectedForm());
-                        }
-                    },
-                    stepId: stepId,
-                    onStepChange: function onStepChange(stepId) {
-                        setAttributes({ stepId: stepId, assignee: '' });
-                    },
-                    steps: steps,
-                    assignee: assignee,
-                    onAssigneeChange: function onAssigneeChange(assignee) {
-                        setAttributes({ assignee: assignee });
-                    },
-                    assignees: assignees[stepId]
-                });
-            };
+			var Filter = function Filter(props) {
+				return React.createElement(_components_reports_filter__WEBPACK_IMPORTED_MODULE_7__["default"], {
+					name: props.name,
+					range: range,
+					onRangeChange: function onRangeChange(range) {
+						setAttributes({ range: range });
+					},
+					selectedFormJson: selectedFormJson,
+					onFormsChange: function onFormsChange(selectedForms) {
+						setAttributes({
+							selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms),
+							category: '',
+							stepId: ''
+						});
+					},
+					category: category,
+					onCategoryChange: function onCategoryChange(category) {
+						setAttributes({ category: category, stepId: '', assignee: '' });
+						if (category === 'step') {
+							_this4.getSteps(_this4.getSelectedForm());
+						}
+					},
+					stepId: stepId,
+					onStepChange: function onStepChange(stepId) {
+						setAttributes({ stepId: stepId, assignee: '' });
+					},
+					steps: steps,
+					assignee: assignee,
+					onAssigneeChange: function onAssigneeChange(assignee) {
+						setAttributes({ assignee: assignee });
+					},
+					assignees: assignees[stepId]
+				});
+			};
 
-            return [React.createElement(
-                InspectorControls,
-                { key: 'inbox-inspector' },
-                React.createElement(
-                    PanelBody,
-                    {
-                        title: __('Display Settings', 'gravityflowblocks')
-                    },
-                    React.createElement(ToggleControl, {
-                        label: __('Display filters', 'gravityflowblocks'),
-                        checked: displayFilter,
-                        onChange: function onChange() {
-                            return setAttributes({ displayFilter: !displayFilter });
-                        }
-                    })
-                ),
-                React.createElement(
-                    PanelBody,
-                    {
-                        title: __('Filter Settings', 'gravityflowblocks')
-                    },
-                    React.createElement(Filter, { name: 'panel-body-filter' })
-                )
-            ), displayFilter && React.createElement(_dummy_filters__WEBPACK_IMPORTED_MODULE_8__["default"], { key: 'block-content-filter' }), typeof reports !== 'string' && !reports.hasOwnProperty('table') && React.createElement(
-                'div',
-                { key: 'gravityflow_chart_loading', className: 'gravityflow_chart' },
-                React.createElement(Spinner, null),
-                __('Loading', 'gravityflow')
-            ), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), typeof reports === 'string' && React.createElement(
-                'div',
-                { key: 'gravityflow_chart_no_data', className: 'gravityflow_chart' },
-                __('No data to display', 'gravityflowblocks')
-            )];
-        }
-    }]);
+			return [React.createElement(
+				InspectorControls,
+				{ key: 'inbox-inspector' },
+				React.createElement(
+					PanelBody,
+					{
+						title: __('Display Settings', 'gravityflowblocks')
+					},
+					React.createElement(ToggleControl, {
+						label: __('Display filters', 'gravityflowblocks'),
+						checked: displayFilter,
+						onChange: function onChange() {
+							return setAttributes({ displayFilter: !displayFilter });
+						}
+					})
+				),
+				React.createElement(
+					PanelBody,
+					{
+						title: __('Filter Settings', 'gravityflowblocks')
+					},
+					React.createElement(Filter, { name: 'panel-body-filter' })
+				)
+			), displayFilter && React.createElement(_dummy_filters__WEBPACK_IMPORTED_MODULE_8__["default"], { key: 'block-content-filter' }), typeof reports !== 'string' && !reports.hasOwnProperty('table') && React.createElement(
+				'div',
+				{ key: 'gravityflow_chart_loading', className: 'gravityflow_chart' },
+				React.createElement(Spinner, null),
+				__('Loading', 'gravityflow')
+			), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), typeof reports === 'string' && React.createElement(
+				'div',
+				{ key: 'gravityflow_chart_no_data',
+					className: 'gravityflow_chart' },
+				__('No data to display', 'gravityflowblocks')
+			)];
+		}
+	}]);
 
-    return Edit;
+	return Edit;
 }(wp.element.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (withState({
-    steps: [],
-    assignees: [],
-    reports: {}
+	steps: [],
+	assignees: [],
+	reports: {}
 })(Edit));
 
 /***/ }),

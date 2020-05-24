@@ -33,9 +33,11 @@ function gravityflow_render_reports( $attributes, $content ) {
 		return;
 	}
 
-	$form = json_decode( $attributes['selectedFormJson'], true );
-	if ( rgar( $form, 'value' ) ) {
-		$attributes['form'] = $form['value'];
+	if ( isset( $attributes['selectedFormJson'] ) ) {
+		$form = json_decode( $attributes['selectedFormJson'], true );
+		if ( rgar( $form, 'value' ) ) {
+			$attributes['form'] = $form['value'];
+		}
 	}
 
 	if ( ! rgar( $attributes, 'displayFilter' ) ) {
@@ -44,7 +46,7 @@ function gravityflow_render_reports( $attributes, $content ) {
 
 	$shortcode_atts = array();
 	foreach ( $attributes as $key => $value ) {
-		// Convert camel to snake
+		// Convert camel to snake.
 		$snake_key                    = strtolower( preg_replace( '/(?<!^)[A-Z]/', '_$0', $key ) );
 		$shortcode_atts[ $snake_key ] = $value;
 	}

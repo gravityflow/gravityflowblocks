@@ -80,7 +80,7 @@ class Gravity_Flow_REST_Reports_Controller extends WP_REST_Controller {
 			'range'             => $range,
 			'start_date'        => $start_date,
 			'category'          => $request->get_param( 'category' ),
-			'step_id'           => $request->get_param( 'step_id' ),
+			'step_id'           => $request->get_param( 'step-id' ),
 			'assignee'          => $assignee_key,
 			'assignee_type'     => $assignee_type,
 			'assignee_id'       => $assignee_id,

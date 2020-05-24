@@ -18,27 +18,13 @@ class Edit extends wp.element.Component {
         super(...arguments);
     }
 
-    componentWillUnmount() {
-        // Hack to remove post meta when the block is removed.
-        // @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
-        wp.data.dispatch('core/editor').editPost({
-            meta: {
-                _gravityflow_reports_form_json: '',
-                _gravityflow_reports_range: '',
-                _gravityflow_reports_category: '',
-                _gravityflow_reports_step: '',
-                _gravityflow_reports_assignee: ''
-            }
-        });
-    }
-
     componentDidMount() {
         this.getSteps();
         this.getReports();
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.step_id !== this.props.attributes.step_id || prevProps.attributes.assignee !== this.props.attributes.assignee) {
+        if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.stepId !== this.props.attributes.stepId || prevProps.attributes.assignee !== this.props.attributes.assignee) {
             this.getReports(this.props);
         }
     }
@@ -106,7 +92,7 @@ class Edit extends wp.element.Component {
                         'form': formId,
                         'range': props.attributes.range === '' ? 'last-12-months' : props.attributes.range,
                         'category': props.attributes.category,
-                        'step_id': props.attributes.step_id,
+                        'step-id': props.attributes.stepId,
                         'assignee': props.attributes.assignee
                     }
                 )
@@ -129,7 +115,7 @@ class Edit extends wp.element.Component {
     }
 
     render() {
-        let {attributes: {range, selectedFormJson, category, step_id, assignee, displayFilter}, steps, assignees, reports, setAttributes} = this.props
+        let {attributes: {range, selectedFormJson, category, stepId, assignee, displayFilter}, steps, assignees, reports, setAttributes} = this.props
 
         const Filter = (props) => {
             return (
@@ -141,25 +127,25 @@ class Edit extends wp.element.Component {
                     }}
                     selectedFormJson={selectedFormJson}
                     onFormsChange={(selectedForms) => {
-                        setAttributes({selectedFormJson: JSON.stringify(selectedForms), category: '', step_id: ''});
+                        setAttributes({selectedFormJson: JSON.stringify(selectedForms), category: '', stepId: ''});
                     }}
                     category={category}
                     onCategoryChange={(category) => {
-                        setAttributes({category: category, step_id: '', assignee: ''});
+                        setAttributes({category: category, stepId: '', assignee: ''});
                         if (category === 'step') {
                             this.getSteps(this.getSelectedForm());
                         }
                     }}
-                    step_id={step_id}
-                    onStepChange={(step_id) => {
-                        setAttributes({step_id: step_id, assignee: ''});
+                    stepId={stepId}
+                    onStepChange={(stepId) => {
+                        setAttributes({stepId: stepId, assignee: ''});
                     }}
                     steps={steps}
                     assignee={assignee}
                     onAssigneeChange={(assignee) => {
                         setAttributes({assignee: assignee});
                     }}
-                    assignees={assignees[step_id]}
+                    assignees={assignees[stepId]}
                 />
             )
         };

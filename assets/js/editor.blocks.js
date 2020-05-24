@@ -1712,21 +1712,6 @@ var Edit = function (_wp$element$Component) {
     }
 
     babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default()(Edit, [{
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            // Hack to remove post meta when the block is removed.
-            // @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
-            wp.data.dispatch('core/editor').editPost({
-                meta: {
-                    _gravityflow_reports_form_json: '',
-                    _gravityflow_reports_range: '',
-                    _gravityflow_reports_category: '',
-                    _gravityflow_reports_step: '',
-                    _gravityflow_reports_assignee: ''
-                }
-            });
-        }
-    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.getSteps();
@@ -1735,7 +1720,7 @@ var Edit = function (_wp$element$Component) {
     }, {
         key: 'componentDidUpdate',
         value: function componentDidUpdate(prevProps) {
-            if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.step_id !== this.props.attributes.step_id || prevProps.attributes.assignee !== this.props.attributes.assignee) {
+            if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.stepId !== this.props.attributes.stepId || prevProps.attributes.assignee !== this.props.attributes.assignee) {
                 this.getReports(this.props);
             }
         }
@@ -1807,7 +1792,7 @@ var Edit = function (_wp$element$Component) {
                     'form': formId,
                     'range': props.attributes.range === '' ? 'last-12-months' : props.attributes.range,
                     'category': props.attributes.category,
-                    'step_id': props.attributes.step_id,
+                    'step-id': props.attributes.stepId,
                     'assignee': props.attributes.assignee
                 })
             }).then(function (reports) {
@@ -1836,7 +1821,7 @@ var Edit = function (_wp$element$Component) {
                 range = _props$attributes.range,
                 selectedFormJson = _props$attributes.selectedFormJson,
                 category = _props$attributes.category,
-                step_id = _props$attributes.step_id,
+                stepId = _props$attributes.stepId,
                 assignee = _props$attributes.assignee,
                 displayFilter = _props$attributes.displayFilter,
                 steps = _props.steps,
@@ -1854,25 +1839,25 @@ var Edit = function (_wp$element$Component) {
                     },
                     selectedFormJson: selectedFormJson,
                     onFormsChange: function onFormsChange(selectedForms) {
-                        setAttributes({ selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', step_id: '' });
+                        setAttributes({ selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms), category: '', stepId: '' });
                     },
                     category: category,
                     onCategoryChange: function onCategoryChange(category) {
-                        setAttributes({ category: category, step_id: '', assignee: '' });
+                        setAttributes({ category: category, stepId: '', assignee: '' });
                         if (category === 'step') {
                             _this4.getSteps(_this4.getSelectedForm());
                         }
                     },
-                    step_id: step_id,
-                    onStepChange: function onStepChange(step_id) {
-                        setAttributes({ step_id: step_id, assignee: '' });
+                    stepId: stepId,
+                    onStepChange: function onStepChange(stepId) {
+                        setAttributes({ stepId: stepId, assignee: '' });
                     },
                     steps: steps,
                     assignee: assignee,
                     onAssigneeChange: function onAssigneeChange(assignee) {
                         setAttributes({ assignee: assignee });
                     },
-                    assignees: assignees[step_id]
+                    assignees: assignees[stepId]
                 });
             };
 
@@ -2005,7 +1990,7 @@ registerBlockType('gravityflow/reports', {
             type: 'string',
             default: ''
         },
-        step_id: {
+        stepId: {
             type: 'string',
             default: ''
         },

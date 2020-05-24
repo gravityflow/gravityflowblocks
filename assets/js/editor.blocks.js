@@ -951,82 +951,82 @@ var __ = wp.i18n.__;
 var SelectControl = wp.components.SelectControl;
 
 var ReportsFilter = function (_wp$element$Component) {
-    babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(ReportsFilter, _wp$element$Component);
+	babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(ReportsFilter, _wp$element$Component);
 
-    function ReportsFilter() {
-        babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, ReportsFilter);
+	function ReportsFilter() {
+		babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, ReportsFilter);
 
-        return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, (ReportsFilter.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default()(ReportsFilter)).apply(this, arguments));
-    }
+		return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, (ReportsFilter.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default()(ReportsFilter)).apply(this, arguments));
+	}
 
-    babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(ReportsFilter, [{
-        key: "render",
-        value: function render() {
-            var _props = this.props,
-                name = _props.name,
-                range = _props.range,
-                onRangeChange = _props.onRangeChange,
-                selectedFormJson = _props.selectedFormJson,
-                _onFormsChange = _props.onFormsChange,
-                category = _props.category,
-                onCategoryChange = _props.onCategoryChange,
-                assignee = _props.assignee,
-                assignees = _props.assignees,
-                onAssigneeChange = _props.onAssigneeChange,
-                step_id = _props.step_id,
-                steps = _props.steps,
-                onStepChange = _props.onStepChange;
+	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(ReportsFilter, [{
+		key: 'render',
+		value: function render() {
+			var _props = this.props,
+			    name = _props.name,
+			    range = _props.range,
+			    onRangeChange = _props.onRangeChange,
+			    selectedFormJson = _props.selectedFormJson,
+			    _onFormsChange = _props.onFormsChange,
+			    category = _props.category,
+			    onCategoryChange = _props.onCategoryChange,
+			    assignee = _props.assignee,
+			    assignees = _props.assignees,
+			    onAssigneeChange = _props.onAssigneeChange,
+			    step_id = _props.step_id,
+			    steps = _props.steps,
+			    onStepChange = _props.onStepChange;
 
 
-            var selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
+			var selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
 
-            return [React.createElement(
-                react__WEBPACK_IMPORTED_MODULE_6__["Fragment"],
-                { key: name },
-                React.createElement(SelectControl, {
-                    label: __('Range', 'gravityflowblocks'),
-                    value: range,
-                    onChange: function onChange(range) {
-                        onRangeChange(range);
-                    },
-                    options: [{ value: 'last-12-months', label: __('Last 12 months', 'gravityflowblocks') }, { value: 'last-6-months', label: __('Last 6 months', 'gravityflowblocks') }, { value: 'last-3-months', label: __('Last 3 months', 'gravityflowblocks') }]
-                }),
-                React.createElement(_form_select__WEBPACK_IMPORTED_MODULE_5__["default"], {
-                    isMulti: false,
-                    selectedForms: selectedForms,
-                    onFormsChange: function onFormsChange(selectedForms) {
-                        _onFormsChange(selectedForms);
-                    }
-                }),
-                selectedForms.value !== '' && React.createElement(SelectControl, {
-                    label: __('Category', 'gravityflowblocks'),
-                    value: category,
-                    onChange: function onChange(category) {
-                        onCategoryChange(category);
-                    },
-                    options: [{ value: 'month', label: __('Month', 'gravityflowblocks') }, { value: 'assignee', label: __('Assignee', 'gravityflowblocks') }, { value: 'step', label: __('Step', 'gravityflowblocks') }]
-                }),
-                category === 'step' && React.createElement(SelectControl, {
-                    label: __('Step', 'gravityflowblocks'),
-                    value: step_id,
-                    onChange: function onChange(step_id) {
-                        onStepChange(step_id);
-                    },
-                    options: steps
-                }),
-                assignees && React.createElement(SelectControl, {
-                    label: __('Assignee', 'gravityflowblocks'),
-                    value: assignee,
-                    onChange: function onChange(assignee) {
-                        onAssigneeChange(assignee);
-                    },
-                    options: assignees
-                })
-            )];
-        }
-    }]);
+			return [React.createElement(
+				react__WEBPACK_IMPORTED_MODULE_6__["Fragment"],
+				{ key: name },
+				React.createElement(SelectControl, {
+					label: __('Range', 'gravityflowblocks'),
+					value: range,
+					onChange: function onChange(range) {
+						onRangeChange(range);
+					},
+					options: [{ value: 'last-12-months', label: __('Last 12 months', 'gravityflowblocks') }, { value: 'last-6-months', label: __('Last 6 months', 'gravityflowblocks') }, { value: 'last-3-months', label: __('Last 3 months', 'gravityflowblocks') }]
+				}),
+				React.createElement(_form_select__WEBPACK_IMPORTED_MODULE_5__["default"], {
+					isMulti: false,
+					selectedForms: selectedForms,
+					onFormsChange: function onFormsChange(selectedForms) {
+						_onFormsChange(selectedForms);
+					}
+				}),
+				selectedForms.value !== '' && React.createElement(SelectControl, {
+					label: __('Category', 'gravityflowblocks'),
+					value: category,
+					onChange: function onChange(category) {
+						onCategoryChange(category);
+					},
+					options: [{ value: 'month', label: __('Month', 'gravityflowblocks') }, { value: 'assignee', label: __('Assignee', 'gravityflowblocks') }, { value: 'step', label: __('Step', 'gravityflowblocks') }]
+				}),
+				category === 'step' && React.createElement(SelectControl, {
+					label: __('Step', 'gravityflowblocks'),
+					value: step_id,
+					onChange: function onChange(step_id) {
+						onStepChange(step_id);
+					},
+					options: steps
+				}),
+				assignees && React.createElement(SelectControl, {
+					label: __('Assignee', 'gravityflowblocks'),
+					value: assignee,
+					onChange: function onChange(assignee) {
+						onAssigneeChange(assignee);
+					},
+					options: assignees
+				})
+			)];
+		}
+	}]);
 
-    return ReportsFilter;
+	return ReportsFilter;
 }(wp.element.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (ReportsFilter);

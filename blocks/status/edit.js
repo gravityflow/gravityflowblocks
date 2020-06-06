@@ -20,12 +20,6 @@ class Edit extends wp.element.Component {
 		super( ...arguments );
 	}
 
-	componentWillUnmount() {
-		// Hack to remove post meta when the block is removed.
-		// @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
-		wp.data.dispatch( 'core/editor' ).editPost( { meta:{_gravityflow_status_fields_json:'', _gravityflow_status_forms_json:''} } );
-	}
-
 	render() {
 		let { attributes: { idColumn, submitterColumn, stepColumn, lastUpdated, dueDate, selectedFormsJson, selectedFieldsJson, timeline, stepStatus, workflowInfo, sidebar, backLink, backLinkText, backLinkUrl, displayAll, allowAnonymous }, setAttributes, setState, currentView, liveData } = this.props
 

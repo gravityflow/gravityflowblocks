@@ -3,16 +3,17 @@
 import Select from './select'
 const { __ } = wp.i18n
 
-const { Spinner } = wp.components
+const { Spinner, SelectControl } = wp.components
 const { withSelect } = wp.data
 import '../store'
+import {Fragment} from "react";
 class FormSelectView extends wp.element.Component {
 	constructor() {
 		super( ...arguments );
 	}
 
 	render() {
-		const { selectedForms, className, forms, selectedFields, onFieldsChange, onFormsChange } = this.props;
+		const { selectedForms, className, forms, selectedFields, onFieldsChange, onFormsChange, isMulti } = this.props;
 		if ( forms === undefined ) {
 			return (
 				<p className={ className }>
@@ -32,6 +33,12 @@ class FormSelectView extends wp.element.Component {
 		}
 
 		let options = [];
+
+		if ( ! isMulti ) {
+			options.push(
+				{ label: __( 'Select A Workflow Form', 'gravityflowblocks' ), value: '' }
+			);
+		}
 
 		Object.keys( forms ).forEach( function ( key, i ) {
 			options.push( {
@@ -73,14 +80,36 @@ class FormSelectView extends wp.element.Component {
 		}
 
 		return (
-			<div key={ 'workflow-form-selector' }>
-				<Select
-					isMulti
-					label={ __( 'Filter Forms', 'gravityflow' ) }
-					value={selectedForms}
-					onChange={onFormsChange}
-					options={options}
-				/>
+			<Fragment>
+				{
+					( isMulti === undefined || isMulti ) && (
+						<Select
+							isMulti={true}
+							label={ __( 'Filter Forms', 'gravityflow' ) }
+							value={selectedForms}
+							onChange={onFormsChange}
+							options={options}
+						/>
+					)
+				}
+				{
+					false === isMulti && (
+						<SelectControl
+							label={ __( 'Filter Forms', 'gravityflow' ) }
+							value={selectedForms ? selectedForms.value : ''}
+							onChange={(value) => {
+								for(let i = 0; i<options.length; i++) {
+								    if ( value === '' || options[i].value === parseInt(value) ) {
+								    	const selectedForm = {label: options[i].label, value: options[i].value};
+										onFormsChange(selectedForm);
+								        break;
+								    }
+								}
+							}}
+							options={options}
+						/>
+					)
+				}
 				{
 					form && selectedFields !== undefined &&
 					<Select
@@ -91,7 +120,7 @@ class FormSelectView extends wp.element.Component {
 						options={fieldOptions}
 					/>
 				}
-			</div>
+			</Fragment>
 		)
 	}
 }

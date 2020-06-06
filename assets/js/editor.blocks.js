@@ -759,6 +759,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _select__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./select */ "./blocks/components/select.js");
 /* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../store */ "./blocks/store.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_8__);
 
 
 
@@ -769,8 +771,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var __ = wp.i18n.__;
-var Spinner = wp.components.Spinner;
+var _wp$components = wp.components,
+    Spinner = _wp$components.Spinner,
+    SelectControl = _wp$components.SelectControl;
 var withSelect = wp.data.withSelect;
+
 
 
 
@@ -792,7 +797,8 @@ var FormSelectView = function (_wp$element$Component) {
 			    forms = _props.forms,
 			    selectedFields = _props.selectedFields,
 			    onFieldsChange = _props.onFieldsChange,
-			    onFormsChange = _props.onFormsChange;
+			    onFormsChange = _props.onFormsChange,
+			    isMulti = _props.isMulti;
 
 			if (forms === undefined) {
 				return React.createElement(
@@ -820,6 +826,10 @@ var FormSelectView = function (_wp$element$Component) {
 			}
 
 			var options = [];
+
+			if (!isMulti) {
+				options.push({ label: __('Select A Workflow Form', 'gravityflowblocks'), value: '' });
+			}
 
 			babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_0___default()(forms).forEach(function (key, i) {
 				options.push({
@@ -860,13 +870,27 @@ var FormSelectView = function (_wp$element$Component) {
 			}
 
 			return React.createElement(
-				'div',
-				{ key: 'workflow-form-selector' },
-				React.createElement(_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
+				react__WEBPACK_IMPORTED_MODULE_8__["Fragment"],
+				null,
+				(isMulti === undefined || isMulti) && React.createElement(_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
 					isMulti: true,
 					label: __('Filter Forms', 'gravityflow'),
 					value: selectedForms,
 					onChange: onFormsChange,
+					options: options
+				}),
+				false === isMulti && React.createElement(SelectControl, {
+					label: __('Filter Forms', 'gravityflow'),
+					value: selectedForms ? selectedForms.value : '',
+					onChange: function onChange(value) {
+						for (var i = 0; i < options.length; i++) {
+							if (value === '' || options[i].value === parseInt(value)) {
+								var selectedForm = { label: options[i].label, value: options[i].value };
+								onFormsChange(selectedForm);
+								break;
+							}
+						}
+					},
 					options: options
 				}),
 				form && selectedFields !== undefined && React.createElement(_select__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -890,6 +914,122 @@ var FormSelect = withSelect(function (select) {
 })(FormSelectView);
 
 /* harmony default export */ __webpack_exports__["default"] = (FormSelect);
+
+/***/ }),
+
+/***/ "./blocks/components/reports-filter.js":
+/*!*********************************************!*\
+  !*** ./blocks/components/reports-filter.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ "./node_modules/babel-runtime/core-js/object/get-prototype-of.js");
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ "./node_modules/babel-runtime/helpers/createClass.js");
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ "./node_modules/babel-runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/babel-runtime/helpers/inherits.js");
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _form_select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./form-select */ "./blocks/components/form-select.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_6__);
+
+
+
+
+
+
+
+
+var __ = wp.i18n.__;
+var SelectControl = wp.components.SelectControl;
+
+var ReportsFilter = function (_wp$element$Component) {
+	babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(ReportsFilter, _wp$element$Component);
+
+	function ReportsFilter() {
+		babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, ReportsFilter);
+
+		return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, (ReportsFilter.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default()(ReportsFilter)).apply(this, arguments));
+	}
+
+	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(ReportsFilter, [{
+		key: 'render',
+		value: function render() {
+			var _props = this.props,
+			    name = _props.name,
+			    range = _props.range,
+			    onRangeChange = _props.onRangeChange,
+			    selectedFormJson = _props.selectedFormJson,
+			    _onFormsChange = _props.onFormsChange,
+			    category = _props.category,
+			    onCategoryChange = _props.onCategoryChange,
+			    assignee = _props.assignee,
+			    assignees = _props.assignees,
+			    onAssigneeChange = _props.onAssigneeChange,
+			    step_id = _props.step_id,
+			    steps = _props.steps,
+			    onStepChange = _props.onStepChange;
+
+
+			var selectedForms = !selectedFormJson ? [] : JSON.parse(selectedFormJson);
+
+			return [React.createElement(
+				react__WEBPACK_IMPORTED_MODULE_6__["Fragment"],
+				{ key: name },
+				React.createElement(SelectControl, {
+					label: __('Range', 'gravityflowblocks'),
+					value: range,
+					onChange: function onChange(range) {
+						onRangeChange(range);
+					},
+					options: [{ value: 'last-12-months', label: __('Last 12 months', 'gravityflowblocks') }, { value: 'last-6-months', label: __('Last 6 months', 'gravityflowblocks') }, { value: 'last-3-months', label: __('Last 3 months', 'gravityflowblocks') }]
+				}),
+				React.createElement(_form_select__WEBPACK_IMPORTED_MODULE_5__["default"], {
+					isMulti: false,
+					selectedForms: selectedForms,
+					onFormsChange: function onFormsChange(selectedForms) {
+						_onFormsChange(selectedForms);
+					}
+				}),
+				selectedForms.value !== '' && React.createElement(SelectControl, {
+					label: __('Category', 'gravityflowblocks'),
+					value: category,
+					onChange: function onChange(category) {
+						onCategoryChange(category);
+					},
+					options: [{ value: 'month', label: __('Month', 'gravityflowblocks') }, { value: 'assignee', label: __('Assignee', 'gravityflowblocks') }, { value: 'step', label: __('Step', 'gravityflowblocks') }]
+				}),
+				category === 'step' && React.createElement(SelectControl, {
+					label: __('Step', 'gravityflowblocks'),
+					value: step_id,
+					onChange: function onChange(step_id) {
+						onStepChange(step_id);
+					},
+					options: steps
+				}),
+				assignees && React.createElement(SelectControl, {
+					label: __('Assignee', 'gravityflowblocks'),
+					value: assignee,
+					onChange: function onChange(assignee) {
+						onAssigneeChange(assignee);
+					},
+					options: assignees
+				})
+			)];
+		}
+	}]);
+
+	return ReportsFilter;
+}(wp.element.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (ReportsFilter);
 
 /***/ }),
 
@@ -1039,13 +1179,6 @@ var Edit = function (_wp$element$Component) {
 	}
 
 	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(Edit, [{
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			// Hack to remove post meta when the block is removed.
-			// @todo remove when this is handled correctly in the editor
-			wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_inbox_forms_json: '', _gravityflow_inbox_fields_json: '' } });
-		}
-	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			this.getInboxEntries(this.props.selectedForms, this.props.selectedFields);
@@ -1423,6 +1556,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _inbox__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./inbox */ "./blocks/inbox/index.js");
 /* harmony import */ var _status__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status */ "./blocks/status/index.js");
 /* harmony import */ var _submit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./submit */ "./blocks/submit/index.js");
+/* harmony import */ var _reports__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./reports */ "./blocks/reports/index.js");
 
 /**
  * Import blocks
@@ -1430,6 +1564,444 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+/***/ }),
+
+/***/ "./blocks/reports/dummy-filters.js":
+/*!*****************************************!*\
+  !*** ./blocks/reports/dummy-filters.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ "./node_modules/babel-runtime/core-js/object/get-prototype-of.js");
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ "./node_modules/babel-runtime/helpers/createClass.js");
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ "./node_modules/babel-runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/babel-runtime/helpers/inherits.js");
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_5__);
+
+
+
+
+
+var Button = wp.components.Button;
+var __ = wp.i18n.__;
+
+
+
+var DummyFilters = function (_wp$element$Component) {
+    babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_4___default()(DummyFilters, _wp$element$Component);
+
+    function DummyFilters() {
+        babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, DummyFilters);
+
+        return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_3___default()(this, (DummyFilters.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_0___default()(DummyFilters)).apply(this, arguments));
+    }
+
+    babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(DummyFilters, [{
+        key: 'render',
+        value: function render() {
+
+            return React.createElement(
+                react__WEBPACK_IMPORTED_MODULE_5__["Fragment"],
+                null,
+                React.createElement(
+                    'select',
+                    { disabled: true, key: 'range' },
+                    React.createElement(
+                        'option',
+                        null,
+                        __('Last 12 month', 'gravityflowblocks')
+                    )
+                ),
+                React.createElement(
+                    'select',
+                    { disabled: true, key: 'form' },
+                    React.createElement(
+                        'option',
+                        null,
+                        __('Select A Workflow Form', 'gravityflowblocks')
+                    )
+                ),
+                React.createElement(
+                    Button,
+                    { disabled: true, key: 'filter', isSecondary: true },
+                    'Filter'
+                )
+            );
+        }
+    }]);
+
+    return DummyFilters;
+}(wp.element.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (DummyFilters);
+
+/***/ }),
+
+/***/ "./blocks/reports/edit.js":
+/*!********************************!*\
+  !*** ./blocks/reports/edit.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! babel-runtime/core-js/json/stringify */ "./node_modules/babel-runtime/core-js/json/stringify.js");
+/* harmony import */ var babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! babel-runtime/core-js/object/keys */ "./node_modules/babel-runtime/core-js/object/keys.js");
+/* harmony import */ var babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! babel-runtime/core-js/object/get-prototype-of */ "./node_modules/babel-runtime/core-js/object/get-prototype-of.js");
+/* harmony import */ var babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! babel-runtime/helpers/classCallCheck */ "./node_modules/babel-runtime/helpers/classCallCheck.js");
+/* harmony import */ var babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! babel-runtime/helpers/createClass */ "./node_modules/babel-runtime/helpers/createClass.js");
+/* harmony import */ var babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! babel-runtime/helpers/possibleConstructorReturn */ "./node_modules/babel-runtime/helpers/possibleConstructorReturn.js");
+/* harmony import */ var babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! babel-runtime/helpers/inherits */ "./node_modules/babel-runtime/helpers/inherits.js");
+/* harmony import */ var babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _components_reports_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/reports-filter */ "./blocks/components/reports-filter.js");
+/* harmony import */ var _dummy_filters__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./dummy-filters */ "./blocks/reports/dummy-filters.js");
+
+
+
+
+
+
+
+
+
+
+var __ = wp.i18n.__;
+var InspectorControls = wp.editor.InspectorControls;
+var _wp = wp,
+    apiFetch = _wp.apiFetch;
+var addQueryArgs = wp.url.addQueryArgs;
+var withState = wp.compose.withState;
+var _wp$components = wp.components,
+    PanelBody = _wp$components.PanelBody,
+    ToggleControl = _wp$components.ToggleControl,
+    Spinner = _wp$components.Spinner;
+
+var Edit = function (_wp$element$Component) {
+	babel_runtime_helpers_inherits__WEBPACK_IMPORTED_MODULE_6___default()(Edit, _wp$element$Component);
+
+	function Edit() {
+		babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_3___default()(this, Edit);
+
+		return babel_runtime_helpers_possibleConstructorReturn__WEBPACK_IMPORTED_MODULE_5___default()(this, (Edit.__proto__ || babel_runtime_core_js_object_get_prototype_of__WEBPACK_IMPORTED_MODULE_2___default()(Edit)).apply(this, arguments));
+	}
+
+	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default()(Edit, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.getSteps();
+			this.getReports();
+		}
+	}, {
+		key: 'componentDidUpdate',
+		value: function componentDidUpdate(prevProps) {
+			if (prevProps.attributes.range !== this.props.attributes.range || prevProps.attributes.selectedFormJson !== this.props.attributes.selectedFormJson || prevProps.attributes.category !== this.props.attributes.category || prevProps.attributes.stepId !== this.props.attributes.stepId || prevProps.attributes.assignee !== this.props.attributes.assignee) {
+				this.getReports(this.props);
+			}
+		}
+	}, {
+		key: 'getSelectedForm',
+		value: function getSelectedForm() {
+			var selectedFormJson = this.props.attributes.selectedFormJson;
+
+			if (!selectedFormJson) {
+				return '';
+			}
+
+			var selectedForm = JSON.parse(selectedFormJson);
+
+			return selectedForm.value;
+		}
+	}, {
+		key: 'getSteps',
+		value: function getSteps(formId) {
+			var _this2 = this;
+
+			if (formId === undefined) {
+				formId = this.getSelectedForm();
+			}
+			var options = [{ label: __('All Steps', 'gravityflow'), value: '' }];
+			var assignees = [];
+
+			if (formId === '') {
+				return;
+			}
+
+			apiFetch({ path: 'gf/v2/workflow/forms/' + formId + '/steps' }).then(function (_steps) {
+				babel_runtime_core_js_object_keys__WEBPACK_IMPORTED_MODULE_1___default()(_steps).forEach(function (key, i) {
+					options.push({
+						label: _steps[key].name,
+						value: _steps[key].id
+					});
+
+					assignees[_steps[key].id] = [{ label: __('All Assignees', 'gravityflow'), value: '' }];
+					if (_steps[key].assignees.length) {
+						_steps[key].assignees.forEach(function (k, j) {
+							assignees[_steps[key].id].push({
+								label: k.name,
+								value: k.key
+							});
+						});
+					}
+				});
+
+				_this2.props.setState({ steps: options, assignees: assignees });
+			});
+		}
+	}, {
+		key: 'getReports',
+		value: function getReports(props) {
+			var _this3 = this;
+
+			var formId = this.getSelectedForm();
+
+			if (typeof props === 'undefined') {
+				props = this.props;
+			}
+
+			// Reset reports to get the spinner.
+			this.props.setState({ reports: {} });
+
+			apiFetch({
+				path: addQueryArgs('/gf/v2/workflow/reports/', {
+					'form': formId,
+					'range': props.attributes.range === '' ? 'last-12-months' : props.attributes.range,
+					'category': props.attributes.category,
+					'step-id': props.attributes.stepId,
+					'assignee': props.attributes.assignee
+				})
+			}).then(function (reports) {
+				_this3.props.setState({ reports: reports });
+
+				if (reports.hasOwnProperty('table')) {
+					var data = google.visualization.arrayToDataTable(JSON.parse(reports.table));
+
+					var options = JSON.parse(reports.options);
+
+					var chartType = 'Bar';
+
+					var chart = new google.charts[chartType](document.querySelector('[data-block="' + _this3.props.clientId + '"] .gravityflow_chart'));
+
+					chart.draw(data, options);
+				}
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this4 = this;
+
+			var _props = this.props,
+			    _props$attributes = _props.attributes,
+			    range = _props$attributes.range,
+			    selectedFormJson = _props$attributes.selectedFormJson,
+			    category = _props$attributes.category,
+			    stepId = _props$attributes.stepId,
+			    assignee = _props$attributes.assignee,
+			    displayFilter = _props$attributes.displayFilter,
+			    steps = _props.steps,
+			    assignees = _props.assignees,
+			    reports = _props.reports,
+			    setAttributes = _props.setAttributes;
+
+
+			var Filter = function Filter(props) {
+				return React.createElement(_components_reports_filter__WEBPACK_IMPORTED_MODULE_7__["default"], {
+					name: props.name,
+					range: range,
+					onRangeChange: function onRangeChange(range) {
+						setAttributes({ range: range });
+					},
+					selectedFormJson: selectedFormJson,
+					onFormsChange: function onFormsChange(selectedForms) {
+						setAttributes({
+							selectedFormJson: babel_runtime_core_js_json_stringify__WEBPACK_IMPORTED_MODULE_0___default()(selectedForms),
+							category: '',
+							stepId: ''
+						});
+					},
+					category: category,
+					onCategoryChange: function onCategoryChange(category) {
+						setAttributes({ category: category, stepId: '', assignee: '' });
+						if (category === 'step') {
+							_this4.getSteps(_this4.getSelectedForm());
+						}
+					},
+					stepId: stepId,
+					onStepChange: function onStepChange(stepId) {
+						setAttributes({ stepId: stepId, assignee: '' });
+					},
+					steps: steps,
+					assignee: assignee,
+					onAssigneeChange: function onAssigneeChange(assignee) {
+						setAttributes({ assignee: assignee });
+					},
+					assignees: assignees[stepId]
+				});
+			};
+
+			return [React.createElement(
+				InspectorControls,
+				{ key: 'inbox-inspector' },
+				React.createElement(
+					PanelBody,
+					{
+						title: __('Display Settings', 'gravityflowblocks')
+					},
+					React.createElement(ToggleControl, {
+						label: __('Display filters', 'gravityflowblocks'),
+						checked: displayFilter,
+						onChange: function onChange() {
+							return setAttributes({ displayFilter: !displayFilter });
+						}
+					})
+				),
+				React.createElement(
+					PanelBody,
+					{
+						title: __('Filter Settings', 'gravityflowblocks')
+					},
+					React.createElement(Filter, { name: 'panel-body-filter' })
+				)
+			), displayFilter && React.createElement(_dummy_filters__WEBPACK_IMPORTED_MODULE_8__["default"], { key: 'block-content-filter' }), typeof reports !== 'string' && !reports.hasOwnProperty('table') && React.createElement(
+				'div',
+				{ key: 'gravityflow_chart_loading', className: 'gravityflow_chart' },
+				React.createElement(Spinner, null),
+				__('Loading', 'gravityflow')
+			), reports.hasOwnProperty('table') && React.createElement('div', { key: 'gravityflow_chart_top_level', className: 'gravityflow_chart' }), typeof reports === 'string' && React.createElement(
+				'div',
+				{ key: 'gravityflow_chart_no_data',
+					className: 'gravityflow_chart' },
+				__('No data to display', 'gravityflowblocks')
+			)];
+		}
+	}]);
+
+	return Edit;
+}(wp.element.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (withState({
+	steps: [],
+	assignees: [],
+	reports: {}
+})(Edit));
+
+/***/ }),
+
+/***/ "./blocks/reports/editor.scss":
+/*!************************************!*\
+  !*** ./blocks/reports/editor.scss ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+// extracted by mini-css-extract-plugin
+
+/***/ }),
+
+/***/ "./blocks/reports/icon.js":
+/*!********************************!*\
+  !*** ./blocks/reports/icon.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var icon = React.createElement(
+    "svg",
+    { width: "100%", height: "100%", viewBox: "0 0 1792 1792", xmlns: "http://www.w3.org/2000/svg" },
+    React.createElement("path", { d: "M640 768v512H384V768h256zm384-512v1024H768V256h256zm1024 1152v128H0V0h128v1408h1920zm-640-896v768h-256V512h256zm384-384v1152h-256V128h256z" })
+);
+
+/* harmony default export */ __webpack_exports__["default"] = (icon);
+
+/***/ }),
+
+/***/ "./blocks/reports/index.js":
+/*!*********************************!*\
+  !*** ./blocks/reports/index.js ***!
+  \*********************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _icon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./icon */ "./blocks/reports/icon.js");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./editor.scss */ "./blocks/reports/editor.scss");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_editor_scss__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./blocks/reports/edit.js");
+/* Copyright (C) 2019 Steven Henty S.L. - All Rights Reserved */
+
+
+
+
+var __ = wp.i18n.__;
+var registerBlockType = wp.blocks.registerBlockType;
+
+
+registerBlockType('gravityflow/reports', {
+    title: __('Workflow Reports', 'gravityflow'),
+    description: __('Displays the workflow reports.', 'gravityflow'),
+    icon: {
+        src: _icon__WEBPACK_IMPORTED_MODULE_0__["default"]
+    },
+    keywords: [__('Gravity Flow'), __('Gravity')],
+    category: 'widgets',
+    supports: {
+        multiple: true,
+        html: false,
+        anchor: true
+    },
+    attributes: {
+        displayFilter: {
+            type: 'boolean',
+            default: false
+        },
+        range: {
+            type: 'string',
+            default: 'last-12-months'
+        },
+        selectedFormJson: {
+            type: 'string',
+            default: ''
+        },
+        category: {
+            type: 'string',
+            default: ''
+        },
+        stepId: {
+            type: 'string',
+            default: ''
+        },
+        assignee: {
+            type: 'string',
+            default: ''
+        }
+    },
+    edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
+    save: function save() {
+        return null;
+    }
+});
 
 /***/ }),
 
@@ -1487,13 +2059,6 @@ var Edit = function (_wp$element$Component) {
 	}
 
 	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(Edit, [{
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			// Hack to remove post meta when the block is removed.
-			// @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
-			wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_status_fields_json: '', _gravityflow_status_forms_json: '' } });
-		}
-	}, {
 		key: 'render',
 		value: function render() {
 			var _props = this.props,
@@ -1982,13 +2547,6 @@ var Edit = function (_wp$element$Component) {
 	}
 
 	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default()(Edit, [{
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			// Hack to remove post meta when the block is removed.
-			// @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
-			wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_submit_forms_json: '' } });
-		}
-	}, {
 		key: 'render',
 		value: function render() {
 			var _props = this.props,
@@ -4350,7 +4908,7 @@ module.exports = function (it) {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.5' };
+var core = module.exports = { version: '2.6.10' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -5006,6 +5564,7 @@ var meta = module.exports = {
 "use strict";
 
 // 19.1.2.1 Object.assign(target, source, ...)
+var DESCRIPTORS = __webpack_require__(/*! ./_descriptors */ "./node_modules/core-js/library/modules/_descriptors.js");
 var getKeys = __webpack_require__(/*! ./_object-keys */ "./node_modules/core-js/library/modules/_object-keys.js");
 var gOPS = __webpack_require__(/*! ./_object-gops */ "./node_modules/core-js/library/modules/_object-gops.js");
 var pIE = __webpack_require__(/*! ./_object-pie */ "./node_modules/core-js/library/modules/_object-pie.js");
@@ -5035,7 +5594,10 @@ module.exports = !$assign || __webpack_require__(/*! ./_fails */ "./node_modules
     var length = keys.length;
     var j = 0;
     var key;
-    while (length > j) if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+    while (length > j) {
+      key = keys[j++];
+      if (!DESCRIPTORS || isEnum.call(S, key)) T[key] = S[key];
+    }
   } return T;
 } : $assign;
 
@@ -5943,12 +6505,14 @@ var enumKeys = __webpack_require__(/*! ./_enum-keys */ "./node_modules/core-js/l
 var isArray = __webpack_require__(/*! ./_is-array */ "./node_modules/core-js/library/modules/_is-array.js");
 var anObject = __webpack_require__(/*! ./_an-object */ "./node_modules/core-js/library/modules/_an-object.js");
 var isObject = __webpack_require__(/*! ./_is-object */ "./node_modules/core-js/library/modules/_is-object.js");
+var toObject = __webpack_require__(/*! ./_to-object */ "./node_modules/core-js/library/modules/_to-object.js");
 var toIObject = __webpack_require__(/*! ./_to-iobject */ "./node_modules/core-js/library/modules/_to-iobject.js");
 var toPrimitive = __webpack_require__(/*! ./_to-primitive */ "./node_modules/core-js/library/modules/_to-primitive.js");
 var createDesc = __webpack_require__(/*! ./_property-desc */ "./node_modules/core-js/library/modules/_property-desc.js");
 var _create = __webpack_require__(/*! ./_object-create */ "./node_modules/core-js/library/modules/_object-create.js");
 var gOPNExt = __webpack_require__(/*! ./_object-gopn-ext */ "./node_modules/core-js/library/modules/_object-gopn-ext.js");
 var $GOPD = __webpack_require__(/*! ./_object-gopd */ "./node_modules/core-js/library/modules/_object-gopd.js");
+var $GOPS = __webpack_require__(/*! ./_object-gops */ "./node_modules/core-js/library/modules/_object-gops.js");
 var $DP = __webpack_require__(/*! ./_object-dp */ "./node_modules/core-js/library/modules/_object-dp.js");
 var $keys = __webpack_require__(/*! ./_object-keys */ "./node_modules/core-js/library/modules/_object-keys.js");
 var gOPD = $GOPD.f;
@@ -5965,7 +6529,7 @@ var SymbolRegistry = shared('symbol-registry');
 var AllSymbols = shared('symbols');
 var OPSymbols = shared('op-symbols');
 var ObjectProto = Object[PROTOTYPE];
-var USE_NATIVE = typeof $Symbol == 'function';
+var USE_NATIVE = typeof $Symbol == 'function' && !!$GOPS.f;
 var QObject = global.QObject;
 // Don't use setters in Qt Script, https://github.com/zloirock/core-js/issues/173
 var setter = !QObject || !QObject[PROTOTYPE] || !QObject[PROTOTYPE].findChild;
@@ -6075,7 +6639,7 @@ if (!USE_NATIVE) {
   $DP.f = $defineProperty;
   __webpack_require__(/*! ./_object-gopn */ "./node_modules/core-js/library/modules/_object-gopn.js").f = gOPNExt.f = $getOwnPropertyNames;
   __webpack_require__(/*! ./_object-pie */ "./node_modules/core-js/library/modules/_object-pie.js").f = $propertyIsEnumerable;
-  __webpack_require__(/*! ./_object-gops */ "./node_modules/core-js/library/modules/_object-gops.js").f = $getOwnPropertySymbols;
+  $GOPS.f = $getOwnPropertySymbols;
 
   if (DESCRIPTORS && !__webpack_require__(/*! ./_library */ "./node_modules/core-js/library/modules/_library.js")) {
     redefine(ObjectProto, 'propertyIsEnumerable', $propertyIsEnumerable, true);
@@ -6124,6 +6688,16 @@ $export($export.S + $export.F * !USE_NATIVE, 'Object', {
   getOwnPropertyNames: $getOwnPropertyNames,
   // 19.1.2.8 Object.getOwnPropertySymbols(O)
   getOwnPropertySymbols: $getOwnPropertySymbols
+});
+
+// Chrome 38 and 39 `Object.getOwnPropertySymbols` fails on primitives
+// https://bugs.chromium.org/p/v8/issues/detail?id=3443
+var FAILS_ON_PRIMITIVES = $fails(function () { $GOPS.f(1); });
+
+$export($export.S + $export.F * FAILS_ON_PRIMITIVES, 'Object', {
+  getOwnPropertySymbols: function getOwnPropertySymbols(it) {
+    return $GOPS.f(toObject(it));
+  }
 });
 
 // 24.3.2 JSON.stringify(value [, replacer [, space]])
@@ -6872,49 +7446,41 @@ var _createEmotion = Object(create_emotion__WEBPACK_IMPORTED_MODULE_0__["default
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 function areInputsEqual(newInputs, lastInputs) {
-  if (newInputs.length !== lastInputs.length) {
-    return false;
-  }
-
-  for (var i = 0; i < newInputs.length; i++) {
-    if (newInputs[i] !== lastInputs[i]) {
-      return false;
+    if (newInputs.length !== lastInputs.length) {
+        return false;
     }
-  }
-
-  return true;
+    for (var i = 0; i < newInputs.length; i++) {
+        if (newInputs[i] !== lastInputs[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 
-function index (resultFn, isEqual) {
-  if (isEqual === void 0) {
-    isEqual = areInputsEqual;
-  }
-
-  var lastThis;
-  var lastArgs = [];
-  var lastResult;
-  var calledOnce = false;
-
-  var result = function result() {
-    for (var _len = arguments.length, newArgs = new Array(_len), _key = 0; _key < _len; _key++) {
-      newArgs[_key] = arguments[_key];
+function memoizeOne(resultFn, isEqual) {
+    if (isEqual === void 0) { isEqual = areInputsEqual; }
+    var lastThis;
+    var lastArgs = [];
+    var lastResult;
+    var calledOnce = false;
+    function memoized() {
+        var newArgs = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            newArgs[_i] = arguments[_i];
+        }
+        if (calledOnce && lastThis === this && isEqual(newArgs, lastArgs)) {
+            return lastResult;
+        }
+        lastResult = resultFn.apply(this, newArgs);
+        calledOnce = true;
+        lastThis = this;
+        lastArgs = newArgs;
+        return lastResult;
     }
-
-    if (calledOnce && lastThis === this && isEqual(newArgs, lastArgs)) {
-      return lastResult;
-    }
-
-    lastResult = resultFn.apply(this, newArgs);
-    calledOnce = true;
-    lastThis = this;
-    lastArgs = newArgs;
-    return lastResult;
-  };
-
-  return result;
+    return memoized;
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (index);
+/* harmony default export */ __webpack_exports__["default"] = (memoizeOne);
 
 
 /***/ }),
@@ -8228,8 +8794,8 @@ var AutosizeInput = function (_Component) {
 			this.updateInputWidth();
 		}
 	}, {
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
+		key: 'UNSAFE_componentWillReceiveProps',
+		value: function UNSAFE_componentWillReceiveProps(nextProps) {
 			var id = nextProps.id;
 
 			if (id !== this.props.id) {
@@ -8405,7 +8971,7 @@ exports.default = AutosizeInput;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/** @license React v16.8.6
+/** @license React v16.11.0
  * react-is.development.js
  *
  * Copyright (c) Facebook, Inc. and its affiliates.
@@ -8427,25 +8993,29 @@ Object.defineProperty(exports, '__esModule', { value: true });
 // The Symbol used to tag the ReactElement-like types. If there is no native Symbol
 // nor polyfill, then a plain number is used for performance.
 var hasSymbol = typeof Symbol === 'function' && Symbol.for;
-
 var REACT_ELEMENT_TYPE = hasSymbol ? Symbol.for('react.element') : 0xeac7;
 var REACT_PORTAL_TYPE = hasSymbol ? Symbol.for('react.portal') : 0xeaca;
 var REACT_FRAGMENT_TYPE = hasSymbol ? Symbol.for('react.fragment') : 0xeacb;
 var REACT_STRICT_MODE_TYPE = hasSymbol ? Symbol.for('react.strict_mode') : 0xeacc;
 var REACT_PROFILER_TYPE = hasSymbol ? Symbol.for('react.profiler') : 0xead2;
 var REACT_PROVIDER_TYPE = hasSymbol ? Symbol.for('react.provider') : 0xeacd;
-var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace;
+var REACT_CONTEXT_TYPE = hasSymbol ? Symbol.for('react.context') : 0xeace; // TODO: We don't use AsyncMode or ConcurrentMode anymore. They were temporary
+// (unstable) APIs that have been removed. Can we remove the symbols?
+
 var REACT_ASYNC_MODE_TYPE = hasSymbol ? Symbol.for('react.async_mode') : 0xeacf;
 var REACT_CONCURRENT_MODE_TYPE = hasSymbol ? Symbol.for('react.concurrent_mode') : 0xeacf;
 var REACT_FORWARD_REF_TYPE = hasSymbol ? Symbol.for('react.forward_ref') : 0xead0;
 var REACT_SUSPENSE_TYPE = hasSymbol ? Symbol.for('react.suspense') : 0xead1;
+var REACT_SUSPENSE_LIST_TYPE = hasSymbol ? Symbol.for('react.suspense_list') : 0xead8;
 var REACT_MEMO_TYPE = hasSymbol ? Symbol.for('react.memo') : 0xead3;
 var REACT_LAZY_TYPE = hasSymbol ? Symbol.for('react.lazy') : 0xead4;
+var REACT_FUNDAMENTAL_TYPE = hasSymbol ? Symbol.for('react.fundamental') : 0xead5;
+var REACT_RESPONDER_TYPE = hasSymbol ? Symbol.for('react.responder') : 0xead6;
+var REACT_SCOPE_TYPE = hasSymbol ? Symbol.for('react.scope') : 0xead7;
 
 function isValidElementType(type) {
-  return typeof type === 'string' || typeof type === 'function' ||
-  // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
-  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE);
+  return typeof type === 'string' || typeof type === 'function' || // Note: its typeof might be other than 'symbol' or 'number' if it's a polyfill.
+  type === REACT_FRAGMENT_TYPE || type === REACT_CONCURRENT_MODE_TYPE || type === REACT_PROFILER_TYPE || type === REACT_STRICT_MODE_TYPE || type === REACT_SUSPENSE_TYPE || type === REACT_SUSPENSE_LIST_TYPE || typeof type === 'object' && type !== null && (type.$$typeof === REACT_LAZY_TYPE || type.$$typeof === REACT_MEMO_TYPE || type.$$typeof === REACT_PROVIDER_TYPE || type.$$typeof === REACT_CONTEXT_TYPE || type.$$typeof === REACT_FORWARD_REF_TYPE || type.$$typeof === REACT_FUNDAMENTAL_TYPE || type.$$typeof === REACT_RESPONDER_TYPE || type.$$typeof === REACT_SCOPE_TYPE);
 }
 
 /**
@@ -8461,12 +9031,11 @@ function isValidElementType(type) {
  * paths. Removing the logging code for production environments will keep the
  * same logic and follow the same code paths.
  */
-
-var lowPriorityWarning = function () {};
+var lowPriorityWarningWithoutStack = function () {};
 
 {
   var printWarning = function (format) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
       args[_key - 1] = arguments[_key];
     }
 
@@ -8474,9 +9043,11 @@ var lowPriorityWarning = function () {};
     var message = 'Warning: ' + format.replace(/%s/g, function () {
       return args[argIndex++];
     });
+
     if (typeof console !== 'undefined') {
       console.warn(message);
     }
+
     try {
       // --- Welcome to debugging React ---
       // This error was thrown as a convenience so that you can use this stack
@@ -8485,25 +9056,27 @@ var lowPriorityWarning = function () {};
     } catch (x) {}
   };
 
-  lowPriorityWarning = function (condition, format) {
+  lowPriorityWarningWithoutStack = function (condition, format) {
     if (format === undefined) {
-      throw new Error('`lowPriorityWarning(condition, format, ...args)` requires a warning ' + 'message argument');
+      throw new Error('`lowPriorityWarningWithoutStack(condition, format, ...args)` requires a warning ' + 'message argument');
     }
+
     if (!condition) {
-      for (var _len2 = arguments.length, args = Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
+      for (var _len2 = arguments.length, args = new Array(_len2 > 2 ? _len2 - 2 : 0), _key2 = 2; _key2 < _len2; _key2++) {
         args[_key2 - 2] = arguments[_key2];
       }
 
-      printWarning.apply(undefined, [format].concat(args));
+      printWarning.apply(void 0, [format].concat(args));
     }
   };
 }
 
-var lowPriorityWarning$1 = lowPriorityWarning;
+var lowPriorityWarningWithoutStack$1 = lowPriorityWarningWithoutStack;
 
 function typeOf(object) {
   if (typeof object === 'object' && object !== null) {
     var $$typeof = object.$$typeof;
+
     switch ($$typeof) {
       case REACT_ELEMENT_TYPE:
         var type = object.type;
@@ -8516,6 +9089,7 @@ function typeOf(object) {
           case REACT_STRICT_MODE_TYPE:
           case REACT_SUSPENSE_TYPE:
             return type;
+
           default:
             var $$typeofType = type && type.$$typeof;
 
@@ -8524,10 +9098,13 @@ function typeOf(object) {
               case REACT_FORWARD_REF_TYPE:
               case REACT_PROVIDER_TYPE:
                 return $$typeofType;
+
               default:
                 return $$typeof;
             }
+
         }
+
       case REACT_LAZY_TYPE:
       case REACT_MEMO_TYPE:
       case REACT_PORTAL_TYPE:
@@ -8536,9 +9113,8 @@ function typeOf(object) {
   }
 
   return undefined;
-}
+} // AsyncMode is deprecated along with isAsyncMode
 
-// AsyncMode is deprecated along with isAsyncMode
 var AsyncMode = REACT_ASYNC_MODE_TYPE;
 var ConcurrentMode = REACT_CONCURRENT_MODE_TYPE;
 var ContextConsumer = REACT_CONTEXT_TYPE;
@@ -8552,17 +9128,16 @@ var Portal = REACT_PORTAL_TYPE;
 var Profiler = REACT_PROFILER_TYPE;
 var StrictMode = REACT_STRICT_MODE_TYPE;
 var Suspense = REACT_SUSPENSE_TYPE;
+var hasWarnedAboutDeprecatedIsAsyncMode = false; // AsyncMode should be deprecated
 
-var hasWarnedAboutDeprecatedIsAsyncMode = false;
-
-// AsyncMode should be deprecated
 function isAsyncMode(object) {
   {
     if (!hasWarnedAboutDeprecatedIsAsyncMode) {
       hasWarnedAboutDeprecatedIsAsyncMode = true;
-      lowPriorityWarning$1(false, 'The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
+      lowPriorityWarningWithoutStack$1(false, 'The ReactIs.isAsyncMode() alias has been deprecated, ' + 'and will be removed in React 17+. Update your code to use ' + 'ReactIs.isConcurrentMode() instead. It has the exact same API.');
     }
   }
+
   return isConcurrentMode(object) || typeOf(object) === REACT_ASYNC_MODE_TYPE;
 }
 function isConcurrentMode(object) {
@@ -11414,7 +11989,7 @@ var optionCSS = function optionCSS(_ref) {
     WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
     // provide some affordance on touch devices
     ':active': {
-      backgroundColor: isSelected ? colors.primary : colors.primary50
+      backgroundColor: !isDisabled && (isSelected ? colors.primary : colors.primary50)
     }
   };
 };
@@ -11698,7 +12273,6 @@ function (_Component) {
       focusedValue: null,
       inputIsHidden: false,
       isFocused: false,
-      isComposing: false,
       menuOptions: {
         render: [],
         focusable: []
@@ -11707,6 +12281,8 @@ function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "blockOptionHover", false);
+
+    _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "isComposing", false);
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "clearFocusValueOnUpdate", false);
 
@@ -12058,15 +12634,11 @@ function (_Component) {
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onCompositionStart", function () {
-      _this.setState({
-        isComposing: true
-      });
+      _this.isComposing = true;
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onCompositionEnd", function () {
-      _this.setState({
-        isComposing: false
-      });
+      _this.isComposing = false;
     });
 
     _defineProperty(_assertThisInitialized(_assertThisInitialized(_this)), "onTouchStart", function (_ref4) {
@@ -12223,7 +12795,6 @@ function (_Component) {
           tabSelectsValue = _this$props7.tabSelectsValue,
           openMenuOnFocus = _this$props7.openMenuOnFocus;
       var _this$state2 = _this.state,
-          isComposing = _this$state2.isComposing,
           focusedOption = _this$state2.focusedOption,
           focusedValue = _this$state2.focusedValue,
           selectValue = _this$state2.selectValue;
@@ -12274,7 +12845,7 @@ function (_Component) {
           break;
 
         case 'Tab':
-          if (isComposing) return;
+          if (_this.isComposing) return;
 
           if (event.shiftKey || !menuIsOpen || !tabSelectsValue || !focusedOption || // don't capture the event if the menu opens on focus and the focused
           // option is already selected; it breaks the flow of navigation
@@ -12295,7 +12866,7 @@ function (_Component) {
 
           if (menuIsOpen) {
             if (!focusedOption) return;
-            if (isComposing) return;
+            if (_this.isComposing) return;
 
             _this.selectOption(focusedOption);
 

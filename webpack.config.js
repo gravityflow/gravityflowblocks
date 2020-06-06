@@ -1,11 +1,15 @@
 const path = require( 'path' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 module.exports = ( env, options ) => {
   const PROD = 'production' === options.mode;
 
   return {
+    optimization: {
+      minimizer: [new OptimizeCSSAssetsPlugin({})],
+    },
     entry: {
       './assets/js/editor.blocks' : './blocks/index.js'
     },
@@ -41,12 +45,7 @@ module.exports = ( env, options ) => {
             {
               loader:  'css-loader',
               options: {
-                minimize:     true,
-                sourcemap:    ! PROD,
-                autoprefixer: {
-                  add:     true,
-                  cascade: false,
-                }
+                sourceMap: ! PROD,
               }
             },
             {

@@ -3,7 +3,7 @@
  * Plugin Name: Gravity Flow Blocks
  * Plugin URI:  https://gravityflow.io
  * Description: Gravity Flow Blocks for the WordPress editor.
- * Version:     0.2
+ * Version:     0.3
  * Author:      Gravity Flow
  * Text Domain: gravityflow
  * Domain Path: /languages

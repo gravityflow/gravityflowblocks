@@ -1,3 +1,7 @@
+= 0.3 =
+Added the reports block.
+
+= 0.2 =
 Fixed an issue where the post meta is displayed in the REST API to users without sufficient permissions.
 Fixed an issue with the status block display_all attribute ignoring the allow_anonymous attribute.
 Fixed the position of the form selection menu.

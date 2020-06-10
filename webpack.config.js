@@ -1,6 +1,7 @@
 const path = require( 'path' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 
 module.exports = ( env, options ) => {
@@ -8,7 +9,7 @@ module.exports = ( env, options ) => {
 
   return {
     optimization: {
-      minimizer: [new OptimizeCSSAssetsPlugin({})],
+      minimizer: [new OptimizeCSSAssetsPlugin({}), new UglifyJsPlugin()],
     },
     entry: {
       './assets/js/editor.blocks' : './blocks/index.js'

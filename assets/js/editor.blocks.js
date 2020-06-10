@@ -1179,6 +1179,13 @@ var Edit = function (_wp$element$Component) {
 	}
 
 	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(Edit, [{
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			// Hack to remove post meta when the block is removed.
+			// @todo remove when this is handled correctly in the editor
+			wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_inbox_forms_json: '', _gravityflow_inbox_fields_json: '' } });
+		}
+	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			this.getInboxEntries(this.props.selectedForms, this.props.selectedFields);
@@ -2059,6 +2066,13 @@ var Edit = function (_wp$element$Component) {
 	}
 
 	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_3___default()(Edit, [{
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			// Hack to remove post meta when the block is removed.
+			// @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
+			wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_status_fields_json: '', _gravityflow_status_forms_json: '' } });
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _props = this.props,
@@ -2547,6 +2561,13 @@ var Edit = function (_wp$element$Component) {
 	}
 
 	babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_4___default()(Edit, [{
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			// Hack to remove post meta when the block is removed.
+			// @todo remove when this is handled correctly in the editor - https://github.com/WordPress/gutenberg/issues/5626
+			wp.data.dispatch('core/editor').editPost({ meta: { _gravityflow_submit_forms_json: '' } });
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _props = this.props,

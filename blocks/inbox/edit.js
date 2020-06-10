@@ -20,6 +20,12 @@ class Edit extends wp.element.Component {
 		super( ...arguments );
 	}
 
+	componentWillUnmount() {
+		// Hack to remove post meta when the block is removed.
+		// @todo remove when this is handled correctly in the editor
+		wp.data.dispatch( 'core/editor' ).editPost( { meta:{_gravityflow_inbox_forms_json:'', _gravityflow_inbox_fields_json:''} } );
+	}
+
 	componentDidMount() {
 		this.getInboxEntries( this.props.selectedForms, this.props.selectedFields );
 	}
